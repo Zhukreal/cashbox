@@ -1,6 +1,6 @@
 import React from 'react'
 import { Normalize } from "styled-normalize"
-import { Routes } from "routes"
+import { Routes } from "./routes"
 import { AccountLoader } from "features/profile"
 import ErrorBoundary from "lib/ErrorBoundary"
 import GlobalFonts from 'static/fonts';
