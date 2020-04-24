@@ -46,6 +46,7 @@ export const StyledButton = styled.button`
     background-color: var(--blue);
     outline: none;
     padding: 0 5rem;
+    border: none;
     border-radius: 34px;
     text-transform: ${p => p.isUpperCase? 'uppercase' : ''};
   

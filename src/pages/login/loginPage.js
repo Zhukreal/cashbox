@@ -6,10 +6,11 @@ import styled from "styled-components"
 import {emailValidator, passwordValidator} from "lib/validators";
 import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
 import {authActions} from 'features/auth'
-import { device } from 'lib/mediaDevice';
+import { device, useDetectDevice } from 'lib/mediaDevice';
 import {Button, StyledButton, Input, H2} from "ui";
 import bgLogin from 'static/img/bg_login.png'
 import preBgLogin from 'static/img/pre_bg_login.png'
+import bgLoginLaptop from 'static/img/bg_login_laptop.png'
 import bgLoginMobile from 'static/img/bg_login_mobile.png'
 import preBgLoginMobile from 'static/img/pre_bg_login_mobile.png'
 import logo from 'static/img/logo.png'
@@ -19,7 +20,11 @@ export const LoginPage = () => {
     const dispatch = useDispatch()
     const { isAuth } = useSelector( state => state.profile )
     const { isLoading } = useSelector( state => state.auth )
-    const loadedBI = useProgressiveImage(bgLogin)
+    const currentDevice = useDetectDevice()
+
+    console.log('currentDevice', currentDevice)
+
+    // const loadedBI = useProgressiveImage(bgLoginMobile)
 
     const [data, setData] = useState({
         email: '',
@@ -55,7 +60,7 @@ export const LoginPage = () => {
 
     if (isAuth) return <Redirect to={"/"} />;
     return (
-        <LoginContainer loaded={loadedBI}>
+        <LoginContainer>
             <FormBox>
                 <Logo src={logo} alt='logo' />
                 <H2>Войти в систему:</H2>
@@ -101,14 +106,19 @@ const LoginContainer = styled.div`
     align-items: center;  
     padding: 5rem;
   
-    @media ${device.mobile} { 
-      background: url(${ props => props.loaded ? bgLoginMobile : preBgLoginMobile});
+    @media ${device.mobile}, ${device.tablet} { 
+      background: url(${bgLoginMobile});
       background-size: cover;
       padding: 1rem;
     }
-  
-  background: url(${ props => props.loaded ? bgLogin : preBgLogin});
-  background-size: cover;
+    @media ${device.laptop} { 
+       background: url(${bgLoginLaptop});
+       background-size: cover;
+    }
+    @media ${device.desktop} { 
+       background: url(${bgLogin});
+       background-size: cover;
+    }  
 `
 
 const FormBox = styled.div`
@@ -133,7 +143,7 @@ const FormBox = styled.div`
       font-family: 'GilroyBold', sans-serif;
     }
     
-    @media ${device.mobile} { 
+    @media ${device.mobile}, ${device.tablet} { 
       width: 100%;
       padding: 2rem 1rem 3rem;
       
@@ -141,6 +151,13 @@ const FormBox = styled.div`
           padding: 0 5rem;
       }
     }
+    
+    @media ${device.laptop} {       
+      ${StyledButton} {
+          padding: 0 10rem;
+      }
+    }
+        
 `
 
 const Logo = styled.img`
