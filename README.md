@@ -1,1 +1,1 @@
-Just template app React, Redux
+Cashbox application
