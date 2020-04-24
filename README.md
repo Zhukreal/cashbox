@@ -1,2 +1,1 @@
-# cashbox
-cashbox
+Just template app React, Redux
