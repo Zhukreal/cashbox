@@ -1,22 +1,22 @@
-import { createGlobalStyle } from "styled-components"
-import { staticLight } from "ui/themes/light"
-import { staticDark } from "ui/themes/dark"
+import {createGlobalStyle, css} from "styled-components"
+
+const colorVariables = css`
+  --primary: #000000;
+  --canvas: #eceff1;
+  --canvas-text: rgba(14,37,74,1);
+  --card: #ffffff;
+  --blue: rgb(80, 135, 222)
+`
 
 export const GlobalStyles = createGlobalStyle`
     * {
       box-sizing: border-box;
+      
     }
     
     :root {
         font-size: 10px;
-    }
-    
-    [data-theme="dark"] {
-        ${staticDark}
-     }
-
-    [data-theme="light"] {
-        ${staticLight}
+        ${colorVariables}
     }
     
     body {
@@ -27,7 +27,7 @@ export const GlobalStyles = createGlobalStyle`
         margin: 0;
         background-color: var(--canvas);
         color: var(--canvas-text);
-        font-family: "Alegreya Sans", "Open Sans", sans-serif;
+        font-family: "GilroyLight", sans-serif;
         -webkit-font-smoothing: antialiased;
     }
     
@@ -46,3 +46,6 @@ export const GlobalStyles = createGlobalStyle`
         font-variant-ligatures: contextual;
     }
 `
+
+
+

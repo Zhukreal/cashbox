@@ -18,7 +18,7 @@ export const Card = styled.div`
     padding: 2rem;
     box-sizing: border-box;
     text-align: center;
-    box-shadow: 0 0.6rem 1rem rgba(36,37,38,0.08);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
     background-color: #ffffff;
     color: #000000;
     

@@ -14,6 +14,7 @@ export const H2 = styled.h2`
   margin-top: 1rem;
   margin-bottom: 1rem;
   user-select: none;
+  font-family: 'GilroyBold', sans-serif;
 `
 
 export const H3 = styled.h3`

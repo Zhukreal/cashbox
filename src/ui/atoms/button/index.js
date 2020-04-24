@@ -1,20 +1,20 @@
 import React from 'react'
-import styled from "styled-components"
-import { Button as ButtonMaterial } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import styled, {css} from "styled-components"
+import { device } from 'lib/mediaDevice'
+import './style.css'
 
 export const Button = (
     {
         type,
         variant = 'contained',
-        color = 'primary',
+        color = 'blue',
         size = 'medium' ,
         disabled,
         isLoading,
         startIcon,
         endIcon,
         onClick,
+        isUpperCase,
         children
     }) => {
 
@@ -28,24 +28,63 @@ export const Button = (
             endIcon={endIcon}
             onClick={onClick}
             disabled={disabled || isLoading}
-            // className={classes.button}
+            isLoading={isLoading}
+            isUpperCase={isUpperCase}
         >
             {children}
-            {isLoading && <StyledCircularProgress size={20} />}
+            {isLoading &&  <SpinnerBox><Spinner /></SpinnerBox>}
         </StyledButton>
     )
 }
 
 
-export const StyledButton = styled(ButtonMaterial)({
-    height: '34px'
-});
+export const StyledButton = styled.button`
+    position: relative;
+    height: 68px;
+    font-size: 1.8rem;
+    color: #ffffff;
+    background-color: var(--blue);
+    outline: none;
+    padding: 0 5rem;
+    border-radius: 34px;
+    text-transform: ${p => p.isUpperCase? 'uppercase' : ''};
+  
+    :hover {
+        cursor: pointer;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
+    }
+    :disabled {
+        cursor: ${p => p.isLoading? 'progress' : 'not-allowed'};
+        opacity: 0.5;
+    }
+    
+    
+    ${(p) =>
+    p.size === 'small' &&
+    css`
+        height: 32px;
+        border-radius: 16px;
+        padding: 0 2rem;
+        font-size: 1.2rem;
+    `}
+    
+    @media ${device.mobile} { 
+        height: 52px;
+    }
+`
 
-const StyledCircularProgress = styled(CircularProgress)({
-    color: 'grey',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -10,
-    marginLeft: -10
-});
+const SpinnerBox = styled.span`
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    //background-color: grey;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -12px;
+    margin-left: -12px;
+`
+
+const Spinner = () => <svg className="circular" viewBox="22 22 44 44">
+    <circle className="path" fill="none" r="20" cx="44" cy="44" stroke-width="3"/>
+</svg>

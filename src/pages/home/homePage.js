@@ -27,20 +27,22 @@ export const HomePage = () => {
 
     return (
         <CommonContentTemplate>
-            <Input
-                name='text'
-                type='search'
-                value={search}
-                label={'Search'}
-                onChange={e => setSearch(e.target.value)}
-            />
-            <OffersList
-                offers={search ? filteredOffers : offers}
-                isLoading={isLoading}
-                showMore={() => getOffers()}
-                hasMore={search ? false : hasMore}
-                isFirstRequest={isFirstRequest}
-            />
+             Home page
+
+            {/*<Input*/}
+            {/*    name='text'*/}
+            {/*    type='search'*/}
+            {/*    value={search}*/}
+            {/*    label={'Search'}*/}
+            {/*    onChange={e => setSearch(e.target.value)}*/}
+            {/*/>*/}
+            {/*<OffersList*/}
+            {/*    offers={search ? filteredOffers : offers}*/}
+            {/*    isLoading={isLoading}*/}
+            {/*    showMore={() => getOffers()}*/}
+            {/*    hasMore={search ? false : hasMore}*/}
+            {/*    isFirstRequest={isFirstRequest}*/}
+            {/*/>*/}
         </CommonContentTemplate>
     )
 }

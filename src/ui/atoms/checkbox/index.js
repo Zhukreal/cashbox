@@ -1,7 +1,4 @@
 import React from 'react'
-import { Checkbox as MaterialCheckbox } from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import './style.sass'
 
 export const Checkbox = ({
     name,
@@ -10,7 +7,7 @@ export const Checkbox = ({
 }) => {
 
     return (
-        <MaterialCheckbox
+        <input
             color="primary"
             name={name}
             value={value}
@@ -26,9 +23,8 @@ export const CheckboxWithLabel = ({
 }) => {
 
     return (
-        <FormControlLabel
-            control={<Checkbox {...props} />}
-            label={label}
+        <input
+
         />
     )
 }

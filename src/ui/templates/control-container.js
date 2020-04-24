@@ -9,5 +9,5 @@ export const ControlContainerTemplate = ({ children }) => (
 
 const ControlContainer = styled.div`
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 `

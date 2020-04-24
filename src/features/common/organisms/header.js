@@ -19,7 +19,6 @@ export const Header = () => {
                 <Row justify="space-between">
                     <Col justify='center'>
                         <Link to={'/'}>Home page</Link>
-                        {/*<Link to={'/about'}>About page</Link>*/}
                     </Col>
                     <Col>
                         {profile.id ?
