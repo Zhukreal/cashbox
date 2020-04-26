@@ -5,7 +5,8 @@ const colorVariables = css`
   --canvas: #eceff1;
   --canvas-text: rgba(14,37,74,1);
   --card: #ffffff;
-  --blue: rgb(80, 135, 222)
+  --blue: rgb(80, 135, 222);
+  --green: #25D77E;
 `
 
 export const GlobalStyles = createGlobalStyle`

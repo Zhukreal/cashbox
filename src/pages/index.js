@@ -5,8 +5,7 @@ import { RegistrationPage } from "./registration/page"
 import { LoginPage } from "./login/loginPage"
 import { StorybookPage } from "./storybook/storybookPage"
 import { OfferPage } from "./offer/offerPage"
-import { TestPage } from "./test/page"
-import { TestPage2 } from "./test/test2"
+import { TestPage } from "./test/testPage"
 
 import { NotFoundPage } from "./internal/not-found/page"
 
@@ -51,11 +50,6 @@ export const routes = () => [
         path: "/test",
         exact: true,
         component: TestPage,
-    },
-    {
-        path: "/test2",
-        exact: true,
-        component: TestPage2,
     },
 
     { component: NotFoundPage }

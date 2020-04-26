@@ -59,6 +59,9 @@ export const StyledButton = styled.button`
         opacity: 0.5;
     }
     
+    ${(p) => p.color === 'green' && css`
+        background-color: var(--green);
+    `}
     
     ${(p) =>
     p.size === 'small' &&
@@ -87,5 +90,5 @@ const SpinnerBox = styled.span`
 `
 
 const Spinner = () => <svg className="circular" viewBox="22 22 44 44">
-    <circle className="path" fill="none" r="20" cx="44" cy="44" stroke-width="3"/>
+    <circle className="path" fill="none" r="20" cx="44" cy="44" strokeWidth="3"/>
 </svg>

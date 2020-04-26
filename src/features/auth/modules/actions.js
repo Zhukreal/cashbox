@@ -1,7 +1,7 @@
-import {apiLogin, apiLogout } from '../../../api/account'
-import {authReducer} from "../../auth";
-import {profileReducer} from "../../profile";
-import {history} from "../../../lib/routing";
+import {apiLogin, apiLogout } from 'api/account'
+import {authReducer} from "features/auth";
+import {profileReducer} from "features/profile";
+import {history} from "lib/routing";
 
 export const login = credentials => async dispatch => {
     try {
@@ -22,5 +22,13 @@ export const logout = () => async dispatch => {
         history.push('/login');
     } catch (e){
         console.log(e)
+    }
+};
+
+export const setExpiredSession = flag => async dispatch => {
+    try {
+        dispatch(authReducer.setExpiredSession(flag))
+    } catch (e){
+
     }
 };

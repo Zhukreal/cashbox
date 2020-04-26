@@ -1,9 +1,10 @@
 import { useEffect } from "react"
 import {useDispatch} from "react-redux";
 import Cookies from "browser-cookies"
-
+import {history} from "lib/routing";
 import {getAccount} from "../modules/actions";
-import {AUTHTOKEN} from '../../../lib/CONST'
+import {AUTHTOKEN} from 'lib/CONST'
+import {useIdle} from "../../../lib/customHooks/useIdle"
 
 
 export const AccountLoader = ({ children }) => {
@@ -18,14 +19,13 @@ export const AccountLoader = ({ children }) => {
         if(TOKEN) {
             dispatch(getAccount(TOKEN))
         } else {
-
+            history.push('/login')
         }
     }
 
 
 
-
-    // if (token && !session) return null
+    // if (!TOKEN) return null
     return children
 }
 

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from "browser-cookies";
 
-import {AUTHTOKEN} from '../../../lib/CONST'
+import {AUTHTOKEN} from 'lib/CONST'
 
 
 let initialState = {

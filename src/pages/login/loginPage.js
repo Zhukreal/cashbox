@@ -1,36 +1,38 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { Redirect } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components"
-
-import {emailValidator, passwordValidator} from "lib/validators";
-import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
+import {history} from "lib/routing";
+// import {emailValidator, passwordValidator} from "lib/validators";
+// import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
 import {authActions} from 'features/auth'
 import { device, useDetectDevice } from 'lib/mediaDevice';
-import {Button, StyledButton, Input, H2} from "ui";
+import {Button, StyledButton, Input, H2, CashBoxList, Modal, Text} from "ui"
 import bgLogin from 'static/img/bg_login.png'
-import preBgLogin from 'static/img/pre_bg_login.png'
+// import preBgLogin from 'static/img/pre_bg_login.png'
 import bgLoginLaptop from 'static/img/bg_login_laptop.png'
 import bgLoginMobile from 'static/img/bg_login_mobile.png'
-import preBgLoginMobile from 'static/img/pre_bg_login_mobile.png'
+// import preBgLoginMobile from 'static/img/pre_bg_login_mobile.png'
 import logo from 'static/img/logo.png'
 
 
 export const LoginPage = () => {
     const dispatch = useDispatch()
     const { isAuth } = useSelector( state => state.profile )
-    const { isLoading } = useSelector( state => state.auth )
+    const { isLoading, isExpiredSession } = useSelector( state => state.auth )
     const currentDevice = useDetectDevice()
-
-    console.log('currentDevice', currentDevice)
-
+    // const inputEl = useRef(null);
+    // console.log('inputEl', inputEl)
     // const loadedBI = useProgressiveImage(bgLoginMobile)
 
     const [data, setData] = useState({
-        email: '',
+        phone: '',
         password: ''
     })
     const [errors, setErrors] = useState({})
+    const [typeView, setTypeView] = useState(1) // typeView: 1 - Login form, 2 - cashbox list
+    const [activeCashbox, setActiveCashbox] = useState(null)
+
     const isValidForm = Boolean(data.phone && data.password && !errors.phone && !errors.password)
 
     useEffect(() => {
@@ -49,22 +51,53 @@ export const LoginPage = () => {
         setData({...data, [name]: value})
     }
 
-    const handleSubmitForm = e => {
+    const handleSubmitForm = async e => {
         e.preventDefault()
         if(!isValidForm) {
             validateForm()
             return
         }
-        dispatch(authActions.login(data))
+        console.log('data', data)
+        try {
+            await dispatch(authActions.login(data))
+            setTypeView(2)
+        } catch (e) {
+
+        }
     }
 
-    if (isAuth) return <Redirect to={"/"} />;
+    const handleChooseCashbox = () => {
+        console.log('save cashbox', activeCashbox)
+        history.push('/')
+    }
+
+    // const handleCloseSe
+
+    if(isExpiredSession) {
+        return (
+            <LoginContainer>
+                <Modal >
+                    <Text fz={30} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>
+                    <div>
+                        <Button
+                            onClick={() => dispatch(authActions.setExpiredSession(false))}
+                            color='green'
+                        >
+                            Продолжить сессию
+                        </Button>
+                    </div>
+                </Modal>
+            </LoginContainer>
+        )
+    }
+
     return (
         <LoginContainer>
+            {!isAuth &&
             <FormBox>
                 <Logo src={logo} alt='logo' />
                 <H2>Войти в систему:</H2>
-                <form onSubmit={handleSubmitForm} >
+                <form onSubmit={handleSubmitForm}>
                     <Input
                         type='tel'
                         label='Введите номер телефона:'
@@ -72,8 +105,12 @@ export const LoginPage = () => {
                         value={data.phone}
                         onChange={onChange}
                         placeholder='+7(___)___-__-__'
+                        readOnly={isLoading}
                         error={data.phone && errors.phone}
                         isForm
+                        isInputMask
+                        mask="+7 (999) 999-99-99"
+                        alwaysShowMask
                     />
                     <Input
                         name='password'
@@ -81,6 +118,7 @@ export const LoginPage = () => {
                         value={data.password}
                         onChange={onChange}
                         placeholder='Пароль'
+                        readOnly={isLoading}
                         error={data.password && errors.password}
                         isForm
                     />
@@ -94,6 +132,29 @@ export const LoginPage = () => {
                     </Button>
                 </form>
             </FormBox>
+            }
+
+            {isAuth &&
+            <FormBox>
+                <Logo src={logo} alt='logo' />
+                <H2>Выбор кассы:</H2>
+                <CashBoxList
+                    list={[1,2,3,4,5,6]}
+                    active={activeCashbox}
+                    setActive={setActiveCashbox}
+                />
+                <div>
+                    <Button
+                        onClick={handleChooseCashbox}
+                        isLoading={false}
+                        disabled={false}
+                        isUpperCase
+                    >
+                        Далее
+                    </Button>
+                </div>
+            </FormBox>
+            }
         </LoginContainer>
     )
 }
@@ -157,7 +218,6 @@ const FormBox = styled.div`
           padding: 0 10rem;
       }
     }
-        
 `
 
 const Logo = styled.img`
