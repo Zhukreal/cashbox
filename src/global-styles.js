@@ -7,6 +7,7 @@ const colorVariables = css`
   --card: #ffffff;
   --blue: rgb(80, 135, 222);
   --green: #25D77E;
+  --red: #F16F58;
 `
 
 export const GlobalStyles = createGlobalStyle`

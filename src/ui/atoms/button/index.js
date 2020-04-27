@@ -62,6 +62,9 @@ export const StyledButton = styled.button`
     ${(p) => p.color === 'green' && css`
         background-color: var(--green);
     `}
+    ${(p) => p.color === 'red' && css`
+        background-color: var(--red);
+    `}
     
     ${(p) =>
     p.size === 'small' &&

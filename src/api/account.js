@@ -11,21 +11,25 @@ export const apiLogin = data => {
         setTimeout(() => resolve(data), 2000);
     });
 
-    // return axios.post("/account/login", data)
+    // return axios.post('/api/v1/auth/token/', data)
 }
 
-export const apiLogout = data => {
+export const apiLogout = () => {
     return  null
 }
 
-export const apiGetAccount = token => {
-    return {
-        id: '2',
-        firstName: 'Yury2',
-        lastName: 'Zhuk2'
-    }
+export const apiGetAccount = () => {
+    return new Promise(function(resolve) {
+        const data =  {
+            id: '2',
+            firstName: 'Cashbox',
+            lastName: '',
+            cashes: [1,2,3,4,5,6]
+        }
+        setTimeout(() => resolve(data), 2000);
+    });
 
-   // return axios.get("/account", token)
+   // return axios.get("/api/v1/current_user/")
 }
 
 

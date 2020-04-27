@@ -18,7 +18,7 @@ import logo from 'static/img/logo.png'
 
 export const LoginPage = () => {
     const dispatch = useDispatch()
-    const { isAuth } = useSelector( state => state.profile )
+    const { isAuth, cashes } = useSelector( state => state.profile )
     const { isLoading, isExpiredSession } = useSelector( state => state.auth )
     const currentDevice = useDetectDevice()
     // const inputEl = useRef(null);
@@ -29,9 +29,12 @@ export const LoginPage = () => {
         phone: '',
         password: ''
     })
+    const [error, setError] = useState(null)
     const [errors, setErrors] = useState({})
     const [typeView, setTypeView] = useState(1) // typeView: 1 - Login form, 2 - cashbox list
     const [activeCashbox, setActiveCashbox] = useState(null)
+    const [isLoadingCashboxes, setIsLoadingCashboxes] = useState(true)
+
 
     const isValidForm = Boolean(data.phone && data.password && !errors.phone && !errors.password)
 
@@ -62,16 +65,21 @@ export const LoginPage = () => {
             await dispatch(authActions.login(data))
             setTypeView(2)
         } catch (e) {
-
+            setError(true)
         }
     }
 
     const handleChooseCashbox = () => {
-        console.log('save cashbox', activeCashbox)
+        if(!activeCashbox) return
+        localStorage.setItem('cashbox', activeCashbox)
         history.push('/')
     }
 
-    // const handleCloseSe
+    const getListCashbox = () => {
+
+    }
+
+
 
     if(isExpiredSession) {
         return (
@@ -97,6 +105,7 @@ export const LoginPage = () => {
             <FormBox>
                 <Logo src={logo} alt='logo' />
                 <H2>Войти в систему:</H2>
+                {error && <Error>Логин или пароль введены неверно</Error>}
                 <form onSubmit={handleSubmitForm}>
                     <Input
                         type='tel'
@@ -139,20 +148,28 @@ export const LoginPage = () => {
                 <Logo src={logo} alt='logo' />
                 <H2>Выбор кассы:</H2>
                 <CashBoxList
-                    list={[1,2,3,4,5,6]}
+                    list={cashes}
                     active={activeCashbox}
                     setActive={setActiveCashbox}
                 />
                 <div>
                     <Button
                         onClick={handleChooseCashbox}
+                        disabled={!activeCashbox}
                         isLoading={false}
-                        disabled={false}
                         isUpperCase
                     >
                         Далее
                     </Button>
                 </div>
+
+                {/*{isLoadingCashboxes ?*/}
+                {/*    <div>Loading...</div>*/}
+                {/*    :*/}
+                {/*    <>*/}
+                {/*        */}
+                {/*    </>*/}
+                {/*}*/}
             </FormBox>
             }
         </LoginContainer>
@@ -219,8 +236,15 @@ const FormBox = styled.div`
       }
     }
 `
-
 const Logo = styled.img`
   width: 122px;
   margin: 0 auto 3rem auto;  
 `
+const Error = styled.div`
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--red);
+`
+
+

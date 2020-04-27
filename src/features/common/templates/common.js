@@ -20,7 +20,7 @@ export const ContentBox = styled.div`
   justify-content: center;
   overflow-y: auto;
   min-height: calc(100vh - 5rem);
-  padding-top: 7rem;
+  padding-top: 8rem;
   padding-bottom: 2rem;
   color: var(--canvas-text);
   background-color: var(--canvas);

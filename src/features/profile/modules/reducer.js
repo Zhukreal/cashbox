@@ -6,7 +6,8 @@ import {AUTHTOKEN} from 'lib/CONST'
 
 let initialState = {
     id: null,
-    isAuth: false
+    isAuth: false,
+    cashes: []
 }
 
 const profile = createSlice({
@@ -14,11 +15,12 @@ const profile = createSlice({
     initialState,
     reducers: {
         setProfile(state, action) {
-            const {token, id, firstName, lastName} = action.payload
+            const {token, id, firstName, lastName, cashes} = action.payload
             state.id = id
             state.firstName = firstName
             state.lastName = lastName
             state.isAuth = true
+            state.cashes = cashes
             if(token) Cookies.set(AUTHTOKEN, token)
         },
         clearProfile(state, action) {
@@ -26,6 +28,7 @@ const profile = createSlice({
             state.firstName = null
             state.lastName = null
             state.isAuth = false
+            state.cashes = []
             Cookies.erase(AUTHTOKEN)
         }
     }

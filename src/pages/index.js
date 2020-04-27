@@ -4,7 +4,6 @@ import { ContactPage } from "./contact/page"
 import { RegistrationPage } from "./registration/page"
 import { LoginPage } from "./login/loginPage"
 import { StorybookPage } from "./storybook/storybookPage"
-import { OfferPage } from "./offer/offerPage"
 import { TestPage } from "./test/testPage"
 
 import { NotFoundPage } from "./internal/not-found/page"
@@ -40,11 +39,6 @@ export const routes = () => [
         path: "/storybook",
         exact: true,
         component: StorybookPage,
-    },
-    {
-        path: "/offers/:id",
-        exact: true,
-        component: OfferPage,
     },
     {
         path: "/test",

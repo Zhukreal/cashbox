@@ -1,21 +1,22 @@
-import { useEffect } from "react"
-import {useDispatch} from "react-redux";
+import React, { useEffect } from "react"
+import {useDispatch, useSelector} from "react-redux";
 import Cookies from "browser-cookies"
 import {history} from "lib/routing";
 import {getAccount} from "../modules/actions";
 import {AUTHTOKEN} from 'lib/CONST'
-import {useIdle} from "../../../lib/customHooks/useIdle"
 
 
 export const AccountLoader = ({ children }) => {
     const dispatch = useDispatch()
+    const { isAuth } = useSelector(state => state.profile)
+    const TOKEN = Cookies.get(AUTHTOKEN)
 
     useEffect(() => {
         loadSession()
     }, [])
 
+
     const loadSession = () => {
-        const TOKEN = Cookies.get(AUTHTOKEN)
         if(TOKEN) {
             dispatch(getAccount(TOKEN))
         } else {
@@ -23,9 +24,7 @@ export const AccountLoader = ({ children }) => {
         }
     }
 
-
-
-    // if (!TOKEN) return null
+    // if (TOKEN && !isAuth) return <div>Loading...</div>
     return children
 }
 

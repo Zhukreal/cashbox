@@ -16,21 +16,13 @@ export const Header = () => {
     return (
         <HeaderBox>
             <Container>
-                <Row justify="space-between">
-                    <Col justify='center'>
-                        <Link to={'/'}>Home page</Link>
-                    </Col>
-                    <Col>
-                        {profile.id ?
-                            <InfoBox>
-                                {`${profile.firstName} ${profile.lastName}`}
-                                <Button onClick={handleLogout} size='small' >Logout</Button>
-                            </InfoBox>
-                            :
-                            <Link to={'/login'}>Login</Link>
-                        }
-                    </Col>
-                </Row>
+                <HeaderRow>
+                    <div>icon</div>
+                    <div>logo</div>
+                    <div>input</div>
+                    <div>something</div>
+                    <Button onClick={handleLogout} size='small' >Logout</Button>
+                </HeaderRow>
             </Container>
         </HeaderBox>
     )
@@ -54,5 +46,9 @@ const HeaderBox = styled.header`
 const InfoBox = styled.div`
   
 `
-
+const HeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
