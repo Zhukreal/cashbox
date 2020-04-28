@@ -7,7 +7,8 @@ import {AUTHTOKEN} from 'lib/CONST'
 let initialState = {
     id: null,
     isAuth: false,
-    cashes: []
+    cashes: [],
+    isOpenedSidebar: false
 }
 
 const profile = createSlice({
@@ -30,13 +31,17 @@ const profile = createSlice({
             state.isAuth = false
             state.cashes = []
             Cookies.erase(AUTHTOKEN)
+        },
+        toggleSidebar (state) {
+            state.isOpenedSidebar = !state.isOpenedSidebar
         }
     }
 })
 
 export const {
     setProfile,
-    clearProfile
+    clearProfile,
+    toggleSidebar
 } = profile.actions
 
 

@@ -2,6 +2,7 @@ import React from 'react'
 import styled, {css} from "styled-components"
 import InputMask from 'react-input-mask';
 import { device } from 'lib/mediaDevice'
+import searchIcon from 'static/img/logo.png'
 
 export const Input = ({
     type,
@@ -11,14 +12,16 @@ export const Input = ({
     onChange,
     placeholder,
                           readOnly,
+    size = 'medium',
     isForm,
     isInputMask,
+                          isSearch,
     mask,
     alwaysShowMask,
     error
 }) => {
     return (
-        <BoxInput isForm >
+        <BoxInput isForm={isForm} >
             {isInputMask ?
                 <StyledInputMask
                     type={type}
@@ -39,8 +42,11 @@ export const Input = ({
                     onChange={onChange}
                     placeholder={placeholder}
                     readOnly={readOnly}
+                    size={size}
+                    isSearch={isSearch}
                 />
             }
+            {isSearch && <SearchIcon src={searchIcon} />}
             <Error>{error}</Error>
         </BoxInput>
 
@@ -66,6 +72,16 @@ const sharedStyle = css`
         cursor: not-allowed;
     }
     
+    ${(p) =>
+    p.isSearch &&
+    css`
+        border: none;
+        height: 52px;
+        border-radius: 26px;
+        padding: 0 26px;
+        font-size: 18px;
+    `}
+    
     @media ${device.mobile} { 
         height: 52px;
         border-radius: 26px;
@@ -82,7 +98,7 @@ const StyledInputMask = styled(InputMask)`
     ${sharedStyle}
 `
 
-const BoxInput = styled.div`
+export const BoxInput = styled.div`
     width: 100%;
     position: relative;
   
@@ -100,4 +116,12 @@ const Error = styled.div`
     bottom: -15px;
     font-size: 1rem;
     color: #ff3939;
+`
+
+const SearchIcon = styled.img`
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 20px;
+  top: 14px;
 `

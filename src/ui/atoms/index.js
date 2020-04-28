@@ -1,5 +1,5 @@
 export { Button, StyledButton } from "./button"
-export { Input } from "./input"
+export { Input, BoxInput } from "./input"
 export { Checkbox, CheckboxWithLabel } from "./checkbox"
 export { Radio } from "./radio"
 export { Switch } from "./switch"

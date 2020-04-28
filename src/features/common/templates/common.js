@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { Header } from "../organisms"
-import { Footer, Container } from "ui"
+import { Container } from "ui"
 
 export const CommonContentTemplate = ({ children }) => (
   <>
@@ -11,7 +11,6 @@ export const CommonContentTemplate = ({ children }) => (
               {children}
           </Container>
       </ContentBox>
-      <Footer></Footer>
   </>
 )
 

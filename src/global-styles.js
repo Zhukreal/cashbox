@@ -5,6 +5,7 @@ const colorVariables = css`
   --canvas: #eceff1;
   --canvas-text: rgba(14,37,74,1);
   --card: #ffffff;
+  --shadow-card: 0px 3px 6px rgba(0, 0, 0, 0.161);
   --blue: rgb(80, 135, 222);
   --green: #25D77E;
   --red: #F16F58;

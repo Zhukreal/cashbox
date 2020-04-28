@@ -11,6 +11,7 @@ import styled from "styled-components";
 export const HomePage = () => {
     const dispatch = useDispatch()
     const { products, filteredProducts, skip, take, isLoading, hasMore, isFirstRequest } = useSelector(state => state.product)
+    const { isOpenedSidebar } = useSelector(state => state.profile)
     const [search, setSearch] = useState('')
     // const debouncedSearch = useDebounce(search, 1000);
 
@@ -39,6 +40,7 @@ export const HomePage = () => {
                         hasMore={search ? false : hasMore}
                         isFirstRequest={isFirstRequest}
                     />
+                    { isOpenedSidebar && <Blur /> }
                 </ProductsBox>
                 <CartBox>
                     <CartList
@@ -54,20 +56,33 @@ export const HomePage = () => {
 const FlexBlock = styled.div`
   display: flex;
   width: 100%;
-  min-height: calc(100vh - 15rem);
+  min-height: calc(100vh - 5rem);
   position: relative;
 `
 const ProductsBox = styled.div`
+  position:relative;
   width: calc(100% - 300px);
-  max-height: calc(100vh - 15rem);
-  padding-right: 40px;
+  //max-height: calc(100vh - 5rem);
 `
 const CartBox = styled.div`
   width: 300px;
   max-width: 300px;
-  height: calc(100vh - 15rem);
+  height: calc(100vh - 5rem);
   overflow-y: auto;
   position: relative;
+  padding-left: 30px;
   //background-color: #f0faff;
 `
-
+const Blur = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.9);
+    filter: blur(0px);
+    -o-filter: blur(0px);
+    -ms-filter: blur(0px);
+    -moz-filter: blur(0px);
+    -webkit-filter: blur(0x);
+`

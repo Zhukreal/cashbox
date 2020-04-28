@@ -68,13 +68,13 @@ const CartBox = styled.div`
     width: 100%;
     max-width: inherit;
     position: fixed;
-    height: calc(100vh - 15rem);
+    height: calc(100vh - 10rem);
 `
 const CartRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    height: calc(100vh - 30rem);
+    height: calc(100vh - 25rem);
     overflow-y: auto;
 `
 const CartCol = styled.div`

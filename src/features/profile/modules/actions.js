@@ -9,4 +9,8 @@ export const getAccount = token => async dispatch => {
         console.log(e)
     }
 };
+export const toggleSidebar = () => dispatch => {
+    dispatch(profileReducer.toggleSidebar())
+};
+
 
