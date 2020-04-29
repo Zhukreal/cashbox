@@ -15,6 +15,7 @@ export const Button = (
         endIcon,
         onClick,
         isUpperCase,
+        isHeaderBtn,
         children
     }) => {
 
@@ -30,6 +31,7 @@ export const Button = (
             disabled={disabled || isLoading}
             isLoading={isLoading}
             isUpperCase={isUpperCase}
+            isHeaderBtn={isHeaderBtn}
         >
             {children}
             {isLoading &&  <SpinnerBox><Spinner /></SpinnerBox>}
@@ -62,8 +64,8 @@ export const StyledButton = styled.button`
     ${(p) => p.color === 'green' && css`
         background-color: var(--green);
     `}
-    ${(p) => p.color === 'red' && css`
-        background-color: var(--red);
+    ${(p) => p.isHeaderBtn && css`
+        border-radius: 22px;
     `}
     
     ${(p) =>
@@ -73,6 +75,10 @@ export const StyledButton = styled.button`
         border-radius: 16px;
         padding: 0 2rem;
         font-size: 1.2rem;
+    `}
+    
+    ${(p) => p.color === 'red' && css`
+        background-color: var(--red);
     `}
     
     @media ${device.mobile} { 

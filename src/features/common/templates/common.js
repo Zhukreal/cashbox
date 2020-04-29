@@ -18,8 +18,8 @@ export const ContentBox = styled.div`
   display: flex;
   justify-content: center;
   overflow-y: auto;
-  min-height: calc(100vh - 5rem);
-  padding-top: 8rem;
+  min-height: calc(100vh - 120px);
+  padding-top: 130px;
   padding-bottom: 2rem;
   color: var(--canvas-text);
   background-color: var(--canvas);

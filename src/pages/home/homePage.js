@@ -15,6 +15,11 @@ export const HomePage = () => {
     const [search, setSearch] = useState('')
     // const debouncedSearch = useDebounce(search, 1000);
 
+    const test = 'test'
+    console.log('test', test)
+    const [someHook, setSome] = useState(test)
+    console.log('someHook', someHook)
+
 
     useEffect(() => {
         getProducts()
@@ -56,18 +61,17 @@ export const HomePage = () => {
 const FlexBlock = styled.div`
   display: flex;
   width: 100%;
-  min-height: calc(100vh - 5rem);
+  min-height: calc(100vh - 120px);
   position: relative;
 `
 const ProductsBox = styled.div`
   position:relative;
-  width: calc(100% - 300px);
-  //max-height: calc(100vh - 5rem);
+  width: calc(100% - 450px);
 `
 const CartBox = styled.div`
-  width: 300px;
-  max-width: 300px;
-  height: calc(100vh - 5rem);
+  width: 450px;
+  max-width: 450px;
+  height: calc(100vh - 120px);
   overflow-y: auto;
   position: relative;
   padding-left: 30px;

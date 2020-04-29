@@ -2,7 +2,7 @@ import React from 'react'
 import styled, {css} from "styled-components"
 import InputMask from 'react-input-mask';
 import { device } from 'lib/mediaDevice'
-import searchIcon from 'static/img/logo.png'
+import searchIcon from 'static/img/icons/search.png'
 
 export const Input = ({
     type,
@@ -76,10 +76,27 @@ const sharedStyle = css`
     p.isSearch &&
     css`
         border: none;
-        height: 52px;
-        border-radius: 26px;
-        padding: 0 26px;
-        font-size: 18px;
+        height: 68px;
+        border-radius: 22px;
+        padding: 0 45px 0 25px;
+        font-size: 17px;
+        
+        ::-webkit-input-placeholder {
+          font-family: 'GilroyBold', sans-serif;
+          color: rgba(14,37,74,0.302);
+        }
+        ::-moz-placeholder          {
+            font-family: 'GilroyBold', sans-serif;
+            color: rgba(14,37,74,0.302);
+        }
+        :-moz-placeholder           {
+            font-family: 'GilroyBold', sans-serif;
+            color: rgba(14,37,74,0.302);
+        }
+        :-ms-input-placeholder      {
+            font-family: 'GilroyBold', sans-serif;
+            color: rgba(14,37,74,0.302);
+        }
     `}
     
     @media ${device.mobile} { 
@@ -123,5 +140,5 @@ const SearchIcon = styled.img`
   width: 20px;
   height: 20px;
   right: 20px;
-  top: 14px;
+  top: 25px;
 `

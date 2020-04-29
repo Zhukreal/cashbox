@@ -4,8 +4,10 @@ import styled from "styled-components"
 import {authActions} from 'features/auth'
 import {profileActions} from 'features/profile'
 import {Sidebar} from "./sidebar";
-import {Container, Row, Col, Button, Input, BoxInput} from "ui";
+import {Container, Row, Col, Button, StyledButton, Input, BoxInput} from "ui";
 import logo from 'static/img/logo.png'
+import burger from 'static/img/burger.png'
+import add from 'static/img/add.png'
 
 export const Header = () => {
     const { isOpenedSidebar } = useSelector(state => state.profile)
@@ -27,7 +29,9 @@ export const Header = () => {
                 <HeaderRow>
                     <LeftBox>
                         <LeftBoxControls>
-                            <IconSidebar onClick={toggleSidebar} />
+                            <IconSidebar onClick={toggleSidebar} >
+                                <IconBurger src={burger} />
+                            </IconSidebar>
                             <Logo src={logo} />
                             <Status />
                         </LeftBoxControls>
@@ -35,15 +39,21 @@ export const Header = () => {
                             placeholder='Поиск товара/кода'
                             isSearch
                         />
-                        <FilterCategory>Популярные</FilterCategory>
-                        <Button size='small' >Секция/Отдел</Button>
+                        {/*<FilterCategory>Популярные</FilterCategory>*/}
+                        <Button
+                            isHeaderBtn
+                        >
+                            Секция/Отдел
+                        </Button>
                     </LeftBox>
                     <RightBox>
                         <Input
-                            placeholder='Введите номер/ФИО клиеента'
+                            placeholder='Введите номер/ФИО клиента'
                             isSearch
                         />
-                        <Button onClick={handleLogout} size='small' >Logout</Button>
+                        <ProfileBtn onClick={() => handleLogout()}>
+                            <ProfileAddImg src={add} />
+                        </ProfileBtn>
                     </RightBox>
                 </HeaderRow>
 
@@ -58,12 +68,11 @@ const HeaderBox = styled.header`
   display: flex;
   width: 100%;
   position: fixed;
-  height: 7rem;
+  height: 120px;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   box-sizing: border-box;
-  box-shadow: 0 -1rem 4rem rgba(36, 37, 38, 0.3);
   color: var(--card-text);
   background-color: var(--card);
   border-color: var(--borders);
@@ -76,44 +85,57 @@ const HeaderRow = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+const LeftBoxControls = styled.div`
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
 const IconSidebar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  border: 1px solid black;
+  width: 62px;
+  height: 62px;
+  border-radius: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--green);
+  cursor: pointer;
+`
+const IconBurger = styled.img`
+  
 `
 const Logo = styled.img`
-  width: 122px;
+  width: 144px;
 `
 const FilterCategory = styled.div`
   font-size: 16px;
 `
 const LeftBox = styled.div`
-    width: calc(100% - 300px);
+    width: calc(100% - 450px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 40px;
     
     ${BoxInput} {
-      width: 300px;
+      margin: 0 20px;
     }
+    ${StyledButton} {
+      width: 280px;
+      padding: 0 25px;
+    }
+    
 `
-const LeftBoxControls = styled.div`
-    min-width: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+
 const RightBox = styled.div`
-    width: 300px;
+    width: 450px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
-  
+    padding-left: 30px;
+    
    ${BoxInput} {
-      width: 200px;
+      margin-right: 20px;
     }
 `
 const Status = styled.div`
@@ -122,4 +144,20 @@ const Status = styled.div`
   border-radius: 10px;
   background-color: var(--green);
 `
-
+const ProfileBtn = styled.div`
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 86px;
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #fafafa;
+  }
+`
+const ProfileAddImg = styled.img`
+  
+`

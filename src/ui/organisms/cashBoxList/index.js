@@ -23,26 +23,29 @@ const CashBox = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    max-height: 200px;
+    max-height: 280px;
     margin-bottom: 50px;
+    padding: 3px;
     overflow-y: auto;
 `
 
 const CashBoxItem = styled.div`
    display: flex;
    align-items: center;
-   width: 49%;
-   height: 40px;
+   width: 48%;
+   height: 70px;
+   font-size: 25px;
    padding: 0 20px;
    margin-bottom: 20px;
-   border-radius: 20px;
-   border: 1px solid #d3d3d3;
-   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
+   border-radius: 22px;
+   box-shadow: var(--shadow-card);
    cursor: pointer;
    
    ${(p) =>
     p.active &&
     css`
-      border-color: blue;
+        border: 1px solid #d7e5ffb3;
+        box-shadow: 0px 3px 6px #4f87de59;
+        font-weight: bold;
     `}
 `

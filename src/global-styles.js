@@ -2,7 +2,7 @@ import {createGlobalStyle, css} from "styled-components"
 
 const colorVariables = css`
   --primary: #000000;
-  --canvas: #eceff1;
+  --canvas: #ffffff;
   --canvas-text: rgba(14,37,74,1);
   --card: #ffffff;
   --shadow-card: 0px 3px 6px rgba(0, 0, 0, 0.161);
@@ -30,7 +30,7 @@ export const GlobalStyles = createGlobalStyle`
         margin: 0;
         background-color: var(--canvas);
         color: var(--canvas-text);
-        font-family: "GilroyLight", sans-serif;
+        font-family: "Gilroy", sans-serif;
         -webkit-font-smoothing: antialiased;
     }
     

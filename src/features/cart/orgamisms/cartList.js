@@ -15,15 +15,14 @@ export const CartList = ({
                         key={item.id}
                     >
                         <CartItemAvatar src={item.avatarUrl} />
-
                         <CartItemInfo>
-                            {item.name} <br/>
-                            12 тнг
+                            <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
+                            <CartItemInfoPrice>12 тнг</CartItemInfoPrice>
                         </CartItemInfo>
                         <CartItemCount>
-                            + <br/>
-                            2 <br/>
-                            -
+                            <CartItemCountIcon>+</CartItemCountIcon>
+                            <CartItemCountValue>12 кг</CartItemCountValue>
+                            <CartItemCountIcon red >-</CartItemCountIcon>
                         </CartItemCount>
                     </CartCol>
                 )}
@@ -40,20 +39,18 @@ export const CartList = ({
                     <CartTotalRowValuer>2309</CartTotalRowValuer>
                 </CartTotalRow>
                 <CartTotalRow>
-                    <CartTotalRowTitle>Итого</CartTotalRowTitle>
+                    <CartTotalRowTitle bold>Итого</CartTotalRowTitle>
                     <CartTotalRowDivider></CartTotalRowDivider>
-                    <CartTotalRowValuer>2309</CartTotalRowValuer>
+                    <CartTotalRowValuer bold>2309</CartTotalRowValuer>
                 </CartTotalRow>
                 <CartBtnBox>
                     <Button
                         color='red'
-                        size='small'
                     >
                         Отмена
                     </Button>
                     <Button
                         color='green'
-                        size='small'
                     >
                         Оплата
                     </Button>
@@ -65,16 +62,18 @@ export const CartList = ({
 }
 
 const CartBox = styled.div`
-    width: 100%;
+    width: 420px;
+    //width: 270px;
     max-width: inherit;
     position: fixed;
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 150px);
 `
 const CartRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    height: calc(100vh - 25rem);
+    height: calc(100vh - 450px);
+    padding: 0 5px;
     overflow-y: auto;
 `
 const CartCol = styled.div`
@@ -83,9 +82,9 @@ const CartCol = styled.div`
   justify-content: space-between;
   position: relative;
   width: 100%;
-  min-height: 100px;
+  height: 190px;
   margin-bottom: 2em;
-  padding: 10px;
+  padding: 0 40px;
   border-radius: 30px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -95,33 +94,57 @@ const CartTotal = styled.div`
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 11rem;
-    padding: 10px;
+    height: 250px;
     border-radius: 30px;
+    padding: 30px;
     background-color: #ffffff;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
 `
 const CartItemAvatar = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
 `
 const CartItemInfo = styled.div`
     font-size: 18px;
-    width: 100%;
+    width: 130px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    justify-content: space-between;
     padding: 0 10px;
 `
+const CartItemInfoTitle = styled.div`
+    font-size: 27px;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    font-family: GilroyBold, sans-serif;
+`
+const CartItemInfoPrice = styled.div`
+    font-size: 28px;
+`
 const CartItemCount = styled.div`
-    width: 50px;
-
+    width: 70px;
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 const CartTotalRow = styled.div`
    display: flex;
    justify-content: space-between;
-   margin-bottom: 10px;
+   margin-bottom: 20px;
 `
 const CartTotalRowTitle = styled.div`
    white-space: nowrap;
+   font-size: 20px;
+   
+   ${(p) =>
+    p.bold &&
+    css`
+      font-family: GilroyBold, sans-serif;
+    `}
 `
 const CartTotalRowDivider = styled.div`
      width: 100%;
@@ -131,7 +154,13 @@ const CartTotalRowDivider = styled.div`
     margin: 0 5px;
 `
 const CartTotalRowValuer = styled.div`
+   font-size: 20px;
    
+   ${(p) =>
+    p.bold &&
+    css`
+      font-family: GilroyBold, sans-serif;
+    `}
 `
 const CartBtnBox = styled.div`
    display: flex;
@@ -141,6 +170,31 @@ const CartBtnBox = styled.div`
     width: 49%;
    }
 `
-
+const CartItemCountIcon = styled.div`
+   width: 20px;
+   height: 20px;
+   font-size: 18px;
+   border-radius: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: #ffffff;
+   background-color: var(--green);
+   cursor: pointer;
+   
+   &:hover {
+    opacity: 0.9;
+   }
+   
+   ${(p) =>
+    p.red &&
+    css`
+      background-color: var(--red);
+    `}
+`
+const CartItemCountValue = styled.div`
+   font-size: 28px;
+   margin: 5px 0;
+`
 
 

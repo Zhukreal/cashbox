@@ -2,16 +2,17 @@ import styled, { css } from "styled-components"
 
 
 export const Container = styled.div`
-  max-width: 120rem;
+  //max-width: 120rem;
   width: 100%;
   display: inherit;
   flex: inherit;
   flex-flow: inherit;
   flex-direction: column;
+  padding: 0 3%;
 
-  @media screen and (max-width: 120rem) {
-    padding: 0 1rem;
-  }
+  //@media screen and (max-width: 120rem) {
+  //  padding: 0 1rem;
+  //}
 `
 
 export const Row = styled.div`

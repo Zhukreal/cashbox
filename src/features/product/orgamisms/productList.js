@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
+import { device } from 'lib/mediaDevice'
 import {Container, Row, Col} from 'ui'
 
 export const ProductList = ({
@@ -46,10 +47,10 @@ const ProductCol = styled.div`
   flex: 0 1 calc(25% - 1em);
   margin-bottom: 2em;
   position: relative;
-  width: 25%;
+  //width: 25%;
   //max-width: calc(25% - 1em);
-  height: 250px;
-  border: 1px solid grey;
+  height: 420px;
+  //border: 1px solid grey;
   border-radius: 30px;
   box-sizing: border-box;
   
@@ -59,10 +60,23 @@ const ProductCol = styled.div`
       background: url(${props.url});
       background-size: cover;
   `}
+  
+  // @media ${device.mobile}, ${device.tablet} { 
+  //    
+  //   }
+    @media ${device.laptop} { 
+      flex: 0 1 calc(33.333% - 1em);
+    }
+    // @media ${device.desktop} { 
+    //   
+    // } 
+  
+  
+  
 `
 const ProductInfo = styled.div`
     position: absolute;
-    height: 100px;
+    height: 200px;
     background-color: #ffffff;
     padding: 10px;
     

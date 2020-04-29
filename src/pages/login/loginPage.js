@@ -7,11 +7,11 @@ import {history} from "lib/routing";
 // import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
 import {authActions} from 'features/auth'
 import { device, useDetectDevice } from 'lib/mediaDevice';
-import {Button, StyledButton, Input, H2, CashBoxList, Modal, Text} from "ui"
-import bgLogin from 'static/img/bg_login.png'
+import {Button, StyledButton, Input, CashBoxList, Modal, Text} from "ui"
+import bgLogin from 'static/img/bg-login.png'
+import bgLoginLaptop from 'static/img/bg-login-laptop.png'
+import bgLoginMobile from 'static/img/bg-login-mobile.png'
 // import preBgLogin from 'static/img/pre_bg_login.png'
-import bgLoginLaptop from 'static/img/bg_login_laptop.png'
-import bgLoginMobile from 'static/img/bg_login_mobile.png'
 // import preBgLoginMobile from 'static/img/pre_bg_login_mobile.png'
 import logo from 'static/img/logo.png'
 
@@ -19,6 +19,7 @@ import logo from 'static/img/logo.png'
 export const LoginPage = () => {
     const dispatch = useDispatch()
     const { isAuth, cashes } = useSelector( state => state.profile )
+
     const { isLoading, isExpiredSession } = useSelector( state => state.auth )
     const currentDevice = useDetectDevice()
     // const inputEl = useRef(null);
@@ -35,8 +36,14 @@ export const LoginPage = () => {
     const [activeCashbox, setActiveCashbox] = useState(null)
     const [isLoadingCashboxes, setIsLoadingCashboxes] = useState(true)
 
+    // const numberPattern = /\d+/g;
+    // const phoneNumbers = data.phone.match( numberPattern);
+    // console.log(phoneNumbers)
+    // console.log(phoneNumbers ? phoneNumbers.join([]) : '')
 
-    const isValidForm = Boolean(data.phone && data.password && !errors.phone && !errors.password)
+    const phoneNumbers = data.phone.replace(/\D/g, "");
+    console.log(phoneNumbers)
+    const isValidForm = Boolean(phoneNumbers.length === 11 && data.password && !errors.phone && !errors.password)
 
     useEffect(() => {
         validateForm()
@@ -137,7 +144,7 @@ export const LoginPage = () => {
                         disabled={!isValidForm}
                         isUpperCase
                     >
-                        Далее
+                        Войти
                     </Button>
                 </form>
             </FormBox>
@@ -179,10 +186,20 @@ export const LoginPage = () => {
 
 const LoginContainer = styled.div`
     width: 100%;
+    height: 100vh;
     min-height: 100vh;
     display: flex;
     align-items: center;  
-    padding: 5rem;
+    padding: 8%;
+    
+    &:after {
+     position: absolute;
+      content: '';
+      left:0; top:0;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(14, 37, 74, 0.2);
+    }
   
     @media ${device.mobile}, ${device.tablet} { 
       background: url(${bgLoginMobile});
@@ -192,6 +209,7 @@ const LoginContainer = styled.div`
     @media ${device.laptop} { 
        background: url(${bgLoginLaptop});
        background-size: cover;
+       padding: 4%;
     }
     @media ${device.desktop} { 
        background: url(${bgLogin});
@@ -201,24 +219,23 @@ const LoginContainer = styled.div`
 
 const FormBox = styled.div`
     width: 50%;
-    max-width: 750px;
+    max-width: 800px;
+    height: 100%;
     display: flex;
     flex-flow: column;
     flex-shrink: 0;
-    padding: 5rem 5rem 10rem;
+    padding: 5% 5% 3% 5%;
     border-radius: 30px;
     box-sizing: border-box;
     text-align: center;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
     background-color: #ffffff;
-    
-    ${H2} {
-      margin-bottom: 3rem;
-    }
+    z-index: 2;
     
     ${StyledButton} {
       padding: 0 15rem;
       font-family: 'GilroyBold', sans-serif;
+      //margin-top: 5%;
     }
     
     @media ${device.mobile}, ${device.tablet} { 
@@ -238,7 +255,12 @@ const FormBox = styled.div`
 `
 const Logo = styled.img`
   width: 122px;
-  margin: 0 auto 3rem auto;  
+  margin: 0 auto 9% auto;  
+`
+const H2 = styled.h2`
+  font-size: 40px;
+  font-family: 'GilroyBold', sans-serif;
+  margin-bottom: 7%;
 `
 const Error = styled.div`
   margin: 10px 0;
