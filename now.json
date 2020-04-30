@@ -1,7 +1,8 @@
 {
   "build": {
     "env": {
-      "NODE_PATH": "src/"
+      "NODE_PATH": "src/",
+      "REACT_APP_API_URL": "http://176.223.142.146:8000"
     }
   }
 }

@@ -12,7 +12,7 @@ import {authActions} from "features/auth"
 
 export const Common = ({ children }) => {
     const dispatch = useDispatch()
-    const TOKEN = Cookies.get(AUTHTOKEN)
+    const TOKEN = localStorage.getItem(AUTHTOKEN)
     const [opened, setOpened] = useState(false)
     const handleWarn = () => {
         setOpened(true)

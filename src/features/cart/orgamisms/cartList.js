@@ -2,6 +2,8 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import {Container, Row, Col, Button, StyledButton} from 'ui'
+import plusIcon from 'static/img/icons/plus-s.png'
+import minusIcon from 'static/img/icons/minus-s.png'
 
 export const CartList = ({
         list,
@@ -14,15 +16,19 @@ export const CartList = ({
                     <CartCol
                         key={item.id}
                     >
-                        <CartItemAvatar src={item.avatarUrl} />
+                        <CartItemAvatar src={item.image} />
                         <CartItemInfo>
                             <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
                             <CartItemInfoPrice>12 тнг</CartItemInfoPrice>
                         </CartItemInfo>
                         <CartItemCount>
-                            <CartItemCountIcon>+</CartItemCountIcon>
+                            <CartItemCountIcon>
+                                <Icon src={plusIcon} />
+                            </CartItemCountIcon>
                             <CartItemCountValue>12 кг</CartItemCountValue>
-                            <CartItemCountIcon red >-</CartItemCountIcon>
+                            <CartItemCountIcon red >
+                                <Icon src={minusIcon} />
+                            </CartItemCountIcon>
                         </CartItemCount>
                     </CartCol>
                 )}
@@ -67,6 +73,7 @@ const CartBox = styled.div`
     max-width: inherit;
     position: fixed;
     height: calc(100vh - 150px);
+    padding-top: 5px;
 `
 const CartRow = styled.div`
     display: flex;
@@ -82,9 +89,9 @@ const CartCol = styled.div`
   justify-content: space-between;
   position: relative;
   width: 100%;
-  height: 190px;
+  height: 170px;
   margin-bottom: 2em;
-  padding: 0 40px;
+  padding: 0 20px;
   border-radius: 30px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -101,13 +108,13 @@ const CartTotal = styled.div`
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
 `
 const CartItemAvatar = styled.img`
-    width: 120px;
-    height: 120px;
-    border-radius: 60px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
 `
 const CartItemInfo = styled.div`
     font-size: 18px;
-    width: 130px;
+    width: 180px;
     height: 120px;
     display: flex;
     flex-direction: column;
@@ -116,7 +123,8 @@ const CartItemInfo = styled.div`
     padding: 0 10px;
 `
 const CartItemInfoTitle = styled.div`
-    font-size: 27px;
+    font-size: 22px;
+    max-height: 75px;
     overflow-y: hidden;
     text-overflow: ellipsis;
     font-family: GilroyBold, sans-serif;
@@ -183,18 +191,22 @@ const CartItemCountIcon = styled.div`
    cursor: pointer;
    
    &:hover {
-    opacity: 0.9;
+    background-color: var(--green-hover);
    }
    
    ${(p) =>
     p.red &&
     css`
       background-color: var(--red);
+      
+      &:hover {
+        background-color: var(--red-hover);
+       }
     `}
 `
 const CartItemCountValue = styled.div`
    font-size: 28px;
    margin: 5px 0;
 `
-
+const Icon = styled.img``
 

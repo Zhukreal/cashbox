@@ -1,8 +1,10 @@
-import {modifySrc} from "../../../lib/modifyData/modifySrc";
+import {API_URL} from 'lib/CONST'
+import testImage from 'static/img/test.png'
 
-export const toOfferModel = (offer) => {
+export const toModel = (product) => {
     return {
-        ...offer,
-        avatarUrl: modifySrc(offer.avatarUrl, 'offer')
+        ...product,
+        // image: `${API_URL}/uploads/${product.image}`
+        image: testImage
     }
 }

@@ -9,3 +9,4 @@ export {
 }
 
 export {ProductList} from './orgamisms/productList'
+export {ProductGroups} from './orgamisms/productGroups'

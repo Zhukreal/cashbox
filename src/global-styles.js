@@ -7,8 +7,11 @@ const colorVariables = css`
   --card: #ffffff;
   --shadow-card: 0px 3px 6px rgba(0, 0, 0, 0.161);
   --blue: rgb(80, 135, 222);
+  --blue-hover: rgb(81,129,217);
   --green: #25D77E;
+  --green-hover: #25d279;
   --red: #F16F58;
+  --red-hover: #ec6f58;
 `
 
 export const GlobalStyles = createGlobalStyle`

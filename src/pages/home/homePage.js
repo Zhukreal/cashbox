@@ -4,22 +4,18 @@ import {useDebounce} from 'lib/customHooks/useDebounce'
 import {useIdle} from 'lib/customHooks/useIdle'
 
 import {Common} from 'features/common'
-import {productActions, ProductList} from 'features/product'
+import {productActions, ProductList, ProductGroups} from 'features/product'
+import {profileActions} from 'features/profile'
+import {commonActions} from 'features/common'
 import {CartList} from 'features/cart'
 import styled from "styled-components";
 
 export const HomePage = () => {
     const dispatch = useDispatch()
     const { products, filteredProducts, skip, take, isLoading, hasMore, isFirstRequest } = useSelector(state => state.product)
-    const { isOpenedSidebar } = useSelector(state => state.profile)
+    const { isOpenedSidebar } = useSelector(state => state.common)
     const [search, setSearch] = useState('')
     // const debouncedSearch = useDebounce(search, 1000);
-
-    const test = 'test'
-    console.log('test', test)
-    const [someHook, setSome] = useState(test)
-    console.log('someHook', someHook)
-
 
     useEffect(() => {
         getProducts()
@@ -34,6 +30,11 @@ export const HomePage = () => {
         dispatch(productActions.getProducts(skip, take))
     }
 
+    const handleCloseSidebar = () => {
+        dispatch(commonActions.toggleSidebar())
+    }
+
+
     return (
         <Common>
             <FlexBlock>
@@ -45,7 +46,8 @@ export const HomePage = () => {
                         hasMore={search ? false : hasMore}
                         isFirstRequest={isFirstRequest}
                     />
-                    { isOpenedSidebar && <Blur /> }
+                    <ProductGroups />
+                    { isOpenedSidebar && <Blur onClick={() => handleCloseSidebar()} /> }
                 </ProductsBox>
                 <CartBox>
                     <CartList
@@ -67,6 +69,7 @@ const FlexBlock = styled.div`
 const ProductsBox = styled.div`
   position:relative;
   width: calc(100% - 450px);
+  max-width: calc(100% - 450px);
 `
 const CartBox = styled.div`
   width: 450px;

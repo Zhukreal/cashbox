@@ -9,7 +9,7 @@ import {AUTHTOKEN} from 'lib/CONST'
 export const AccountLoader = ({ children }) => {
     const dispatch = useDispatch()
     const { isAuth } = useSelector(state => state.profile)
-    const TOKEN = Cookies.get(AUTHTOKEN)
+    const TOKEN = localStorage.getItem(AUTHTOKEN)
 
     useEffect(() => {
         loadSession()

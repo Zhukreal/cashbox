@@ -4,8 +4,8 @@ import {apiGetListProducts} from "api/product";
 export const getProducts = (skip, take) => async dispatch => {
     try {
         dispatch(productReducer.setLoading(true))
-        let data = await apiGetListProducts({skip, take});
-        dispatch(productReducer.setProducts(data))
+        let res = await apiGetListProducts({skip, take});
+        dispatch(productReducer.setProducts(res.data))
     } catch (e){
         console.log(e)
     } finally {

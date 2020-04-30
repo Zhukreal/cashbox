@@ -1,30 +1,23 @@
 import React, {useState, useEffect, useRef} from "react";
-import { Redirect } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import styled from "styled-components"
-import {history} from "lib/routing";
+import styled, {css} from "styled-components"
 // import {emailValidator, passwordValidator} from "lib/validators";
 // import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
 import {authActions} from 'features/auth'
+import {ChooseCashbox} from 'features/profile'
 import { device, useDetectDevice } from 'lib/mediaDevice';
 import {Button, StyledButton, Input, CashBoxList, Modal, Text} from "ui"
 import bgLogin from 'static/img/bg-login.png'
 import bgLoginLaptop from 'static/img/bg-login-laptop.png'
 import bgLoginMobile from 'static/img/bg-login-mobile.png'
-// import preBgLogin from 'static/img/pre_bg_login.png'
-// import preBgLoginMobile from 'static/img/pre_bg_login_mobile.png'
 import logo from 'static/img/logo.png'
 
 
 export const LoginPage = () => {
     const dispatch = useDispatch()
-    const { isAuth, cashes } = useSelector( state => state.profile )
-
+    const { isAuth } = useSelector( state => state.profile )
     const { isLoading, isExpiredSession } = useSelector( state => state.auth )
     const currentDevice = useDetectDevice()
-    // const inputEl = useRef(null);
-    // console.log('inputEl', inputEl)
-    // const loadedBI = useProgressiveImage(bgLoginMobile)
 
     const [data, setData] = useState({
         phone: '',
@@ -32,29 +25,20 @@ export const LoginPage = () => {
     })
     const [error, setError] = useState(null)
     const [errors, setErrors] = useState({})
-    const [typeView, setTypeView] = useState(1) // typeView: 1 - Login form, 2 - cashbox list
-    const [activeCashbox, setActiveCashbox] = useState(null)
-    const [isLoadingCashboxes, setIsLoadingCashboxes] = useState(true)
-
-    // const numberPattern = /\d+/g;
-    // const phoneNumbers = data.phone.match( numberPattern);
-    // console.log(phoneNumbers)
-    // console.log(phoneNumbers ? phoneNumbers.join([]) : '')
 
     const phoneNumbers = data.phone.replace(/\D/g, "");
-    console.log(phoneNumbers)
     const isValidForm = Boolean(phoneNumbers.length === 11 && data.password && !errors.phone && !errors.password)
 
     useEffect(() => {
-        validateForm()
+        // validateForm()
     }, [data])
 
-    const validateForm = () => {
+    // const validateForm = () => {
         // setErrors({...errors,
         //     email: emailValidator(data.email),
         //     password: passwordValidator(data.password),
         // })
-    }
+    // }
 
     const onChange = e => {
         const {name, value} = e.target
@@ -63,29 +47,21 @@ export const LoginPage = () => {
 
     const handleSubmitForm = async e => {
         e.preventDefault()
-        if(!isValidForm) {
-            validateForm()
-            return
+        // if(!isValidForm) {
+        //     validateForm()
+        //     return
+        // }
+        let obj = {
+            username: phoneNumbers.substring(1),
+            password: data.password,
+            "grant_type":"password"
         }
-        console.log('data', data)
         try {
-            await dispatch(authActions.login(data))
-            setTypeView(2)
+             await dispatch(authActions.login(obj))
         } catch (e) {
             setError(true)
         }
     }
-
-    const handleChooseCashbox = () => {
-        if(!activeCashbox) return
-        localStorage.setItem('cashbox', activeCashbox)
-        history.push('/')
-    }
-
-    const getListCashbox = () => {
-
-    }
-
 
 
     if(isExpiredSession) {
@@ -146,6 +122,9 @@ export const LoginPage = () => {
                     >
                         Войти
                     </Button>
+                    <div>1323213213</div>
+                    <div>111111</div>
+
                 </form>
             </FormBox>
             }
@@ -153,32 +132,11 @@ export const LoginPage = () => {
             {isAuth &&
             <FormBox>
                 <Logo src={logo} alt='logo' />
-                <H2>Выбор кассы:</H2>
-                <CashBoxList
-                    list={cashes}
-                    active={activeCashbox}
-                    setActive={setActiveCashbox}
-                />
-                <div>
-                    <Button
-                        onClick={handleChooseCashbox}
-                        disabled={!activeCashbox}
-                        isLoading={false}
-                        isUpperCase
-                    >
-                        Далее
-                    </Button>
-                </div>
-
-                {/*{isLoadingCashboxes ?*/}
-                {/*    <div>Loading...</div>*/}
-                {/*    :*/}
-                {/*    <>*/}
-                {/*        */}
-                {/*    </>*/}
-                {/*}*/}
+                <H2 isCashbox>Выбор кассы:</H2>
+                <ChooseCashbox />
             </FormBox>
             }
+
         </LoginContainer>
     )
 }
@@ -261,6 +219,12 @@ const H2 = styled.h2`
   font-size: 40px;
   font-family: 'GilroyBold', sans-serif;
   margin-bottom: 7%;
+  
+    ${(p) =>
+    p.isCashbox &&
+    css`
+        margin-top: 0;
+    `}
 `
 const Error = styled.div`
   margin: 10px 0;

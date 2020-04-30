@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components"
 import {authActions} from 'features/auth'
 import {profileActions} from 'features/profile'
+import {commonActions} from 'features/common'
 import {Sidebar} from "./sidebar";
 import {Container, Row, Col, Button, StyledButton, Input, BoxInput} from "ui";
 import logo from 'static/img/logo.png'
@@ -10,12 +11,11 @@ import burger from 'static/img/burger.png'
 import add from 'static/img/add.png'
 
 export const Header = () => {
-    const { isOpenedSidebar } = useSelector(state => state.profile)
+    const { isOpenedSidebar } = useSelector(state => state.common)
     const dispatch = useDispatch()
 
-
     const toggleSidebar = () => {
-        dispatch(profileActions.toggleSidebar())
+        dispatch(commonActions.toggleSidebar())
     }
 
     const handleLogout = () => {

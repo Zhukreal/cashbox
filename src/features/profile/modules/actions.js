@@ -3,14 +3,12 @@ import {profileReducer} from '../index'
 
 export const getAccount = token => async dispatch => {
     try {
-        let data = await apiGetAccount(token);
-        dispatch(profileReducer.setProfile(data))
+        let profile = await apiGetAccount(token);
+        dispatch(profileReducer.setProfile(profile.data))
     } catch (e){
         console.log(e)
     }
 };
-export const toggleSidebar = () => dispatch => {
-    dispatch(profileReducer.toggleSidebar())
-};
+
 
 

@@ -63,7 +63,20 @@ export const StyledButton = styled.button`
     
     ${(p) => p.color === 'green' && css`
         background-color: var(--green);
+        
+        &:hover {
+            background-color: var(--green-hover);
+        }
     `}
+    
+    ${(p) => p.color === 'red' && css`
+        background-color: var(--red);
+        
+        &:hover {
+            background-color: var(--red-hover);
+        }
+    `}
+    
     ${(p) => p.isHeaderBtn && css`
         border-radius: 22px;
     `}
@@ -77,9 +90,6 @@ export const StyledButton = styled.button`
         font-size: 1.2rem;
     `}
     
-    ${(p) => p.color === 'red' && css`
-        background-color: var(--red);
-    `}
     
     @media ${device.mobile} { 
         height: 52px;

@@ -7,3 +7,4 @@ export {
 }
 
 export { AccountLoader } from "./organisms/account-loader"
+export { ChooseCashbox } from "./organisms/choose-cashbox"

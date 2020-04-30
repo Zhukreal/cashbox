@@ -1,17 +1,16 @@
 import React from 'react'
 import styled, {css} from "styled-components"
-import {Container, Row, Col, Button} from "ui";
 
 export const CashBoxList = ({ list, active, setActive }) => {
     return (
         <CashBox>
             {list.map(item =>
                 <CashBoxItem
-                    key={item}
-                    active={item === active}
-                    onClick={() => setActive(item)}
+                    key={item.id}
+                    active={item.id === active}
+                    onClick={() => setActive(item.id)}
                 >
-                    Касса № {item}
+                    {item.name}
                 </CashBoxItem>
             )}
         </CashBox>

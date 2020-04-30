@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {toOfferModel} from './model'
+import {toModel} from './model'
 
 let initialState = {
     products: [],
@@ -19,18 +19,16 @@ const product = createSlice({
             state.isLoading = action.payload
         },
         setProducts(state, action) {
-            const { data } = action.payload
+            const { results } = action.payload
             state.isFirstRequest = false
             state.skip = state.skip + state.take
-            state.hasMore = data.length === state.take
-            const modifiedProducts = data.map(offer => toOfferModel(offer))
-            // temp fix if user came from offer page
-            if(state.products.length === 1) state.products = []
+            state.hasMore = results.length === results.take
+            const modifiedProducts = results.map(product => toModel(product))
             state.products = [...state.products, ...modifiedProducts]
         },
         setFilteredProducts(state, action) {
             const { data } = action.payload
-            state.filteredProducts = data.map(offer => toOfferModel(offer))
+            // state.filteredProducts = data.map(offer => toOfferModel(offer))
         }
     }
 })
