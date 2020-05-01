@@ -16,7 +16,7 @@ import logo from 'static/img/logo.png'
 export const LoginPage = () => {
     const dispatch = useDispatch()
     const { isAuth } = useSelector( state => state.profile )
-    const { isLoading, isExpiredSession } = useSelector( state => state.auth )
+    const { isLoading, isExpiredSession, isFailureConnection } = useSelector( state => state.auth )
     const currentDevice = useDetectDevice()
 
     const [data, setData] = useState({
@@ -43,6 +43,7 @@ export const LoginPage = () => {
     const onChange = e => {
         const {name, value} = e.target
         setData({...data, [name]: value})
+        setError(false)
     }
 
     const handleSubmitForm = async e => {
@@ -63,15 +64,21 @@ export const LoginPage = () => {
         }
     }
 
+    const handleCloseModal = () => {
+        dispatch(authActions.setExpiredSession(false))
+        dispatch(authActions.setFailureConnection(false))
+    }
 
-    if(isExpiredSession) {
+
+    if(isExpiredSession || isFailureConnection) {
         return (
             <LoginContainer>
                 <Modal >
-                    <Text fz={30} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>
+                    {isExpiredSession && <Text fz={30} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>}
+                    {isFailureConnection && <Text fz={30} mb={30} >Сессия была отключена по причине отсутствия связи</Text>}
                     <div>
                         <Button
-                            onClick={() => dispatch(authActions.setExpiredSession(false))}
+                            onClick={handleCloseModal}
                             color='green'
                         >
                             Продолжить сессию
@@ -122,8 +129,11 @@ export const LoginPage = () => {
                     >
                         Войти
                     </Button>
-                    <div>1323213213</div>
-                    <div>111111</div>
+
+                    {/*<br/>*/}
+                    {/*<br/>*/}
+                    {/*<div>1323213213</div>*/}
+                    {/*<div>111111</div>*/}
 
                 </form>
             </FormBox>
@@ -162,7 +172,7 @@ const LoginContainer = styled.div`
     @media ${device.mobile}, ${device.tablet} { 
       background: url(${bgLoginMobile});
       background-size: cover;
-      padding: 1rem;
+      padding: 3%;
     }
     @media ${device.laptop} { 
        background: url(${bgLoginLaptop});
@@ -179,6 +189,7 @@ const FormBox = styled.div`
     width: 50%;
     max-width: 800px;
     height: 100%;
+    min-height: 600px;
     display: flex;
     flex-flow: column;
     flex-shrink: 0;
@@ -198,7 +209,10 @@ const FormBox = styled.div`
     
     @media ${device.mobile}, ${device.tablet} { 
       width: 100%;
-      padding: 2rem 1rem 3rem;
+      height: auto;
+      min-height: auto;
+      padding: 10% 7%;
+      
       
       ${StyledButton} {
           padding: 0 5rem;
@@ -225,6 +239,10 @@ const H2 = styled.h2`
     css`
         margin-top: 0;
     `}
+    
+    @media ${device.mobile} {       
+      font-size: 30px;
+    }
     
     @media ${device.laptop} {       
       font-size: 34px;

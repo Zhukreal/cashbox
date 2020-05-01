@@ -34,9 +34,9 @@ export const logout = () => async dispatch => {
 };
 
 export const setExpiredSession = flag => async dispatch => {
-    try {
-        dispatch(authReducer.setExpiredSession(flag))
-    } catch (e){
+    dispatch(authReducer.setExpiredSession(flag))
+};
 
-    }
+export const setFailureConnection = flag => async dispatch => {
+    dispatch(authReducer.setFailureConnection(flag))
 };

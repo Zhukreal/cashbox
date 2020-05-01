@@ -15,13 +15,17 @@ const auth = createSlice({
         },
         setExpiredSession(state, action) {
             state.isExpiredSession = action.payload
+        },
+        setFailureConnection(state, action) {
+            state.isFailureConnection = action.payload
         }
     }
 })
 
 export const {
     setIsLoading,
-    setExpiredSession
+    setExpiredSession,
+    setFailureConnection
 } = auth.actions
 
 export default auth.reducer

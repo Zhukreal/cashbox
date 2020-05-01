@@ -12,5 +12,9 @@ export const apiLogout = () => {
 export const apiGetAccount = () => {
    return axios.get(`${API_URL}/api/v1/current_user/`)
 }
+export const apiCheckConnection = () => {
+    return axios.head(`${API_URL}/api/v1/current_user/`)
+}
+
 
 

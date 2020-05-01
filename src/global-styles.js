@@ -41,16 +41,7 @@ export const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         font-size: 10px;
     }
-    
-    tt,
-    code,
-    kbd,
-    samp,
-    listing {
-        font-family: hasklig, Hack, "Fira Code", "Source Code Pro", monaco, menlo,
-          consolas, monospace;
-        font-variant-ligatures: contextual;
-    }
+  
 `
 
 

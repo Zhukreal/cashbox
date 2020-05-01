@@ -27,6 +27,10 @@ const CashBox = styled.div`
     margin-bottom: 50px;
     padding: 3px;
     overflow-y: auto;
+    
+    @media ${device.mobile} {       
+      flex-direction: row;
+    }
 `
 
 const CashBoxItem = styled.div`
@@ -40,6 +44,9 @@ const CashBoxItem = styled.div`
    border-radius: 22px;
    box-shadow: var(--shadow-card);
    cursor: pointer;
+    white-space: nowrap;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
    
    ${(p) =>
     p.active &&
@@ -49,9 +56,15 @@ const CashBoxItem = styled.div`
         font-weight: bold;
     `}
    
-   @media ${device.laptop} {       
+   @media ${device.mobile} {       
+      width: 100%;
       height: 60px;
       font-size: 22px;
     }
+    
+   @media ${device.laptop} {       
+      height: 60px;
+      font-size: 22px;
+   }
 `
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import {useDebounce} from 'lib/customHooks/useDebounce'
-import {useIdle} from 'lib/customHooks/useIdle'
 
 import {Common} from 'features/common'
 import {productActions, ProductList, ProductGroups} from 'features/product'
@@ -37,24 +36,24 @@ export const HomePage = () => {
 
     return (
         <Common>
-            <FlexBlock>
-                <ProductsBox>
-                    <ProductList
-                        list={search ? filteredProducts : products}
-                        isLoading={isLoading}
-                        showMore={() => getProducts()}
-                        hasMore={search ? false : hasMore}
-                        isFirstRequest={isFirstRequest}
-                    />
-                    <ProductGroups />
-                    { isOpenedSidebar && <Blur onClick={() => handleCloseSidebar()} /> }
-                </ProductsBox>
-                <CartBox>
-                    <CartList
-                        list={products}
-                    />
-                </CartBox>
-            </FlexBlock>
+            {/*<FlexBlock>*/}
+            {/*    <ProductsBox>*/}
+            {/*        <ProductList*/}
+            {/*            list={search ? filteredProducts : products}*/}
+            {/*            isLoading={isLoading}*/}
+            {/*            showMore={() => getProducts()}*/}
+            {/*            hasMore={search ? false : hasMore}*/}
+            {/*            isFirstRequest={isFirstRequest}*/}
+            {/*        />*/}
+            {/*        <ProductGroups />*/}
+            {/*        { isOpenedSidebar && <Blur onClick={() => handleCloseSidebar()} /> }*/}
+            {/*    </ProductsBox>*/}
+            {/*    <CartBox>*/}
+            {/*        <CartList*/}
+            {/*            list={products}*/}
+            {/*        />*/}
+            {/*    </CartBox>*/}
+            {/*</FlexBlock>*/}
         </Common>
     )
 }
