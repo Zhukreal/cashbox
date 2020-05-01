@@ -14,7 +14,7 @@ export const InactiveForWhile = ({ handleContinueSession, handleLogout }) => {
     useEffect(() => {
         console.log(timer)
         if(timer <= 0) handleLogout()
-    }, [timer])
+    }, [timer, handleLogout])
 
 
     return (
