@@ -20,8 +20,8 @@ const size = {
 export const device = {
     mobile: `(min-width: 320px) and (max-width: 425px)`,
     tablet: `(min-width: 426px) and (max-width: 768px)`,
-    laptop: `(min-width: 769px) and (max-width: 1440px)`,
-    desktop: `(min-width: 1441px)`
+    laptop: `(min-width: 769px) and (max-width: 1444px)`,
+    desktop: `(min-width: 1445px)`
 };
 
 export const useDetectDevice = () => {
