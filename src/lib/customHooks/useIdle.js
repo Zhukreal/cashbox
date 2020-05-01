@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 export const useIdle = (handleWarn, handleLogout) => {
-    const [warningTime, setWarningTime] = useState(600000);
+    const [warningTime, setWarningTime] = useState(60000);
     // const [signoutTime, setSignoutTime] = useState(1000000);
     let warnTimeout;
     // let logoutTimeout;
