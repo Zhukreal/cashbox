@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, {css} from "styled-components"
+import { device } from 'lib/mediaDevice';
 
 export const CashBoxList = ({ list, active, setActive }) => {
     return (
@@ -47,4 +48,10 @@ const CashBoxItem = styled.div`
         box-shadow: 0px 3px 6px #4f87de59;
         font-weight: bold;
     `}
+   
+   @media ${device.laptop} {       
+      height: 60px;
+      font-size: 22px;
+    }
 `
+

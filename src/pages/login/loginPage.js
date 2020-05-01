@@ -225,6 +225,10 @@ const H2 = styled.h2`
     css`
         margin-top: 0;
     `}
+    
+    @media ${device.laptop} {       
+      font-size: 34px;
+    }
 `
 const Error = styled.div`
   margin: 10px 0;

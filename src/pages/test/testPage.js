@@ -6,7 +6,6 @@ export const TestPage = () => {
     const close = () => setOpened(() => false)
     const toggle = () => setOpened((isOpen) => !isOpen)
 
-
     function partial(func, ...argsBound) {
         return function(...args) {
             return func.call(this, ...argsBound, ...args);
