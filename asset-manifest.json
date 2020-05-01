@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/cashbox/static/css/main.4acfb673.chunk.css",
+    "main.js": "/cashbox/static/js/main.f8c772cc.chunk.js",
+    "main.js.map": "/cashbox/static/js/main.f8c772cc.chunk.js.map",
+    "runtime-main.js": "/cashbox/static/js/runtime-main.a5459290.js",
+    "runtime-main.js.map": "/cashbox/static/js/runtime-main.a5459290.js.map",
+    "static/js/2.8ab81fc2.chunk.js": "/cashbox/static/js/2.8ab81fc2.chunk.js",
+    "static/js/2.8ab81fc2.chunk.js.map": "/cashbox/static/js/2.8ab81fc2.chunk.js.map",
+    "index.html": "/cashbox/index.html",
+    "precache-manifest.1315ac34306fdf5a60f1bab3e65c7dc7.js": "/cashbox/precache-manifest.1315ac34306fdf5a60f1bab3e65c7dc7.js",
+    "service-worker.js": "/cashbox/service-worker.js",
+    "static/css/main.4acfb673.chunk.css.map": "/cashbox/static/css/main.4acfb673.chunk.css.map",
+    "static/js/2.8ab81fc2.chunk.js.LICENSE.txt": "/cashbox/static/js/2.8ab81fc2.chunk.js.LICENSE.txt",
+    "static/media/Gilroyextrabold.woff": "/cashbox/static/media/Gilroyextrabold.21bab415.woff",
+    "static/media/Gilroylight.woff": "/cashbox/static/media/Gilroylight.1b391051.woff",
+    "static/media/bg-login-laptop.png": "/cashbox/static/media/bg-login-laptop.6f0efd9e.png",
+    "static/media/bg-login-mobile.png": "/cashbox/static/media/bg-login-mobile.93c06e3d.png",
+    "static/media/bg-login.png": "/cashbox/static/media/bg-login.d56f2ef7.png",
+    "static/media/test.png": "/cashbox/static/media/test.044e2f21.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a5459290.js",
+    "static/js/2.8ab81fc2.chunk.js",
+    "static/css/main.4acfb673.chunk.css",
+    "static/js/main.f8c772cc.chunk.js"
+  ]
+}
