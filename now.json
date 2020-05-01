@@ -2,16 +2,7 @@
   "build": {
     "env": {
       "NODE_PATH": "src/",
-      "REACT_APP_API_URL": "http://176.223.142.146:8000"
+      "REACT_APP_API_URL": "https://176.223.142.146:8000"
     }
-  },
-  "routes": [{
-    "headers": {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
-    },
-    "src": "http://176.223.142.146:8000/api/.*",
-    "dest": "http://176.223.142.146:8000"
-  }]
+  }
 }

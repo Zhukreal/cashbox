@@ -5,6 +5,7 @@ import {authActions} from "features/auth";
 
 axios.interceptors.request.use(function(config) {
     const token = localStorage.getItem(AUTHTOKEN);
+
     if ( token != null ) {
         config.headers.Authorization = `Bearer ${token}`;
     } else {
