@@ -1,37 +1,74 @@
-import * as React from "react"
-import { Link } from "react-router-dom"
+import React, {useState, useEffect} from "react"
+import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
+import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
+import {productActions} from "features/product";
 import plusIcon from 'static/img/icons/plus.png'
 
-export const ProductList = ({
-        list,
-        isLoading,
-        showMore,
-        hasMore,
-        isFirstRequest
-    }) => {
+export const ProductList = () => {
+    const dispatch = useDispatch()
+    const [listItems, setListItems] = useState(Array.from(Array(30).keys(), n => n + 1));
+    const { products, filteredProducts, skip, take, isLoading, hasMore } = useSelector(state => state.product)
+    const [search, setSearch] = useState('')
+    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
+    // const debouncedSearch = useDebounce(search, 1000);
+
+    useEffect(() => {
+        getProducts()
+    }, [])
+
+    function fetchMoreListItems() {
+        setIsFetching(true);
+        setTimeout(() => {
+            setListItems(prevState => ([...prevState, ...Array.from(Array(20).keys(), n => n + prevState.length + 1)]));
+            setIsFetching(false);
+        }, 10000);
+    }
+
+    // useEffect(() => {
+    //     if(debouncedSearch) dispatch(offersActions.getOffersByFilter(debouncedSearch))
+    //     },[debouncedSearch]
+    // );
+
+    const getProducts = () => {
+        dispatch(productActions.getProducts(skip, take))
+    }
+
+    console.log('isFetching', isFetching)
+
+
     if(isLoading) return <div>Loading...</div>
     return (
         <ProductsRow>
-            {list.map(item =>
-                <ProductCol
-                    key={item.id}
-                    url={item.image}
-                >
-                    <ProductInfo>
-                        <ProductName>{item.name}</ProductName>
-                        <ProductCode>Код: {item.barcode}</ProductCode>
-                        <ProductPrice>{item.base_price} тнг</ProductPrice>
-                        <AddIcon>
-                            <PlusIcon src={plusIcon} />
-                        </AddIcon>
-                    </ProductInfo>
+            <>
+                <ul className="list-group mb-2">
+                    {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}
+                </ul>
+                {isFetching && <div>Fetching more list items...</div>}
+            </>
 
-                </ProductCol>
-            )}
-            {isLoading && <div>Loading...</div>}
-            {/*{(!isLoading && hasMore) && <div onClick={showMore}>Show more</div> }*/}
+
+
+
+            {/*{products.map(item =>*/}
+            {/*    <ProductCol*/}
+            {/*        key={item.id}*/}
+            {/*        url={item.image}*/}
+            {/*    >*/}
+            {/*        <ProductInfo>*/}
+            {/*            <ProductName>{item.name}</ProductName>*/}
+            {/*            <ProductCode>Код: {item.barcode}</ProductCode>*/}
+            {/*            <ProductPrice>{item.base_price} тнг</ProductPrice>*/}
+            {/*            <AddIcon>*/}
+            {/*                <PlusIcon src={plusIcon} />*/}
+            {/*            </AddIcon>*/}
+            {/*        </ProductInfo>*/}
+
+            {/*    </ProductCol>*/}
+            {/*)}*/}
+            {/*{isLoading && <div>Loading...</div>}*/}
         </ProductsRow>
     )
 }

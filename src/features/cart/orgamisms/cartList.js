@@ -1,18 +1,16 @@
-import * as React from "react"
+import React, {useEffect} from "react"
 import { Link } from "react-router-dom"
 import styled, { css } from "styled-components"
 import {Container, Row, Col, Button, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 
-export const CartList = ({
-        list,
-        isLoading
-    }) => {
+export const CartList = () => {
+
     return (
         <CartBox>
             <CartRow>
-                {list.map(item =>
+                {[].map(item =>
                     <CartCol
                         key={item.id}
                     >
@@ -33,35 +31,38 @@ export const CartList = ({
                     </CartCol>
                 )}
             </CartRow>
-            <CartTotal>
-                <CartTotalRow>
-                    <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
-                    <CartTotalRowDivider></CartTotalRowDivider>
-                    <CartTotalRowValuer>2309</CartTotalRowValuer>
-                </CartTotalRow>
-                <CartTotalRow>
-                    <CartTotalRowTitle>Скидка</CartTotalRowTitle>
-                    <CartTotalRowDivider></CartTotalRowDivider>
-                    <CartTotalRowValuer>2309</CartTotalRowValuer>
-                </CartTotalRow>
-                <CartTotalRow>
-                    <CartTotalRowTitle bold>Итого</CartTotalRowTitle>
-                    <CartTotalRowDivider></CartTotalRowDivider>
-                    <CartTotalRowValuer bold>2309</CartTotalRowValuer>
-                </CartTotalRow>
-                <CartBtnBox>
-                    <Button
-                        color='red'
-                    >
-                        Отмена
-                    </Button>
-                    <Button
-                        color='green'
-                    >
-                        Оплата
-                    </Button>
-                </CartBtnBox>
-            </CartTotal>
+            {[].length &&
+                <CartTotal>
+                    <CartTotalRow>
+                        <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
+                        <CartTotalRowDivider></CartTotalRowDivider>
+                        <CartTotalRowValuer>2309</CartTotalRowValuer>
+                    </CartTotalRow>
+                    <CartTotalRow>
+                        <CartTotalRowTitle>Скидка</CartTotalRowTitle>
+                        <CartTotalRowDivider></CartTotalRowDivider>
+                        <CartTotalRowValuer>2309</CartTotalRowValuer>
+                    </CartTotalRow>
+                    <CartTotalRow>
+                        <CartTotalRowTitle bold>Итого</CartTotalRowTitle>
+                        <CartTotalRowDivider></CartTotalRowDivider>
+                        <CartTotalRowValuer bold>2309</CartTotalRowValuer>
+                    </CartTotalRow>
+                    <CartBtnBox>
+                        <Button
+                            color='red'
+                        >
+                            Отмена
+                        </Button>
+                        <Button
+                            color='green'
+                        >
+                            Оплата
+                        </Button>
+                    </CartBtnBox>
+                </CartTotal>
+            }
+
         </CartBox>
 
     )

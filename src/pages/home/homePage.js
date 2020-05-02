@@ -11,23 +11,7 @@ import styled from "styled-components";
 
 export const HomePage = () => {
     const dispatch = useDispatch()
-    const { products, filteredProducts, skip, take, isLoading, hasMore, isFirstRequest } = useSelector(state => state.product)
     const { isOpenedSidebar } = useSelector(state => state.common)
-    const [search, setSearch] = useState('')
-    // const debouncedSearch = useDebounce(search, 1000);
-
-    useEffect(() => {
-        getProducts()
-    }, [])
-
-    // useEffect(() => {
-    //     if(debouncedSearch) dispatch(offersActions.getOffersByFilter(debouncedSearch))
-    //     },[debouncedSearch]
-    // );
-
-    const getProducts = () => {
-        dispatch(productActions.getProducts(skip, take))
-    }
 
     const handleCloseSidebar = () => {
         dispatch(commonActions.toggleSidebar())
@@ -36,24 +20,20 @@ export const HomePage = () => {
 
     return (
         <Common>
-            {/*<FlexBlock>*/}
-            {/*    <ProductsBox>*/}
-            {/*        <ProductList*/}
-            {/*            list={search ? filteredProducts : products}*/}
-            {/*            isLoading={isLoading}*/}
-            {/*            showMore={() => getProducts()}*/}
-            {/*            hasMore={search ? false : hasMore}*/}
-            {/*            isFirstRequest={isFirstRequest}*/}
-            {/*        />*/}
-            {/*        <ProductGroups />*/}
-            {/*        { isOpenedSidebar && <Blur onClick={() => handleCloseSidebar()} /> }*/}
-            {/*    </ProductsBox>*/}
-            {/*    <CartBox>*/}
-            {/*        <CartList*/}
-            {/*            list={products}*/}
-            {/*        />*/}
-            {/*    </CartBox>*/}
-            {/*</FlexBlock>*/}
+            <FlexBlock>
+                <ProductsBox>
+                    {/*<ProductList />*/}
+                    <ProductGroups />
+                    { isOpenedSidebar &&
+                    <Blur onClick={() => handleCloseSidebar()} />
+                    }
+                </ProductsBox>
+                <CartBox>
+                    <CartList
+                        list={[]}
+                    />
+                </CartBox>
+            </FlexBlock>
         </Common>
     )
 }

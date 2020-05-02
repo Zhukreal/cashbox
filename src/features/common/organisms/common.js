@@ -30,7 +30,9 @@ export const Common = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        const requestInterval = 10000 // 10 sec
+        // const requestInterval = 10000 // 10 sec
+        const requestInterval = 300000 // 5 min
+        // const requestInterval = 600000 // 10 min
         const interval = setInterval(() => checkConnection(), requestInterval);
         return () => {
             clearInterval(interval);
@@ -45,7 +47,7 @@ export const Common = ({ children }) => {
         dispatch(authActions.setExpiredSession(true))
         dispatch(authActions.logout())
     }
-    useIdle(handleWarn, handleLogout)
+    // useIdle(handleWarn, handleLogout)
 
     const handleContinueSession = () => {
         setOpened(false)

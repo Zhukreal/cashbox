@@ -1,47 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
+import {Link} from 'react-router-dom'
 import {Button, Text, Modal} from "ui";
 
 export const TestPage = () => {
-    const [opened, setOpened] = useState(false)
-    const close = () => setOpened(() => false)
-    const toggle = () => setOpened((isOpen) => !isOpen)
+    const [opened, setOpened] = useState(1)
+    const toggle = () => setOpened(5)
 
-    function partial(func, ...argsBound) {
-        return function(...args) {
-            return func.call(this, ...argsBound, ...args);
-        }
-    }
-    let user = {
-        firstName: "John",
-        say(time, phrase) {
-            console.log(`[${time}] ${this.firstName}: ${phrase}!`);
-        }
-    };
-    user.sayNow = partial(user.say, new Date().getHours() + ':' + new Date().getMinutes());
-    user.sayNow("Hello");
+    useEffect(() => {
+        return () => {
+            console.log("cleaned up", opened);
+        };
+    }, []);
+
+    console.log('opened', opened)
+
 
     return (
         <div>
             <Button
                 onClick={toggle}
             >
-                openModal
+                Test
             </Button>
 
-            {opened && (
-                <Modal onClose={close} >
-                    <Text fz={16}>Сессия была отключена так как вы бездействовали некоторое время</Text>
-                    <div>
-                        <Button
-                            onClick={toggle}
-                            size='small'
+            <Link to={'/'}>LInk</Link>
 
-                        >
-                            Продолжить сессию
-                        </Button>
-                    </div>
-                </Modal>
-            )}
         </div>
     )
 
