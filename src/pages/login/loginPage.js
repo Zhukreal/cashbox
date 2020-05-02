@@ -172,7 +172,8 @@ const LoginContainer = styled.div`
     @media ${device.mobile}, ${device.tablet} { 
       background: url(${bgLoginMobile});
       background-size: cover;
-      padding: 3%;
+      padding: 20% 3% 3%;
+      align-items: flex-start;
     }
     @media ${device.laptop} { 
        background: url(${bgLoginLaptop});
