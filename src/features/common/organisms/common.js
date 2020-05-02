@@ -47,7 +47,7 @@ export const Common = ({ children }) => {
         dispatch(authActions.setExpiredSession(true))
         dispatch(authActions.logout())
     }
-    // useIdle(handleWarn, handleLogout)
+    useIdle(handleWarn, handleLogout)
 
     const handleContinueSession = () => {
         setOpened(false)
