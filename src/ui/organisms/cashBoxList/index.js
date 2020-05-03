@@ -51,15 +51,16 @@ const CashBoxItem = styled.div`
    ${(p) =>
     p.active &&
     css`
-        border: 1px solid #d7e5ffb3;
-        box-shadow: 0px 3px 6px #4f87de59;
-        font-weight: bold;
+        border: 1px solid var(--blue);
+        //box-shadow: 0px 3px 6px #4f87de59;
+        color: var(--blue);
     `}
    
    @media ${device.mobile} {       
       width: 100%;
-      height: 60px;
-      font-size: 22px;
+      height: 40px;
+      font-size: 17px;
+      justify-content: center;
     }
     
    @media ${device.laptop} {       

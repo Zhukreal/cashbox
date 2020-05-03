@@ -23,15 +23,13 @@ export const HomePage = () => {
             <FlexBlock>
                 <ProductsBox>
                     {/*<ProductList />*/}
-                    <ProductGroups />
+                    {/*<ProductGroups />*/}
                     { isOpenedSidebar &&
                     <Blur onClick={() => handleCloseSidebar()} />
                     }
                 </ProductsBox>
                 <CartBox>
-                    <CartList
-                        list={[]}
-                    />
+                    <CartList />
                 </CartBox>
             </FlexBlock>
         </Common>

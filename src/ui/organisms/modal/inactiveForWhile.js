@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react"
 import styled, {keyframes} from "styled-components"
-import {Text, Button} from "ui"
+import { device } from 'lib/mediaDevice';
+import {StyledText, Button} from "ui"
+
 
 export const InactiveForWhile = ({ handleContinueSession, handleLogout }) => {
     const [timer, setTimer] = useState(59)
@@ -19,10 +21,10 @@ export const InactiveForWhile = ({ handleContinueSession, handleLogout }) => {
 
     return (
         <>
-            <Text fz={30} mb={30} >
+            <TextModal mb={30} >
                 Вы бездействовали некоторое время. <br/>
                 Сессия будет отключена через:
-            </Text>
+            </TextModal>
 
             <TimerBox>
                 <TimeValue>00:{timer < 10 ? `0${timer}` : timer}</TimeValue>
@@ -93,4 +95,11 @@ const CirclePlaceholder = styled.circle`
     opacity: 0.1;
     fill: none;
     z-index: 2;
+`
+const TextModal = styled(StyledText)`
+  font-size: 30px;
+  
+  @media ${device.mobile} {
+      font-size: 20px
+    }
 `

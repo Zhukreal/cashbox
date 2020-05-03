@@ -9,67 +9,70 @@ import plusIcon from 'static/img/icons/plus.png'
 export const ProductList = () => {
     const dispatch = useDispatch()
     const [listItems, setListItems] = useState(Array.from(Array(30).keys(), n => n + 1));
-    const { products, filteredProducts, skip, take, isLoading, hasMore } = useSelector(state => state.product)
+    const { products, skip, take, isLoading, hasMore } = useSelector(state => state.product)
     const [search, setSearch] = useState('')
-    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
 
     // const debouncedSearch = useDebounce(search, 1000);
 
     useEffect(() => {
-        getProducts()
+        dispatch(productActions.getProducts(skip, take))
     }, [])
 
-    function fetchMoreListItems() {
+    const fetchMoreListItems = async () => {
+        // if(!hasMore) return
         setIsFetching(true);
-        setTimeout(() => {
-            setListItems(prevState => ([...prevState, ...Array.from(Array(20).keys(), n => n + prevState.length + 1)]));
-            setIsFetching(false);
-        }, 10000);
+        await dispatch(productActions.getProducts(skip, take))
+        setIsFetching(false);
     }
+    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
 
     // useEffect(() => {
     //     if(debouncedSearch) dispatch(offersActions.getOffersByFilter(debouncedSearch))
     //     },[debouncedSearch]
     // );
 
-    const getProducts = () => {
-        dispatch(productActions.getProducts(skip, take))
-    }
 
+    console.log('isFetching', isFetching)
     console.log('isFetching', isFetching)
 
 
-    if(isLoading) return <div>Loading...</div>
+    if(isLoading && !products.length) return <div>Loading...</div>
+
     return (
+        <>
         <ProductsRow>
-            <>
-                <ul className="list-group mb-2">
-                    {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}
-                </ul>
-                {isFetching && <div>Fetching more list items...</div>}
-            </>
+                {/*<ul className="list-group mb-2">*/}
+                {/*    {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}*/}
+                {/*</ul>*/}
 
+            {products.map((item, key) =>
+                <ProductCol
+                    key={`${item.id}-${key}`}
+                    url={item.image}
+                >
+                    <ProductInfo>
+                        <ProductName>{item.name}</ProductName>
+                        <ProductCode>Код: {item.barcode}</ProductCode>
+                        <ProductPrice>{item.base_price} тнг</ProductPrice>
+                        <AddIcon>
+                            <PlusIcon src={plusIcon} />
+                        </AddIcon>
+                    </ProductInfo>
 
-
-
-            {/*{products.map(item =>*/}
-            {/*    <ProductCol*/}
-            {/*        key={item.id}*/}
-            {/*        url={item.image}*/}
-            {/*    >*/}
-            {/*        <ProductInfo>*/}
-            {/*            <ProductName>{item.name}</ProductName>*/}
-            {/*            <ProductCode>Код: {item.barcode}</ProductCode>*/}
-            {/*            <ProductPrice>{item.base_price} тнг</ProductPrice>*/}
-            {/*            <AddIcon>*/}
-            {/*                <PlusIcon src={plusIcon} />*/}
-            {/*            </AddIcon>*/}
-            {/*        </ProductInfo>*/}
-
-            {/*    </ProductCol>*/}
-            {/*)}*/}
-            {/*{isLoading && <div>Loading...</div>}*/}
+                </ProductCol>
+            )}
+            <LoadingMore>
+                {hasMore ?
+                    isFetching && 'Loading...'
+                    :
+                    'Больше нет товаров'
+                }
+            </LoadingMore>
         </ProductsRow>
+
+        </>
     )
 }
 
@@ -77,7 +80,7 @@ export const ProductList = () => {
 const ProductsRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  //justify-content: space-between;
   width: 100%;
   padding-bottom: 110px;
   //height: calc(100vh - 220px);
@@ -85,11 +88,9 @@ const ProductsRow = styled.div`
 `
 const ProductCol = styled.div`
   display: flex;
-  flex: 0 1 calc(25% - 1em);
-  margin-bottom: 1em;
+  flex: 0 1 calc(25% - 3em);
+  margin: 1em;
   position: relative;
-  //width: 25%;
-  //max-width: calc(25% - 1em);
   height: 420px;
   //border: 1px solid grey;
   border-radius: 30px;
@@ -102,18 +103,9 @@ const ProductCol = styled.div`
       background-size: cover;
   `}
   
-  // @media ${device.mobile}, ${device.tablet} { 
-  //    
-  //   }
     @media ${device.laptop} { 
-      flex: 0 1 calc(33.333% - 1em);
+      flex: 0 1 calc(33.333% - 3em);
     }
-    // @media ${device.desktop} { 
-    //   
-    // } 
-  
-  
-  
 `
 const ProductInfo = styled.div`
     position: absolute;
@@ -161,6 +153,16 @@ const AddIcon = styled.div`
   }
 `
 const PlusIcon = styled.img``
+
+const LoadingMore = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 14px;
+    height: 50px;
+    padding-top: 10px;
+    color: #cacaca;
+`
 
 
 

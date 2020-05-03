@@ -30,6 +30,9 @@ const GroupItem = styled.div`
     border-radius: 30px;
     font-size: 26px;
     box-shadow: var(--shadow-card);
+     white-space: nowrap;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
     
     &:hover {
         background-color: #fafafa;

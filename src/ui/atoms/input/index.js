@@ -100,18 +100,18 @@ const sharedStyle = css`
     `}
     
     @media ${device.mobile} { 
-        height: 52px;
-        border-radius: 26px;
-        padding: 0 26px;
-        font-size: 20px;
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 20px;
+        font-size: 15px;
     }
 `
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
     ${sharedStyle}
 `
 
-const StyledInputMask = styled(InputMask)`
+export const StyledInputMask = styled(InputMask)`
     ${sharedStyle}
 `
 

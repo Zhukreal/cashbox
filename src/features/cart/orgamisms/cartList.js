@@ -6,7 +6,6 @@ import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 
 export const CartList = () => {
-
     return (
         <CartBox>
             <CartRow>
@@ -31,7 +30,7 @@ export const CartList = () => {
                     </CartCol>
                 )}
             </CartRow>
-            {[].length &&
+            {!![].length &&
                 <CartTotal>
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
