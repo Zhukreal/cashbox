@@ -242,7 +242,8 @@ const FormBox = styled.div`
       width: 100%;
       height: auto;
       min-height: auto;
-      padding: 10% 7% 15% 7%;
+      padding: 10% 7%;
+      padding-bottom: 150px;
       border-radius: 50px 50px 0 0 ;
       
       ${StyledButton} {

@@ -81,6 +81,7 @@ const sharedStyle = css`
         padding: 0 45px 0 25px;
         font-size: 17px;
         
+        -webkit-appearance: none;
         ::-webkit-input-placeholder {
           font-family: 'GilroyBold', sans-serif;
           color: rgba(14,37,74,0.302);
