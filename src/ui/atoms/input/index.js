@@ -63,6 +63,8 @@ const sharedStyle = css`
     border-radius: 34px;
     color: rgb(14, 37, 74);
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
+     -webkit-appearance: none;
+     -moz-appearance: none;
     ::-webkit-input-placeholder {color: rgba(14,37,74,0.302);}
     ::-moz-placeholder          {color: rgba(14,37,74,0.302);}/* Firefox 19+ */
     :-moz-placeholder           {color: rgba(14,37,74,0.302);}/* Firefox 18- */
@@ -81,7 +83,6 @@ const sharedStyle = css`
         padding: 0 45px 0 25px;
         font-size: 17px;
         
-        -webkit-appearance: none;
         ::-webkit-input-placeholder {
           font-family: 'GilroyBold', sans-serif;
           color: rgba(14,37,74,0.302);
