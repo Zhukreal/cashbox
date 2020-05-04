@@ -13,7 +13,7 @@ import icon8 from 'static/img/icons/s-8.png'
 import icon9 from 'static/img/icons/s-9.png'
 import icon10 from 'static/img/icons/s-10.png'
 
-export const Sidebar = () => {
+export const Sidebar = ({ handleLogout }) => {
 
     return (
         <SidebarBox>
@@ -58,6 +58,10 @@ export const Sidebar = () => {
             <SidebarItem>
                 <SidebarItemIcon src={icon10} />
                 Панель администратора
+            </SidebarItem>
+            <SidebarItem onClick={handleLogout}>
+                {/*<SidebarItemIcon src={icon10} />*/}
+                Выход
             </SidebarItem>
         </SidebarBox>
     )

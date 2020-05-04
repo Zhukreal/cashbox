@@ -8,8 +8,8 @@ export const CashBoxList = ({ list, active, setActive }) => {
             {list.map(item =>
                 <CashBoxItem
                     key={item.id}
-                    active={item.id === active}
-                    onClick={() => setActive(item.id)}
+                    active={item.store_id === active}
+                    onClick={() => setActive(item.store_id)}
                 >
                     {item.name}
                 </CashBoxItem>
@@ -45,7 +45,7 @@ const CashBoxItem = styled.div`
    box-shadow: var(--shadow-card);
    cursor: pointer;
     white-space: nowrap;
-    overflow-y: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
    
    ${(p) =>

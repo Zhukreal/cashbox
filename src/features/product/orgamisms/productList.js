@@ -20,7 +20,7 @@ export const ProductList = () => {
     }, [])
 
     const fetchMoreListItems = async () => {
-        // if(!hasMore) return
+        if(!hasMore) return
         setIsFetching(true);
         await dispatch(productActions.getProducts(skip, take))
         setIsFetching(false);
@@ -85,6 +85,10 @@ const ProductsRow = styled.div`
   padding-bottom: 110px;
   //height: calc(100vh - 220px);
   //max-height: calc(100vh - 220px);
+  
+  @media ${device.laptop} { 
+     padding-bottom: 90px;
+  }
 `
 const ProductCol = styled.div`
   display: flex;
@@ -121,7 +125,7 @@ const ProductName = styled.div`
     font-size: 26px;
     margin-bottom: 20px;
     white-space: nowrap;
-    overflow-y: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
 `
 const ProductCode = styled.div`

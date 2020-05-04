@@ -9,7 +9,7 @@ export const CartList = () => {
     return (
         <CartBox>
             <CartRow>
-                {[].map(item =>
+                {[{name: 'test'}].map(item =>
                     <CartCol
                         key={item.id}
                     >
@@ -30,7 +30,7 @@ export const CartList = () => {
                     </CartCol>
                 )}
             </CartRow>
-            {!![].length &&
+            {
                 <CartTotal>
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
@@ -68,7 +68,7 @@ export const CartList = () => {
 }
 
 const CartBox = styled.div`
-    width: 420px;
+    width: 100%;
     //width: 270px;
     max-width: inherit;
     position: fixed;
@@ -125,7 +125,7 @@ const CartItemInfo = styled.div`
 const CartItemInfoTitle = styled.div`
     font-size: 22px;
     max-height: 75px;
-    overflow-y: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     font-family: GilroyBold, sans-serif;
 `

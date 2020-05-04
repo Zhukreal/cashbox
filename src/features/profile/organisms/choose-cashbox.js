@@ -15,7 +15,7 @@ export const ChooseCashbox = () => {
 
     useEffect(() => {
         if(cashes.length === 1) {
-            localStorage.setItem('cashbox', cashes[0].id)
+            localStorage.setItem('cashbox', cashes[0].store_id)
             history.push('/')
         }
     }, [cashes])

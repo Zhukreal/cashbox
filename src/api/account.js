@@ -15,6 +15,3 @@ export const apiGetAccount = () => {
 export const apiCheckConnection = () => {
     return axios.head(`${API_URL}/api/v1/current_user/`)
 }
-
-
-

@@ -1,33 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import {Link} from 'react-router-dom'
-import {Button, Text, Modal} from "ui";
+import React from "react";
+import test from 'static/img/logo.png'
 
 export const TestPage = () => {
-    const [opened, setOpened] = useState(1)
-    const toggle = () => setOpened(5)
+    const obj = {
+        'test': test
+    }
 
-    useEffect(() => {
-        return () => {
-            console.log("cleaned up", opened);
-        };
-    }, []);
-
-    console.log('opened', opened)
-
+    const getLogo = () => {
+        // your logic
+        return obj['test']
+    }
 
     return (
-        <div>
-            <Button
-                onClick={toggle}
-            >
-                Test
-            </Button>
-
-            <Link to={'/'}>LInk</Link>
-
-        </div>
+        <>
+            <img src={getLogo()} alt="t"/>
+        </>
     )
-
 }
 
 

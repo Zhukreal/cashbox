@@ -81,7 +81,7 @@ const sharedStyle = css`
         height: 68px;
         border-radius: 22px;
         padding: 0 45px 0 25px;
-        font-size: 17px;
+        font-size: 20px;
         
         ::-webkit-input-placeholder {
           font-family: 'GilroyBold', sans-serif;
@@ -99,7 +99,15 @@ const sharedStyle = css`
             font-family: 'GilroyBold', sans-serif;
             color: rgba(14,37,74,0.302);
         }
+        
+        @media ${device.laptop} { 
+            font-size: 16px;
+            height: 54px;
+            border-radius: 20px;
+        }
+        
     `}
+    
     
     @media ${device.mobile} { 
         height: 40px;
@@ -143,4 +151,12 @@ const SearchIcon = styled.img`
   height: 20px;
   right: 20px;
   top: 25px;
+  
+    @media ${device.laptop} { 
+        width: 18px;
+        height: 18px;
+        right: 18px;
+        top: 18px
+    }
+  
 `

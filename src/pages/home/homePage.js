@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import {useDebounce} from 'lib/customHooks/useDebounce'
-
+import { device } from 'lib/mediaDevice'
 import {Common} from 'features/common'
 import {productActions, ProductList, ProductGroups} from 'features/product'
 import {profileActions} from 'features/profile'
@@ -22,15 +22,15 @@ export const HomePage = () => {
         <Common>
             <FlexBlock>
                 <ProductsBox>
-                    {/*<ProductList />*/}
-                    {/*<ProductGroups />*/}
-                    { isOpenedSidebar &&
-                    <Blur onClick={() => handleCloseSidebar()} />
-                    }
+                    <ProductList />
+                    <ProductGroups />
                 </ProductsBox>
                 <CartBox>
                     <CartList />
                 </CartBox>
+                { isOpenedSidebar &&
+                <Blur onClick={() => handleCloseSidebar()} />
+                }
             </FlexBlock>
         </Common>
     )
@@ -45,17 +45,26 @@ const FlexBlock = styled.div`
 `
 const ProductsBox = styled.div`
   position:relative;
-  width: calc(100% - 450px);
-  max-width: calc(100% - 450px);
+  width: calc(100% - 480px);
+  max-width: calc(100% - 480px);
+  
+  @media ${device.laptop} { 
+      width: calc(100% - 400px);
+      max-width: calc(100% - 400px);
+    }
 `
 const CartBox = styled.div`
-  width: 450px;
-  max-width: 450px;
+  width: 100%;
+  max-width: 480px;
   height: calc(100vh - 120px);
   overflow-y: auto;
   position: relative;
-  padding-left: 30px;
+  //padding-left: 30px;
   //background-color: #f0faff;
+  
+  @media ${device.laptop} { 
+      max-width: 400px;
+    }
 `
 const Blur = styled.div`
     width: 100%;

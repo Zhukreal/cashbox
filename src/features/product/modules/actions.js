@@ -1,5 +1,5 @@
 import {productReducer} from '../index'
-import {apiGetListProducts} from "api/product";
+import {apiGetListProducts, apiGetListGroups, apiCheckCashStatus, apiGetListSections} from "api/product";
 
 export const getProducts = (skip, take) => async dispatch => {
     try {
@@ -20,7 +20,46 @@ export const getProductsByFilter = (search) => async dispatch => {
     } catch (e){
         console.log(e)
     } finally {
-        // dispatch(offersReducer.setLoading(false))
+
     }
 };
+export const getGroups = () => async dispatch => {
+    try {
+        let res = await apiGetListGroups();
+        dispatch(productReducer.setGroups(res.data))
+    } catch (e){
+        console.log(e)
+    } finally {
+        dispatch(productReducer.setLoadingGroups(false))
+    }
+};
+
+export const checkCashStatus = () => async dispatch => {
+    try {
+        const CASHBOX = localStorage.getItem('cashbox')
+        let res = await apiCheckCashStatus(CASHBOX);
+
+    } catch (e){
+        console.log(e)
+    } finally {
+        dispatch(productReducer.setCashStatus(false))
+    }
+};
+
+export const getSections = () => async dispatch => {
+    try {
+        const CASHBOX = localStorage.getItem('cashbox')
+        let data = await apiGetListSections(CASHBOX);
+        dispatch(productReducer.setSections(data))
+    } catch (e){
+        console.log(e)
+    } finally {
+
+    }
+}
+
+
+
+
+
 

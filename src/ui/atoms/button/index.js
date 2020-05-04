@@ -79,6 +79,7 @@ export const StyledButton = styled.button`
     
     ${(p) => p.isHeaderBtn && css`
         border-radius: 22px;
+        font-size: 20px;
     `}
     
     ${(p) =>
@@ -90,6 +91,10 @@ export const StyledButton = styled.button`
         font-size: 1.2rem;
     `}
     
+    @media ${device.laptop} { 
+        height: 54px;
+        font-size: 17px;
+    }
     
     @media ${device.mobile} { 
         height: 52px;
