@@ -9,14 +9,18 @@ const common = createSlice({
     name: 'commonReducer',
     initialState,
     reducers: {
-        toggleSidebar (state) {
+        toggleSidebar (state, action) {
             state.isOpenedSidebar = !state.isOpenedSidebar
+        },
+        showSidebar (state, action) {
+            state.isOpenedSidebar = action.payload
         }
     }
 })
 
 export const {
-    toggleSidebar
+    toggleSidebar,
+    showSidebar
 } = common.actions
 
 

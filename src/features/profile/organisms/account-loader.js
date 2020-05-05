@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
-import {useDispatch, useSelector} from "react-redux";
-import Cookies from "browser-cookies"
+import {useDispatch} from "react-redux";
 import {history} from "lib/routing";
 import {getAccount} from "../modules/actions";
 import {AUTHTOKEN} from 'lib/CONST'
@@ -8,7 +7,6 @@ import {AUTHTOKEN} from 'lib/CONST'
 
 export const AccountLoader = ({ children }) => {
     const dispatch = useDispatch()
-    const { isAuth } = useSelector(state => state.profile)
     const TOKEN = localStorage.getItem(AUTHTOKEN)
 
     useEffect(() => {

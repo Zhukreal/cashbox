@@ -1,5 +1,4 @@
-import Cookies from "browser-cookies"
-import {apiLogin, apiLogout, apiGetAccount } from 'api/account'
+import {apiLogin } from 'api/account'
 import {authReducer} from "features/auth";
 import {profileActions, profileReducer} from "features/profile";
 import {history} from "lib/routing";

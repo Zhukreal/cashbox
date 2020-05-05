@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import {useDebounce} from 'lib/customHooks/useDebounce'
 import { device } from 'lib/mediaDevice'
 import {Common} from 'features/common'
-import {productActions, ProductList, ProductGroups} from 'features/product'
-import {profileActions} from 'features/profile'
+import {ProductList, ProductGroups} from 'features/product'
 import {commonActions} from 'features/common'
 import {CartList} from 'features/cart'
 import styled from "styled-components";
@@ -12,10 +10,13 @@ import styled from "styled-components";
 export const HomePage = () => {
     const dispatch = useDispatch()
     const { isOpenedSidebar } = useSelector(state => state.common)
+    const { searchUser } = useSelector(state => state.user)
+    const isBlurred = isOpenedSidebar || searchUser
 
     const handleCloseSidebar = () => {
-        dispatch(commonActions.toggleSidebar())
+        dispatch(commonActions.showSidebar(false))
     }
+
 
 
     return (
@@ -28,9 +29,7 @@ export const HomePage = () => {
                 <CartBox>
                     <CartList />
                 </CartBox>
-                { isOpenedSidebar &&
-                <Blur onClick={() => handleCloseSidebar()} />
-                }
+                { isBlurred && <Blur onClick={() => handleCloseSidebar()} />}
             </FlexBlock>
         </Common>
     )

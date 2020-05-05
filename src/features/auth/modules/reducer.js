@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import Cookies from "browser-cookies";
+import { createSlice } from '@reduxjs/toolkit'
 
 let initialState = {
     isLoading: false,

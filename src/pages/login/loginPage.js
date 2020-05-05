@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
-// import {emailValidator, passwordValidator} from "lib/validators";
-// import {useProgressiveImage} from 'lib/customHooks/useProgressiveImage'
 import {authActions} from 'features/auth'
 import {ChooseCashbox} from 'features/profile'
 import { device, useDetectDevice } from 'lib/mediaDevice';

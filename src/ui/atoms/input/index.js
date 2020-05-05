@@ -11,11 +11,11 @@ export const Input = ({
     value,
     onChange,
     placeholder,
-                          readOnly,
+    readOnly,
     size = 'medium',
     isForm,
     isInputMask,
-                          isSearch,
+    isSearch,
     mask,
     alwaysShowMask,
     error
@@ -46,7 +46,7 @@ export const Input = ({
                     isSearch={isSearch}
                 />
             }
-            {isSearch && <SearchIcon src={searchIcon} />}
+            {(isSearch && !value) && <SearchIcon src={searchIcon} />}
             <Error>{error}</Error>
         </BoxInput>
 
@@ -80,7 +80,7 @@ const sharedStyle = css`
         border: none;
         height: 68px;
         border-radius: 22px;
-        padding: 0 45px 0 25px;
+        padding: 0 25px 0 25px;
         font-size: 20px;
         
         ::-webkit-input-placeholder {

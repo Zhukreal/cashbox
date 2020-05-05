@@ -1,21 +1,25 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
+import useOnClickOutside from "use-onclickoutside";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import {productActions} from "features/product";
 import groupIcon from 'static/img/icons/group.png'
 
+
 export const ProductGroups = () => {
     const [opened, setOpened] = useState(false)
     const dispatch = useDispatch()
     const { groups, isLoadingGroups } = useSelector(state => state.product)
+    const ref = useRef(null)
+    useOnClickOutside(ref, () => setOpened(false))
 
     const isHasIcon = groups.length > 3
     const shortList = groups.slice(0, 3)
 
     useEffect(() => {
         dispatch(productActions.getGroups())
-    }, [])
+    }, [dispatch])
 
     const toggleFull = () => {
         setOpened(!opened)
@@ -31,7 +35,7 @@ export const ProductGroups = () => {
     return (
         <GroupBox>
             {opened &&
-            <FullListWrapper>
+            <FullListWrapper ref={ref}>
                 <Title>Категории товара:</Title>
                 <FullList>
                     {groups.map((item) =>
@@ -156,6 +160,10 @@ const FullListWrapper = styled.div`
     border-radius: 30px;
     background: white;
     box-shadow: var(--shadow-card);
+    
+    @media ${device.laptop} { 
+       bottom: 90px;
+    }
 `
 const FullList = styled.div`
     display: flex;

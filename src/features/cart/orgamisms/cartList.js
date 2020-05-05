@@ -1,7 +1,6 @@
-import React, {useEffect} from "react"
-import { Link } from "react-router-dom"
+import React from "react"
 import styled, { css } from "styled-components"
-import {Container, Row, Col, Button, StyledButton} from 'ui'
+import { Button, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 
@@ -11,7 +10,7 @@ export const CartList = () => {
             <CartRow>
                 {[{name: 'test'}].map(item =>
                     <CartCol
-                        key={item.id}
+                        key={item.name}
                     >
                         <CartItemAvatar src={item.image} />
                         <CartItemInfo>

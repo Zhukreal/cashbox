@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import { device } from 'lib/mediaDevice';
 
 export const Container = styled.div`
@@ -26,8 +26,8 @@ export const Col = styled.div`
   width: 25%;
 `
 
-const getWidthString = (span) => {
-  if(!span) return;
-  let width = span / 12 * 100
-  return `width: ${width}%;`
-}
+// const getWidthString = (span) => {
+//   if(!span) return;
+//   let width = span / 12 * 100
+//   return `width: ${width}%;`
+// }

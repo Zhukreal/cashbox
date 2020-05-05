@@ -77,11 +77,7 @@ export const StyledButton = styled.button`
         }
     `}
     
-    ${(p) => p.isHeaderBtn && css`
-        border-radius: 22px;
-        font-size: 20px;
-    `}
-    
+  
     ${(p) =>
     p.size === 'small' &&
     css`

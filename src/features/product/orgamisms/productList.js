@@ -1,23 +1,19 @@
-import React, {useState, useEffect} from "react"
+import React, {useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
 import {productActions} from "features/product";
 import plusIcon from 'static/img/icons/plus.png'
+import emptyPhoto from 'static/img/no-photo.png'
 
 export const ProductList = () => {
     const dispatch = useDispatch()
-    const [listItems, setListItems] = useState(Array.from(Array(30).keys(), n => n + 1));
     const { products, skip, take, isLoading, hasMore } = useSelector(state => state.product)
-    const [search, setSearch] = useState('')
-
-
-    // const debouncedSearch = useDebounce(search, 1000);
 
     useEffect(() => {
         dispatch(productActions.getProducts(skip, take))
-    }, [])
+    }, [dispatch])
 
     const fetchMoreListItems = async () => {
         if(!hasMore) return
@@ -28,25 +24,11 @@ export const ProductList = () => {
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
 
-    // useEffect(() => {
-    //     if(debouncedSearch) dispatch(offersActions.getOffersByFilter(debouncedSearch))
-    //     },[debouncedSearch]
-    // );
-
-
-    console.log('isFetching', isFetching)
-    console.log('isFetching', isFetching)
-
-
     if(isLoading && !products.length) return <div>Loading...</div>
 
     return (
         <>
         <ProductsRow>
-                {/*<ul className="list-group mb-2">*/}
-                {/*    {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}*/}
-                {/*</ul>*/}
-
             {products.map((item, key) =>
                 <ProductCol
                     key={`${item.id}-${key}`}
@@ -99,6 +81,7 @@ const ProductCol = styled.div`
   //border: 1px solid grey;
   border-radius: 30px;
   box-sizing: border-box;
+   background: #E7E9ED url(${emptyPhoto}) center 85px no-repeat;
   
   ${(props) =>
     props.url &&

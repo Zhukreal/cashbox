@@ -1,21 +1,33 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
-import { device } from 'lib/mediaDevice'
+import {device} from 'lib/mediaDevice'
+import {useDebounce} from 'lib/customHooks/useDebounce'
 import {authActions} from 'features/auth'
 import {profileActions} from 'features/profile'
+import {userActions} from 'features/user'
 import {commonActions} from 'features/common'
 import {ProductSections} from 'features/product'
+import {UsersList} from 'features/user'
 import {Sidebar} from "./sidebar";
-import {Container, Row, Col, Button, StyledButton, Input, BoxInput} from "ui";
+import {Container, Input, BoxInput} from "ui";
 import logo from 'static/img/logo.png'
 import burger from 'static/img/burger.png'
 import add from 'static/img/add.png'
 
 export const Header = () => {
-    const [isHover, setIsHover] = useState(false)
-    const { isOpenedSidebar } = useSelector(state => state.common)
     const dispatch = useDispatch()
+    const [isHover, setIsHover] = useState(false)
+    const [searchU, setSearchU] = useState('')
+    const debouncedSearch = useDebounce(searchU, 300);
+
+    const { searchUser } = useSelector(state => state.user)
+    const { isOpenedSidebar } = useSelector(state => state.common)
+
+    useEffect(() => {
+        dispatch(userActions.getUsers(debouncedSearch))
+        },[debouncedSearch]
+    );
 
     const toggleSidebar = () => {
         dispatch(commonActions.toggleSidebar())
@@ -23,11 +35,16 @@ export const Header = () => {
 
     const handleLogout = () => {
         dispatch(authActions.logout())
-        toggleSidebar()
+        dispatch(commonActions.showSidebar(false))
     }
 
     const toggleHover = () => {
         setIsHover(prev => !prev)
+    }
+
+    const onChangeSearchUsers = (e) => {
+        const {value} = e.target
+        setSearchU(value)
     }
 
     return (
@@ -51,7 +68,11 @@ export const Header = () => {
                         <ProductSections />
                     </LeftBox>
                     <RightBox>
+                        {searchUser && <UsersList /> }
                         <Input
+                            type='search'
+                            value={searchU}
+                            onChange={onChangeSearchUsers}
                             placeholder='Введите номер/ФИО клиента'
                             isSearch
                         />
@@ -140,10 +161,6 @@ const LeftBox = styled.div`
     
     ${BoxInput} {
       margin: 0 20px 0 50px;
-    }
-    ${StyledButton} {
-      width: 320px;
-      padding: 0 15px;
     }
     
     @media ${device.laptop} { 
