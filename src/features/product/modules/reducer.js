@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 import {toModel} from './model'
 
 let initialState = {
@@ -7,11 +7,13 @@ let initialState = {
     isLoading: true,
     skip: 0,
     take: 16,
+    initialTake: 16,
     hasMore: false,
     groups: [],
     isLoadingGroups: true,
     cashStatus: false,
-    sections: []
+    sections: [],
+    searchFilter: ''
 }
 
 const product = createSlice({
@@ -23,15 +25,16 @@ const product = createSlice({
         },
         setProducts(state, action) {
             const { results } = action.payload
-            state.isFirstRequest = false
+            state.skip = state.initialTake
+            state.hasMore = results.length === state.initialTake
+            state.products = results.map(product => toModel(product))
+        },
+        setMoreProducts(state, action) {
+            const { results } = action.payload
             state.skip = state.skip + state.take
-            state.hasMore = results.length === results.take
+            state.hasMore = results.length === state.take
             const modifiedProducts = results.map(product => toModel(product))
             state.products = [...state.products, ...modifiedProducts]
-        },
-        setFilteredProducts(state, action) {
-            const { data } = action.payload
-            // state.filteredProducts = data.map(offer => toOfferModel(offer))
         },
         setGroups(state, action) {
             const { results } = action.payload
@@ -47,6 +50,10 @@ const product = createSlice({
         setSections(state, action) {
             const { results } = action.payload
             state.sections = results
+        },
+        setSearchFilter(state, action) {
+            state.skip = 0
+            state.searchFilter = action.payload
         }
     }
 })
@@ -55,10 +62,12 @@ export const {
     setLoading,
     setLoadingGroups,
     setProducts,
+    setMoreProducts,
     setFilteredProducts,
     setGroups,
     setCashStatus,
-    setSections
+    setSections,
+    setSearchFilter
 } = product.actions
 
 

@@ -17,16 +17,6 @@ export const ProductSections = () => {
         dispatch(productActions.getSections())
     }, [])
 
-    const showHide = e => {
-        console.log('e:', e.target)
-    }
-
-    // useEffect(() => {
-    //     document.addEventListener('click', showHide);
-    //
-    //     return () => document.removeEventListener('click', showHide);
-    // }, [])
-
     const toggleFull = () => {
         setOpened(!opened)
     }

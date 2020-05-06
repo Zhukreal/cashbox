@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useCallback} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
@@ -9,22 +9,43 @@ import emptyPhoto from 'static/img/no-photo.png'
 
 export const ProductList = () => {
     const dispatch = useDispatch()
-    const { products, skip, take, isLoading, hasMore } = useSelector(state => state.product)
+    const { products, isLoading, skip, take, hasMore, searchFilter } = useSelector(state => state.product)
+    const { currency } = useSelector(state => state.profile)
 
     useEffect(() => {
-        dispatch(productActions.getProducts(skip, take))
-    }, [dispatch])
+        const obj = {
+            search: searchFilter,
+            skip: skip,
+            take: take
+        }
+        dispatch(productActions.getProducts(obj))
+    }, [dispatch, searchFilter])
+
+    // const fetchMoreListItems = useCallback(async () => {
+    //         if(!hasMore) return
+    //         setIsFetching(true);
+    //         await dispatch(productActions.getProductsMore())
+    //         setIsFetching(false);
+    // },[hasMore]);
 
     const fetchMoreListItems = async () => {
+        console.log('hm', hasMore)
         if(!hasMore) return
+        const obj = {
+            search: searchFilter,
+            skip: skip,
+            take: take
+        }
         setIsFetching(true);
-        await dispatch(productActions.getProducts(skip, take))
+        await dispatch(productActions.getProductsMore(obj))
         setIsFetching(false);
     }
+
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
 
-    if(isLoading && !products.length) return <div>Loading...</div>
+    if(isLoading && !products.length) return <Loading>Загрузка...</Loading>
+    if(searchFilter && !products.length) return <Loading>По вышему запросу ничего не найдено...</Loading>
 
     return (
         <>
@@ -37,7 +58,7 @@ export const ProductList = () => {
                     <ProductInfo>
                         <ProductName>{item.name}</ProductName>
                         <ProductCode>Код: {item.barcode}</ProductCode>
-                        <ProductPrice>{item.base_price} тнг</ProductPrice>
+                        <ProductPrice>{item.base_price} {currency}</ProductPrice>
                         <AddIcon>
                             <PlusIcon src={plusIcon} />
                         </AddIcon>
@@ -47,7 +68,7 @@ export const ProductList = () => {
             )}
             <LoadingMore>
                 {hasMore ?
-                    isFetching && 'Loading...'
+                    isFetching && 'Загружаем еще...'
                     :
                     'Больше нет товаров'
                 }
@@ -150,6 +171,12 @@ const LoadingMore = styled.div`
     padding-top: 10px;
     color: #cacaca;
 `
+const Loading = styled.div`
+    font-size: 15px;
+    text-align: center;
+    color: grey;
+`
+
 
 
 

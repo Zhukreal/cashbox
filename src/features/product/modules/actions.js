@@ -1,10 +1,12 @@
 import {productReducer} from '../index'
 import {apiGetListProducts, apiGetListGroups, apiCheckCashStatus, apiGetListSections} from "api/product";
+import {store} from 'lib/store/store'
 
-export const getProducts = (skip, take) => async dispatch => {
+export const getProducts = (obj) => async dispatch => {
     try {
+        // const { product } = store.getState()
         dispatch(productReducer.setLoading(true))
-        let res = await apiGetListProducts({skip, take});
+        let res = await apiGetListProducts(obj);
         dispatch(productReducer.setProducts(res.data))
     } catch (e){
         console.log(e)
@@ -13,16 +15,22 @@ export const getProducts = (skip, take) => async dispatch => {
     }
 };
 
-export const getProductsByFilter = (search) => async dispatch => {
+export const getProductsMore = (obj) => async dispatch => {
     try {
-        let data = await apiGetListProducts({search});
-        dispatch(productReducer.setFilteredProducts(data))
+        // const { product } = store.getState()
+        // console.log('product', product)
+        let res = await apiGetListProducts(obj);
+        dispatch(productReducer.setMoreProducts(res.data))
     } catch (e){
         console.log(e)
     } finally {
 
     }
 };
+export const setSearch = (str) => async dispatch => {
+    dispatch(productReducer.setSearchFilter(str))
+}
+
 export const getGroups = () => async dispatch => {
     try {
         let res = await apiGetListGroups();

@@ -18,8 +18,8 @@ export const LoginPage = () => {
     const currentDevice = useDetectDevice()
 
     const [data, setData] = useState({
-        phone: '',
-        password: ''
+        phone: '1323213213',
+        password: '111111'
     })
     const [error, setError] = useState(null)
     const [errors, setErrors] = useState({})

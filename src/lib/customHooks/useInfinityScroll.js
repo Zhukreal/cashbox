@@ -1,33 +1,36 @@
 import { useState, useEffect } from 'react';
-import { useDebouncedCallback } from "use-debounce";
+// import { useDebouncedCallback } from "use-debounce";
 
 export const useInfiniteScroll = (callback) => {
     const [isFetching, setIsFetching] = useState(false);
-
-
-    const [scrollHandler] = useDebouncedCallback(
-        () => {
-            handleScroll()
-        },
-        500
-    );
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+
     useEffect(() => {
-        if (!isFetching) return;
-        callback(() => {
-            console.log('called back');
-        });
+        if (isFetching) callback();
     }, [isFetching]);
 
 
     function handleScroll() {
-        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
-        setIsFetching(true);
+        let innerHeight = window.innerHeight
+        let scrollTop = document.documentElement.scrollTop
+        let offsetHeight = document.documentElement.offsetHeight
+        let isTimeToCb = (scrollTop > 100) && (innerHeight + scrollTop + 100 > offsetHeight)
+
+        // console.log('innerHeight', innerHeight)
+        // console.log('scrollTop', scrollTop)
+        // console.log('offsetHeight', offsetHeight)
+
+        if(isTimeToCb && !isFetching) setIsFetching(true);
+
+
+        //
+        // if ((wIH + scrT !== ofsH) || isFetching) return;
+
     }
 
     return [isFetching, setIsFetching];

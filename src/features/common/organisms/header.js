@@ -1,37 +1,37 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
 import {device} from 'lib/mediaDevice'
 import {useDebounce} from 'lib/customHooks/useDebounce'
 import {authActions} from 'features/auth'
-import {profileActions} from 'features/profile'
 import {userActions} from 'features/user'
+import {productActions} from 'features/product'
 import {commonActions} from 'features/common'
 import {ProductSections} from 'features/product'
 import {UsersList} from 'features/user'
 import {Sidebar} from "./sidebar";
 import {Container, Input, BoxInput} from "ui";
 import logo from 'static/img/logo.png'
-import burger from 'static/img/burger.png'
 import add from 'static/img/add.png'
+
 
 export const Header = () => {
     const dispatch = useDispatch()
     const [isHover, setIsHover] = useState(false)
+    const [searchP, setSearchP] = useState('')
     const [searchU, setSearchU] = useState('')
-    const debouncedSearch = useDebounce(searchU, 300);
-
+    const debouncedSearchU = useDebounce(searchU, 300);
+    const debouncedSearchP = useDebounce(searchP, 300);
     const { searchUser } = useSelector(state => state.user)
-    const { isOpenedSidebar } = useSelector(state => state.common)
 
     useEffect(() => {
-        dispatch(userActions.getUsers(debouncedSearch))
-        },[debouncedSearch]
+        dispatch(userActions.getUsers(debouncedSearchU))
+        },[debouncedSearchU]
     );
 
-    const toggleSidebar = () => {
-        dispatch(commonActions.toggleSidebar())
-    }
+    useEffect(() => {
+        dispatch(productActions.setSearch(debouncedSearchP))
+    },[debouncedSearchP]);
 
     const handleLogout = () => {
         dispatch(authActions.logout())
@@ -46,6 +46,11 @@ export const Header = () => {
         const {value} = e.target
         setSearchU(value)
     }
+    const onChangeSearchProducts = (e) => {
+        const {value} = e.target
+        setSearchP(value)
+    }
+
 
     return (
         <HeaderBox>
@@ -53,14 +58,15 @@ export const Header = () => {
                 <HeaderRow>
                     <LeftBox>
                         <LeftBoxControls>
-                            <IconSidebar onClick={toggleSidebar} >
-                                <IconBurger src={burger} />
-                            </IconSidebar>
+                            <Sidebar handleLogout={handleLogout} />
                             <Logo src={logo} />
                             <Status onMouseEnter={toggleHover} onMouseLeave={toggleHover} />
                             {isHover && <CashStatus>Касса заблокирована</CashStatus>}
                         </LeftBoxControls>
                         <Input
+                            type='search'
+                            value={searchP}
+                            onChange={onChangeSearchProducts}
                             placeholder='Поиск товара/кода'
                             isSearch
                         />
@@ -82,7 +88,7 @@ export const Header = () => {
                     </RightBox>
                 </HeaderRow>
 
-                { isOpenedSidebar && <Sidebar handleLogout={handleLogout} /> }
+
             </Container>
         </HeaderBox>
     )
@@ -121,27 +127,6 @@ const LeftBoxControls = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
-`
-const IconSidebar = styled.div`
-  width: 62px;
-  height: 62px;
-  border-radius: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--green);
-  cursor: pointer;
-  
-  @media ${device.laptop} { 
-    width: 54px;
-    height: 54px;
-    border-radius: 27px;
-  }
-`
-const IconBurger = styled.img`
-  @media ${device.laptop} { 
-    width: 24px;
-  }
 `
 const Logo = styled.img`
   width: 144px;

@@ -9,6 +9,7 @@ let initialState = {
     id: null,
     firstName: null,
     lastName: null,
+    currency: null,
     cashes: [],
     isOpenedSidebar: false
 }
@@ -18,10 +19,11 @@ const profile = createSlice({
     initialState,
     reducers: {
         setProfile(state, action) {
-            const {id, first_name, last_name, cashes} = action.payload
+            const {id, first_name, last_name, currency, cashes} = action.payload
             state.id = id
             state.firstName = first_name
             state.lastName = last_name
+            state.currency = currency
             state.isAuth = true
             state.cashes = cashes
             // if(token) Cookies.set(AUTHTOKEN, token)
