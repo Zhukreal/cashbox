@@ -1,5 +1,6 @@
 import * as React from "react"
 import styled from "styled-components"
+import { device } from 'lib/mediaDevice'
 import { Header } from "../organisms"
 import { Container } from "ui"
 
@@ -23,4 +24,8 @@ export const ContentBox = styled.div`
   padding-bottom: 2rem;
   color: var(--canvas-text);
   background-color: var(--canvas);
+  
+  @media ${device.mobileTablet} { 
+      padding-top: 170px;
+  }
 `

@@ -26,7 +26,8 @@ export const logout = () => async dispatch => {
         // await apiLogout();
         localStorage.removeItem(AUTHTOKEN)
         dispatch(profileReducer.clearProfile())
-        history.push('/login');
+        window.location.href = '/login'
+        // history.push('/login');
     } catch (e){
         console.log(e)
     }

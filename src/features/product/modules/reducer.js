@@ -10,9 +10,11 @@ let initialState = {
     initialTake: 16,
     hasMore: false,
     groups: [],
+    activeGroup: {},
     isLoadingGroups: true,
-    cashStatus: false,
+    currentShift: {},
     sections: [],
+    activeSection: {},
     searchFilter: ''
 }
 
@@ -45,7 +47,7 @@ const product = createSlice({
             state.isLoadingGroups = action.payload
         },
         setCashStatus(state, action) {
-            state.cashStatus = action.payload
+            state.currentShift = action.payload
         },
         setSections(state, action) {
             const { results } = action.payload
@@ -54,6 +56,12 @@ const product = createSlice({
         setSearchFilter(state, action) {
             state.skip = 0
             state.searchFilter = action.payload
+        },
+        setSection(state, action) {
+            state.activeSection = action.payload
+        },
+        setGroup(state, action) {
+            state.activeGroup = action.payload
         }
     }
 })
@@ -65,8 +73,10 @@ export const {
     setMoreProducts,
     setFilteredProducts,
     setGroups,
+    setGroup,
     setCashStatus,
     setSections,
+    setSection,
     setSearchFilter
 } = product.actions
 

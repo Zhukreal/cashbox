@@ -1,28 +1,28 @@
 import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
-import {device} from 'lib/mediaDevice'
+import {device, useDetectDevice} from 'lib/mediaDevice'
 import {useDebounce} from 'lib/customHooks/useDebounce'
 import {authActions} from 'features/auth'
 import {userActions} from 'features/user'
-import {productActions} from 'features/product'
+import {productActions, ShiftStatus} from 'features/product'
 import {commonActions} from 'features/common'
 import {ProductSections} from 'features/product'
 import {UsersList} from 'features/user'
 import {Sidebar} from "./sidebar";
-import {Container, Input, BoxInput} from "ui";
+import {Container, Input, BoxInput } from "ui";
 import logo from 'static/img/logo.png'
 import add from 'static/img/add.png'
 
 
 export const Header = () => {
     const dispatch = useDispatch()
-    const [isHover, setIsHover] = useState(false)
     const [searchP, setSearchP] = useState('')
     const [searchU, setSearchU] = useState('')
     const debouncedSearchU = useDebounce(searchU, 300);
     const debouncedSearchP = useDebounce(searchP, 300);
     const { searchUser } = useSelector(state => state.user)
+    const currentDevice = useDetectDevice()
 
     useEffect(() => {
         dispatch(userActions.getUsers(debouncedSearchU))
@@ -38,10 +38,6 @@ export const Header = () => {
         dispatch(commonActions.showSidebar(false))
     }
 
-    const toggleHover = () => {
-        setIsHover(prev => !prev)
-    }
-
     const onChangeSearchUsers = (e) => {
         const {value} = e.target
         setSearchU(value)
@@ -51,17 +47,19 @@ export const Header = () => {
         setSearchP(value)
     }
 
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     return (
         <HeaderBox>
             <Container>
+                {isDesktopView &&
                 <HeaderRow>
                     <LeftBox>
                         <LeftBoxControls>
-                            <Sidebar handleLogout={handleLogout} />
-                            <Logo src={logo} />
-                            <Status onMouseEnter={toggleHover} onMouseLeave={toggleHover} />
-                            {isHover && <CashStatus>Касса заблокирована</CashStatus>}
+                            <Sidebar handleLogout={handleLogout}/>
+                            <Logo src={logo}/>
+                            <ShiftStatus />
                         </LeftBoxControls>
                         <Input
                             type='search'
@@ -70,11 +68,10 @@ export const Header = () => {
                             placeholder='Поиск товара/кода'
                             isSearch
                         />
-                        {/*<FilterCategory>Популярные</FilterCategory>*/}
-                        <ProductSections />
+                        <ProductSections/>
                     </LeftBox>
                     <RightBox>
-                        {searchUser && <UsersList /> }
+                        {searchUser && <UsersList/>}
                         <Input
                             type='search'
                             value={searchU}
@@ -82,12 +79,36 @@ export const Header = () => {
                             placeholder='Введите номер/ФИО клиента'
                             isSearch
                         />
-                        <ProfileBtn onClick={() => handleLogout()}>
-                            <ProfileAddImg src={add} />
+                        <ProfileBtn>
+                            <ProfileAddImg src={add}/>
                         </ProfileBtn>
                     </RightBox>
                 </HeaderRow>
+                }
 
+                {isMobileView &&
+                <HeaderRowMobile>
+                    <HeaderRowMobileTop>
+                        <HML>
+                            <Sidebar handleLogout={handleLogout}/>
+                            <ProductSections />
+                        </HML>
+                        <HMR>
+                            <ShiftStatus />
+                            <Logo src={logo} />
+                        </HMR>
+                    </HeaderRowMobileTop>
+                    <HeaderRowMobileSearch>
+                        <Input
+                            type='search'
+                            value={searchP}
+                            onChange={onChangeSearchProducts}
+                            placeholder='Поиск товара/кода'
+                            isSearch
+                        />
+                    </HeaderRowMobileSearch>
+                </HeaderRowMobile>
+                }
 
             </Container>
         </HeaderBox>
@@ -108,6 +129,10 @@ const HeaderBox = styled.header`
   background-color: var(--card);
   border-color: var(--borders);
   
+  @media ${device.mobile} { 
+    height: 110px;
+  }
+  
   @media ${device.laptop} { 
     height: 100px
   }
@@ -121,6 +146,24 @@ const HeaderRow = styled.div`
   align-items: center;
   justify-content: space-between;
 `
+
+const HeaderRowMobile = styled.div`
+  display: flex;
+  height: 110px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+`
+const HeaderRowMobileTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const HeaderRowMobileSearch = styled.div`
+  padding: 0 10%;
+`
+
+
 const LeftBoxControls = styled.div`
     min-width: 280px;
     display: flex;
@@ -131,6 +174,9 @@ const LeftBoxControls = styled.div`
 const Logo = styled.img`
   width: 144px;
   
+  @media ${device.mobileTablet} { 
+    width: 67px
+  }
   @media ${device.laptop} { 
     width: 124px;
   }
@@ -169,18 +215,6 @@ const RightBox = styled.div`
       width: 400px;
     }
 `
-const Status = styled.div`
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: var(--red);
-  
-  @media ${device.laptop} { 
-      width: 24px;
-      height: 24px;
-      border-radius: 12px;
-  }
-`
 const ProfileBtn = styled.div`
   height: 68px;
   display: flex;
@@ -204,15 +238,12 @@ const ProfileBtn = styled.div`
 const ProfileAddImg = styled.img`
   
 `
-const CashStatus = styled.div`
-    position: absolute;
-    right: -45px;
-    top: 48px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    background: #ffffff;
-    color: var(--red);
-    box-shadow: var(--shadow-card);
+const HML = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px
+`
+const HMR = styled(HML)`
+  width: 95px;
 `

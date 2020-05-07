@@ -109,7 +109,7 @@ const sharedStyle = css`
     `}
     
     
-    @media ${device.mobile} { 
+    @media ${device.mobileTablet} { 
         height: 40px;
         border-radius: 20px;
         padding: 0 20px;
@@ -152,11 +152,19 @@ const SearchIcon = styled.img`
   right: 20px;
   top: 25px;
   
+  @media ${device.mobileTablet} { 
+        width: 16px;
+        height: 16px;
+        right: 14px;
+        top: 14px;
+    }
+    
     @media ${device.laptop} { 
         width: 18px;
         height: 18px;
         right: 18px;
         top: 18px
     }
+    
   
 `

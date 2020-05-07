@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
+import {device} from 'lib/mediaDevice'
 import {productActions} from "features/product";
 import groupIcon from 'static/img/icons/group.png'
 import {Button, StyledButton} from "ui/atoms/button";
@@ -9,7 +10,7 @@ import useOnClickOutside from "use-onclickoutside";
 export const ProductSections = () => {
     const [opened, setOpened] = useState(false)
     const dispatch = useDispatch()
-    const { sections } = useSelector(state => state.product)
+    const { sections, activeSection } = useSelector(state => state.product)
     const ref = useRef(null)
     useOnClickOutside(ref, () => setOpened(false))
 
@@ -21,8 +22,8 @@ export const ProductSections = () => {
         setOpened(!opened)
     }
 
-    const handleSetSection = (id) => {
-        console.log(id)
+    const handleSetSection = (section) => {
+        dispatch(productActions.setSection(section))
         setOpened(false)
     }
 
@@ -30,13 +31,26 @@ export const ProductSections = () => {
     return (
         <SectionsBox ref={ref}>
             <Button onClick={toggleFull} >
-                Секция/Отдел
+                {activeSection.id ? activeSection.name : 'Секция/Отдел'}
             </Button>
             {opened &&
-                <List >
-                    {sections.map((item, key) =>
-                        <Item key={item.id} onClick={() => handleSetSection(item.id)}>{item.name}</Item>
-                    )}
+                <List>
+                    {sections.length ?
+                        <>
+                            {sections.map((item, key) =>
+                                <Item
+                                    key={item.id}
+                                    onClick={() => handleSetSection(item)}
+                                    active={activeSection.id === item.id}
+                                >
+                                    {item.name}
+                                </Item>
+                            )}
+                        </>
+                        :
+                        <Not>Не найдено</Not>
+                    }
+
                 </List>
             }
         </SectionsBox>
@@ -55,14 +69,46 @@ const SectionsBox = styled.div `
       padding: 0 15px;
       z-index: 2;
    }
+   
+   @media ${device.mobileTablet} { 
+    max-width: 140px;
+    min-width: 140px;
+   
+    ${StyledButton} {
+      font-size: 10px;
+      padding: 0 10px;
+      height: 32px;
+      border-radius: 16px;
+      background-color: #ffffff;
+      color: var(--primary);
+      box-shadow: var(--shadow-card);
+   }
+  }
+   
 `
 const Item = styled.div `
     padding: 10px;
     font-size: 16px;
+    text-align: center;
     
     &:hover {
       cursor: pointer;
       background-color: rgba(79,135,222,0.13);
+    }
+    
+    ${(p) => p.active && css`
+         background-color: var(--blue);
+         color: #ffffff;
+         
+          &:hover {
+              background-color: var(--blue);
+           }
+    `}
+    
+    
+    @media ${device.mobileTablet} { 
+      font-size: 14px;
+      padding: 5px;
     }
 `
 const List = styled.div `
@@ -78,4 +124,18 @@ const List = styled.div `
     border-radius: 0 0 20px 20px;
     box-shadow: var(--shadow-card);
     z-index: 1;
+    
+    @media ${device.mobileTablet} { 
+      top: 20px;
+      min-height: 55px;
+    }
+`
+const Not = styled.div`
+  text-align: center;
+  color: grey;
+  padding-top: 15px;
+  
+  @media ${device.mobileTablet} { 
+      padding-top: 10px;
+    }
 `

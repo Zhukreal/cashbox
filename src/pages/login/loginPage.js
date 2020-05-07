@@ -4,11 +4,12 @@ import styled, {css} from "styled-components"
 import {authActions} from 'features/auth'
 import {ChooseCashbox} from 'features/profile'
 import { device, useDetectDevice } from 'lib/mediaDevice';
-import {Button, StyledButton, Input, StyledInput, StyledInputMask, CashBoxList, Modal, Text} from "ui"
+import {Button, ButtonIcon, StyledButton, Input, StyledInput, StyledInputMask, CashBoxList, Modal, Text} from "ui"
 import bgLogin from 'static/img/bg-login.png'
 import bgLoginLaptop from 'static/img/bg-login-laptop.png'
 import bgLoginMobile from 'static/img/bg-login-mobile2.png'
 import logo from 'static/img/logo.png'
+import arrowRight from 'static/img/icons/arrow-right.png'
 
 
 export const LoginPage = () => {
@@ -67,42 +68,44 @@ export const LoginPage = () => {
         dispatch(authActions.setFailureConnection(false))
     }
 
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     if(isExpiredSession || isFailureConnection) {
         return (
             <LoginContainer>
-                {(currentDevice.isMobile || currentDevice.isTablet) ?
-                    <FormBox>
-                        {isExpiredSession && <Text fz={15} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>}
-                        {isFailureConnection && <Text fz={15} mb={30} >Сессия была отключена по причине отсутствия связи</Text>}
-                        <EnterMobile>
-                            <EMText>Возобновить</EMText>
-                            <EMButton onClick={handleCloseModal} >
-                                <Arrow viewBox="5077.896x -1096 14.313 8.809">
-                                    <path fill="transparent" stroke="rgba(255,255,255,1)" stroke-width="2px"
-                                          stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4"
-                                          shape-rendering="auto" id="Path_336"
-                                          d="M 5077.896484375 -1096.00048828125 L 5085.0537109375 -1087.19189453125 L 5092.2099609375 -1096.00048828125">
-                                    </path>
-                                </Arrow>
-                            </EMButton>
-                        </EnterMobile>
-                    </FormBox>
-                    :
-                    <Modal >
-                        {isExpiredSession && <Text fz={30} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>}
-                        {isFailureConnection && <Text fz={30} mb={30} >Сессия была отключена по причине отсутствия связи</Text>}
-                        <div>
-                            <Button
-                                onClick={handleCloseModal}
-                                color='green'
-                            >
-                                Продолжить сессию
-                            </Button>
-                        </div>
-                    </Modal>
+                {isMobileView &&
+                <FormBox>
+                    {isExpiredSession &&
+                    <Text fz={15} mb={30}>Сессия была отключена так как вы бездействовали некоторое время</Text>}
+                    {isFailureConnection &&
+                    <Text fz={15} mb={30}>Сессия была отключена по причине отсутствия связи</Text>}
+                    <EnterMobile>
+                        <EMText>Возобновить</EMText>
+                        <ButtonIcon
+                            onClick={handleCloseModal}
+                            disabled={!isValidForm || isLoading}
+                            isLoading={isLoading}
+                            icon={arrowRight}
+                        >
+                        </ButtonIcon>
+                    </EnterMobile>
+                </FormBox>
                 }
-
+                {isDesktopView &&
+                <Modal >
+                    {isExpiredSession && <Text fz={30} mb={30} >Сессия была отключена так как вы бездействовали некоторое время</Text>}
+                    {isFailureConnection && <Text fz={30} mb={30} >Сессия была отключена по причине отсутствия связи</Text>}
+                    <div>
+                        <Button
+                            onClick={handleCloseModal}
+                            color='green'
+                        >
+                            Продолжить сессию
+                        </Button>
+                    </div>
+                </Modal>
+                }
             </LoginContainer>
         )
     }
@@ -143,15 +146,12 @@ export const LoginPage = () => {
                     {(currentDevice.isMobile || currentDevice.isTablet) ?
                         <EnterMobile>
                             <EMText>Войти в систему</EMText>
-                            <EMButton disabled={!isValidForm || isLoading} isLoading={isLoading} >
-                                <Arrow viewBox="5077.896 -1096 14.313 8.809">
-                                    <path fill="transparent" stroke="rgba(255,255,255,1)" stroke-width="2px"
-                                          stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4"
-                                          shape-rendering="auto" id="Path_336"
-                                          d="M 5077.896484375 -1096.00048828125 L 5085.0537109375 -1087.19189453125 L 5092.2099609375 -1096.00048828125">
-                                    </path>
-                                </Arrow>
-                            </EMButton>
+                            <ButtonIcon
+                                disabled={!isValidForm || isLoading}
+                                isLoading={isLoading}
+                                icon={arrowRight}
+                            >
+                            </ButtonIcon>
                         </EnterMobile>
                         :
                         <Button
@@ -202,6 +202,7 @@ const LoginContainer = styled.div`
       background-size: cover;
       padding: 0;
       align-items: flex-end;
+      height: auto;
     }
     @media ${device.laptop} { 
        background: url(${bgLoginLaptop});
@@ -304,33 +305,7 @@ const EMText = styled.div`
     font-size: 25px;
     color: var(--blue);
 `
-const EMButton = styled.button`
-    position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    color: #ffffff;
-    background-color: var(--blue);
-    box-shadow: var(--shadow-card);
-    outline: none;
-    border: none;
-    font-size: 20px;
-    
-    :disabled {
-      opacity: 0.7;
-    }
-`
-const Arrow = styled.svg`
-    width: 18px;
-    height: 10px;
-    transform: rotate(-90deg);
-    /* transform-origin: center; */
-    left: 2px;
-    top: 0px;
-    position: absolute;
-    top: 19px;
-    left: 18px;
-`
+
 
 
 

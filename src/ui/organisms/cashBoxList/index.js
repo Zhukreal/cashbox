@@ -30,6 +30,8 @@ const CashBox = styled.div`
     
     @media ${device.mobile} {       
       flex-direction: row;
+      margin-bottom: 30px;
+      max-height: 310px;
     }
 `
 

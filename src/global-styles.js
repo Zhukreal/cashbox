@@ -17,7 +17,9 @@ const colorVariables = css`
 export const GlobalStyles = createGlobalStyle`
     * {
       box-sizing: border-box;
-      
+      :focus {
+            outline: none;
+        }
     }
     
     :root {

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 import styled, { css } from "styled-components"
-import { device } from 'lib/mediaDevice'
+import {device, useDetectDevice} from 'lib/mediaDevice'
 import {productActions} from "features/product";
 import groupIcon from 'static/img/icons/group.png'
 
@@ -10,10 +10,10 @@ import groupIcon from 'static/img/icons/group.png'
 export const ProductGroups = () => {
     const [opened, setOpened] = useState(false)
     const dispatch = useDispatch()
-    const { groups, isLoadingGroups } = useSelector(state => state.product)
+    const { groups, activeGroup, isLoadingGroups } = useSelector(state => state.product)
     const ref = useRef(null)
     useOnClickOutside(ref, () => setOpened(false))
-
+    const currentDevice = useDetectDevice()
     const isHasIcon = groups.length > 3
     const shortList = groups.slice(0, 3)
 
@@ -25,36 +25,80 @@ export const ProductGroups = () => {
         setOpened(!opened)
     }
 
+    const setActive = (group) => {
+        dispatch(productActions.setGroup(group))
+        setOpened(false)
+    }
 
-    if(isLoadingGroups) return (
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+
+
+    if(isDesktopView && isLoadingGroups) return (
         <GroupBox>
             <Loading>Loading...</Loading>
         </GroupBox>
     )
 
-    return (
-        <GroupBox>
-            {opened &&
-            <FullListWrapper ref={ref}>
-                <Title>Категории товара:</Title>
-                <FullList>
-                    {groups.map((item) =>
-                        <GroupItemFull key={item.id}>{item.name}</GroupItemFull>
-                    )}
-                </FullList>
-            </FullListWrapper>
-            }
+    if(isDesktopView) {
+        return (
+            <GroupBox>
+                {opened &&
+                <FullListWrapper ref={ref}>
+                    <Title>Категории товара:</Title>
+                    <FullList>
+                        {groups.map((item) =>
+                            <GroupItemFull
+                                key={item.id}
+                                onClick={() => setActive(item)}
+                                active={item.id === activeGroup.id}
+                            >
+                                {item.name}
+                            </GroupItemFull>
+                        )}
+                    </FullList>
+                </FullListWrapper>
+                }
 
-            {isHasIcon &&
+                {isHasIcon &&
                 <GroupItem isIconItem onClick={() => toggleFull()}>
-                    <GroupIcon src={groupIcon} />
+                    <GroupIcon
+                        src={groupIcon}
+                    />
                 </GroupItem>
-            }
-            {shortList.map((item) =>
-                <GroupItem key={item.id}>{item.name}</GroupItem>
-            )}
-        </GroupBox>
-    )
+                }
+                {shortList.map((item) =>
+                    <GroupItem
+                        key={item.id}
+                        onClick={() => setActive(item)}
+                        active={item.id === activeGroup.id}
+                    >
+                        {item.name}
+                    </GroupItem>
+                )}
+            </GroupBox>
+        )
+    }
+
+    if(isMobileView) {
+        return (
+            <GroupBoxMobile>
+                {groups.map((item) =>
+                    <GroupItemMobile
+                        key={item.id}
+                        onClick={() => setActive(item)}
+                        active={item.id === activeGroup.id}
+                    >
+                        {item.name}
+                    </GroupItemMobile>
+                )}
+            </GroupBoxMobile>
+        )
+    }
+
+    return null
+
+
 }
 
 const GroupItem = styled.div`
@@ -92,7 +136,11 @@ const GroupItem = styled.div`
        @media ${device.laptop} { 
             width: 70px;
         } 
-       
+    ` }
+    
+    ${p => p.active && css`
+       border: 1px solid var(--blue);
+       color: var(--blue);
     ` }
     
        
@@ -183,6 +231,30 @@ const Title = styled.div`
   margin: 0 0 10px 10px;
 `
 
+const GroupBoxMobile = styled.div`
+    position: fixed;
+    top: 110px;
+    height: 50px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    width: auto;
+    overflow-x: auto;
+    z-index: 3;
+    background-color: #ffffff;
+`
+const GroupItemMobile = styled.div`
+  height: 50px;
+  line-height: 50px;
+  font-size: 20px;
+  padding-right: 20px;
+  color: var(--canvas-text);
+  
+   ${p => p.active && css`
+       color: var(--blue);
+    ` }
+`
 
 
 

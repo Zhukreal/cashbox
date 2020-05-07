@@ -2,6 +2,7 @@ import React from 'react'
 import styled, {css} from "styled-components"
 import { device } from 'lib/mediaDevice'
 import './style.css'
+import arrowRight from "../../../static/img/icons/arrow-right.png";
 
 export const Button = (
     {
@@ -36,6 +37,28 @@ export const Button = (
             {children}
             {isLoading &&  <SpinnerBox><Spinner /></SpinnerBox>}
         </StyledButton>
+    )
+}
+
+export const ButtonIcon = (
+    {
+        type,
+        disabled,
+        isLoading,
+        onClick,
+        icon
+    }) => {
+
+    return (
+        <StyledButtonIcon
+            type={type}
+            onClick={onClick}
+            disabled={disabled || isLoading}
+            isLoading={isLoading}
+        >
+            <img src={icon} alt=""/>
+            {isLoading &&  <SpinnerBox><Spinner /></SpinnerBox>}
+        </StyledButtonIcon>
     )
 }
 
@@ -94,6 +117,26 @@ export const StyledButton = styled.button`
     
     @media ${device.mobile} { 
         height: 52px;
+    }
+`
+
+const StyledButtonIcon  = styled.button`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    color: #ffffff;
+    background-color: var(--blue);
+    box-shadow: var(--shadow-card);
+    outline: none;
+    border: none;
+    font-size: 20px;
+    
+    :disabled {
+      opacity: 0.7;
     }
 `
 

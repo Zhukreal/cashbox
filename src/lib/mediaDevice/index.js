@@ -13,12 +13,13 @@ import React, {useState, useEffect} from 'react'
 const size = {
     mobile: '425px',
     tablet: '768px',
-    laptop: '1440px',
+    laptop: '1444px',
     desktop: '2560px'
 }
 
 export const device = {
     mobile: `(min-width: 320px) and (max-width: 425px)`,
+    mobileTablet: `(min-width: 320px) and (max-width: 768px)`,
     tablet: `(min-width: 426px) and (max-width: 768px)`,
     laptop: `(min-width: 769px) and (max-width: 1444px)`,
     desktop: `(min-width: 1445px)`
@@ -39,7 +40,7 @@ export const useDetectDevice = () => {
             type = 'isMobile'
         } else if (width <= 768) {
             type = 'isTablet'
-        } else if (width <= 1440) {
+        } else if (width <= 1444) {
             type = 'isLaptop'
         } else if (width <= 2560) {
             type = 'isDesktop'

@@ -11,3 +11,4 @@ export {
 export {ProductList} from './orgamisms/productList'
 export {ProductGroups} from './orgamisms/productGroups'
 export {ProductSections} from './orgamisms/productSections'
+export {ShiftStatus} from './orgamisms/shiftStatus'

@@ -11,6 +11,7 @@ export const apiGetListSections = (id)  => {
     return axios.get(`${API_URL}/api/v1/stores/${id}/get_sections/`)
 }
 export const apiCheckCashStatus = (id) => {
-    return axios.get(`${API_URL}/api/v1/cashes/${id}/stats/`)
+    // return axios.get(`${API_URL}/api/v1/cashes/${id}/stats/`)
+    return axios.get(`${API_URL}/api/v1/current_shift/ `)
 }
 

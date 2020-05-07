@@ -46,11 +46,11 @@ export const checkCashStatus = () => async dispatch => {
     try {
         const CASHBOX = localStorage.getItem('cashbox')
         let res = await apiCheckCashStatus(CASHBOX);
-
+        dispatch(productReducer.setCashStatus(res.data))
     } catch (e){
         console.log(e)
     } finally {
-        dispatch(productReducer.setCashStatus(false))
+
     }
 };
 
@@ -65,7 +65,12 @@ export const getSections = () => async dispatch => {
 
     }
 }
-
+export const setSection = (section) => async dispatch => {
+    dispatch(productReducer.setSection(section))
+}
+export const setGroup = (group) => async dispatch => {
+    dispatch(productReducer.setGroup(group))
+}
 
 
 

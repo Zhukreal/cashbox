@@ -1,35 +1,52 @@
 import React from "react"
+import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { Button, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
+import noPhoto from 'static/img/no-photo.png'
+import {cartActions} from "../index";
+
 
 export const CartList = () => {
+    const dispatch = useDispatch()
+    const { products } = useSelector(state => state.cart)
+    const { currency } = useSelector(state => state.profile)
+
+    const handleAddOne = (product) => {
+        dispatch(cartActions.addToCart(product))
+    }
+    const handleRemoveOne = (product) => {
+        dispatch(cartActions.removeOne(product))
+    }
+
+
     return (
         <CartBox>
             <CartRow>
-                {[{name: 'test'}].map(item =>
+                {products.map(item =>
                     <CartCol
                         key={item.name}
                     >
-                        <CartItemAvatar src={item.image} />
+                        <CartItemAvatar src={item.image ? item.image : noPhoto } />
                         <CartItemInfo>
                             <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-                            <CartItemInfoPrice>12 тнг</CartItemInfoPrice>
+                            {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}</CartItemInfoDiscount>}
+                            <CartItemInfoPrice>{item.base_price} {currency}</CartItemInfoPrice>
                         </CartItemInfo>
                         <CartItemCount>
-                            <CartItemCountIcon>
+                            <CartItemCountIcon onClick={() => handleAddOne(item)}>
                                 <Icon src={plusIcon} />
                             </CartItemCountIcon>
-                            <CartItemCountValue>12 кг</CartItemCountValue>
-                            <CartItemCountIcon red >
+                            <CartItemCountValue>{item.count} {item.unit}</CartItemCountValue>
+                            <CartItemCountIcon onClick={() => handleRemoveOne(item)} red >
                                 <Icon src={minusIcon} />
                             </CartItemCountIcon>
                         </CartItemCount>
                     </CartCol>
                 )}
             </CartRow>
-            {
+            {!!products.length &&
                 <CartTotal>
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
@@ -75,9 +92,9 @@ const CartBox = styled.div`
     padding-top: 5px;
 `
 const CartRow = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    //display: flex;
+    //flex-wrap: wrap;
+    //justify-content: space-between;
     height: calc(100vh - 450px);
     padding: 0 5px;
     overflow-y: auto;
@@ -128,12 +145,16 @@ const CartItemInfoTitle = styled.div`
     text-overflow: ellipsis;
     font-family: GilroyBold, sans-serif;
 `
+const CartItemInfoDiscount = styled.div`
+    font-size: 15px;
+    color: #6D82A3; 
+`
 const CartItemInfoPrice = styled.div`
     font-size: 28px;
 `
 const CartItemCount = styled.div`
-    width: 70px;
-    min-width: 70px;
+    width: 80px;
+    min-width: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;

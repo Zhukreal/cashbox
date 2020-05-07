@@ -3,9 +3,9 @@ import * as reducer from './modules/reducer'
 import * as selector from './modules/selectors'
 
 export {
-    actions as productActions,
-    reducer as productReducer,
-    selector as productSelectors
+    actions as cartActions,
+    reducer as cartReducer,
+    selector as cartSelectors
 }
 
 export {CartList} from './orgamisms/cartList'

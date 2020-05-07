@@ -4,6 +4,7 @@ import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
 import {productActions} from "features/product";
+import {cartActions} from "features/cart";
 import plusIcon from 'static/img/icons/plus.png'
 import emptyPhoto from 'static/img/no-photo.png'
 
@@ -21,13 +22,6 @@ export const ProductList = () => {
         dispatch(productActions.getProducts(obj))
     }, [dispatch, searchFilter])
 
-    // const fetchMoreListItems = useCallback(async () => {
-    //         if(!hasMore) return
-    //         setIsFetching(true);
-    //         await dispatch(productActions.getProductsMore())
-    //         setIsFetching(false);
-    // },[hasMore]);
-
     const fetchMoreListItems = async () => {
         console.log('hm', hasMore)
         if(!hasMore) return
@@ -40,13 +34,15 @@ export const ProductList = () => {
         await dispatch(productActions.getProductsMore(obj))
         setIsFetching(false);
     }
-
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+
+    const handleAddToCart = (product) => {
+        dispatch(cartActions.addToCart(product))
+    }
 
 
     if(isLoading && !products.length) return <Loading>Загрузка...</Loading>
     if(searchFilter && !products.length) return <Loading>По вышему запросу ничего не найдено...</Loading>
-
     return (
         <>
         <ProductsRow>
@@ -58,8 +54,9 @@ export const ProductList = () => {
                     <ProductInfo>
                         <ProductName>{item.name}</ProductName>
                         <ProductCode>Код: {item.barcode}</ProductCode>
+                        <ProductCode>Остаток: {item.min_rest} {item.unit}</ProductCode>
                         <ProductPrice>{item.base_price} {currency}</ProductPrice>
-                        <AddIcon>
+                        <AddIcon onClick={() => handleAddToCart(item)}>
                             <PlusIcon src={plusIcon} />
                         </AddIcon>
                     </ProductInfo>
@@ -70,7 +67,7 @@ export const ProductList = () => {
                 {hasMore ?
                     isFetching && 'Загружаем еще...'
                     :
-                    'Больше нет товаров'
+                    ''
                 }
             </LoadingMore>
         </ProductsRow>
@@ -88,6 +85,10 @@ const ProductsRow = styled.div`
   padding-bottom: 110px;
   //height: calc(100vh - 220px);
   //max-height: calc(100vh - 220px);
+  
+   @media ${device.mobileTablet} { 
+     padding: 0 10%;
+  }
   
   @media ${device.laptop} { 
      padding-bottom: 90px;
@@ -107,10 +108,15 @@ const ProductCol = styled.div`
   ${(props) =>
     props.url &&
     css`
-      background: url(${props.url});
+      background: #E7E9ED url(${props.url});
       background-size: cover;
   `}
   
+    @media ${device.mobileTablet} { 
+      flex: 0 1 100%;
+       height: 320px;
+    }
+    
     @media ${device.laptop} { 
       flex: 0 1 calc(33.333% - 3em);
     }
@@ -124,22 +130,40 @@ const ProductInfo = styled.div`
     width: 96%;
     left: 2%;
     border-radius: 30px;
+    
+    @media ${device.mobileTablet} { 
+       height: 150px;
+    }
 `
 const ProductName = styled.div`
     font-size: 26px;
     margin-bottom: 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    height: 60px;
+    overflow-y: hidden;
+    word-wrap: break-word;
+    
+    @media ${device.mobileTablet} { 
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
 `
 const ProductCode = styled.div`
   font-size: 15px;
-  color: #2A5393;  
+  color: #6D82A3;  
+  
+  @media ${device.mobileTablet} { 
+      font-size: 13px;
+    }
 `
 const ProductPrice = styled.div`
   font-size: 26px;
   position: absolute;
   bottom: 30px;
+  
+  @media ${device.mobileTablet} { 
+      font-size: 20px;
+      bottom: 20px;
+    }
 `
 const AddIcon = styled.div`
   width: 56px;
@@ -159,8 +183,19 @@ const AddIcon = styled.div`
     cursor: pointer;
     background-color: var(--blue-hover);
   }
+  
+  @media ${device.mobileTablet} { 
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
 `
-const PlusIcon = styled.img``
+const PlusIcon = styled.img`
+    @media ${device.mobileTablet} { 
+      width: 16px;
+      height: 16px;
+    }
+`
 
 const LoadingMore = styled.div`
     display: flex;

@@ -12,7 +12,7 @@ export const Container = styled.div`
   
   @media ${device.laptop} { 
        padding: 0 2%;
-    }
+  }
 `
 
 export const Row = styled.div`
