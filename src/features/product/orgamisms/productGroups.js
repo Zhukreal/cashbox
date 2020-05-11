@@ -48,7 +48,7 @@ export const ProductGroups = () => {
 
     if(isDesktopView && isLoadingGroups) return (
         <GroupBox>
-            <Loading>Loading...</Loading>
+            <Loading>Загрузка...</Loading>
         </GroupBox>
     )
 
@@ -59,6 +59,12 @@ export const ProductGroups = () => {
                 <FullListWrapper>
                     <Title>Категории товара:</Title>
                     <FullList>
+                        <GroupItemFull
+                            onClick={() => setActive({})}
+                            active={!activeGroup.id}
+                        >
+                            Все
+                        </GroupItemFull>
                         {groups.map((item) =>
                             <GroupItemFull
                                 key={item.id}
@@ -95,6 +101,12 @@ export const ProductGroups = () => {
     if(isMobileView) {
         return (
             <GroupBoxMobile>
+                <GroupItemMobile
+                    onClick={() => setActive({})}
+                    active={!activeGroup.id}
+                >
+                    Все
+                </GroupItemMobile>
                 {groups.map((item) =>
                     <GroupItemMobile
                         key={item.id}

@@ -15,7 +15,7 @@ export const Card = styled.div`
     flex-flow: column;
     flex-shrink: 0;
     border-radius: 4px;
-    padding: 2rem;
+    padding: 20px;
     box-sizing: border-box;
     text-align: center;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
@@ -24,6 +24,6 @@ export const Card = styled.div`
     
     ${StyledButton} {
       width: 100%;
-      margin-top: 1rem;
+      margin-top: 10px;
     }
 `

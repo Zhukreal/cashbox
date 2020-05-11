@@ -14,6 +14,9 @@ export const getUsers = (search) => async dispatch => {
         dispatch(userReducer.setLoadingList(false))
     }
 };
+export const setShowedAdd = (value) =>  dispatch => {
+    dispatch(userReducer.setShowedAdd(value))
+};
 
 
 

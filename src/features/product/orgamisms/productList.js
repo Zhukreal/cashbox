@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
-import {productActions, productSelectors, Skeleton} from "features/product";
+import {productActions, productSelectors, Skeleton, NewProduct} from "features/product";
 import {cartActions} from "features/cart";
 import { Modal, Confirm } from "ui"
 import plusIcon from 'static/img/icons/plus.png'
@@ -11,6 +11,7 @@ import emptyPhoto from 'static/img/no-photo.png'
 
 export const ProductList = () => {
     const [productConfirm, setProductConfirm] = useState({})
+    const [openedModalNewProduct, setOpenedModalNewProduct] = useState(false)
     const dispatch = useDispatch()
     const { isLoading, skip, take, hasMore, searchFilter, activeSorting, activeGroup } = useSelector(state => state.product)
     const products  = useSelector(productSelectors.products())
@@ -36,11 +37,10 @@ export const ProductList = () => {
 
     const handleAddToCart = (product) => {
         const currentCount = product.currentCount
-        console.log(currentCount)
-        if(currentCount) {
-            dispatch(cartActions.addToCart(product))
-        } else {
+        if(currentCount === 0) {
             setProductConfirm(product)
+        } else {
+            dispatch(cartActions.addToCart(product))
         }
     }
     const handleAddToCartAfterConfirm = () => {
@@ -48,11 +48,34 @@ export const ProductList = () => {
         setProductConfirm({})
     }
 
+    const handleAddNew = () => {
+        return
+        dispatch(productActions.setBlur(true))
+        setOpenedModalNewProduct(true)
+    }
+
+    const handleCloseModal = () => {
+        dispatch(productActions.setBlur(false))
+        setOpenedModalNewProduct(false)
+    }
+
     if(isLoading && !products.length) return <Skeleton />
     if(searchFilter && !products.length) return <Loading>По вышему запросу ничего не найдено...</Loading>
     return (
         <>
             <ProductsRow>
+                <ProductCol>
+                    <ProductInfo>
+                        <ProductName>Новый товар</ProductName>
+                        {/*<ProductCode>Код: - </ProductCode>*/}
+                        {/*<ProductCode>Остаток: - </ProductCode>*/}
+                        <ProductPrice>0 {currency}</ProductPrice>
+                        <AddIcon onClick={() => handleAddNew()}>
+                            <PlusIcon src={plusIcon} />
+                        </AddIcon>
+                    </ProductInfo>
+                </ProductCol>
+
                 {products.map((item, key) =>
                     <ProductCol
                         key={`${item.id}-${key}`}
@@ -61,15 +84,15 @@ export const ProductList = () => {
                         <ProductInfo>
                             <ProductName>{item.name}</ProductName>
                             <ProductCode>Код: {item.barcode}</ProductCode>
-                            <ProductCode>Остаток: {item.currentCount} {item.unit}</ProductCode>
+                            {item.currentCount !== null && <ProductCode>Остаток: {item.currentCount} {item.unit}</ProductCode>}
                             <ProductPrice>{item.base_price} {currency}</ProductPrice>
                             <AddIcon onClick={() => handleAddToCart(item)}>
                                 <PlusIcon src={plusIcon} />
                             </AddIcon>
                         </ProductInfo>
-
                     </ProductCol>
                 )}
+
                 <LoadingMore>
                     {hasMore ?
                         isFetching && 'Загружаем еще...'
@@ -86,10 +109,22 @@ export const ProductList = () => {
                         onOk={handleAddToCartAfterConfirm}
                         onCancel={() => setProductConfirm({})}
                     >
-
                     </Confirm>
                 </Modal>
             }
+
+            {openedModalNewProduct &&
+            <Modal
+                onClose={handleCloseModal}
+                noPadding
+            >
+                <NewProduct
+                    onClose={handleCloseModal}
+                />
+            </Modal>
+            }
+
+
 
         </>
     )

@@ -1,65 +1,92 @@
-import React from "react"
+import React, {useState} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import {cartActions, cartSelectors} from "../index";
-import { Button, StyledButton} from 'ui'
+import {Button, Modal, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 import noPhoto from 'static/img/no-photo.png'
 import closeCard from 'static/img/icons/close-card.png'
+import {NewProduct, productActions} from "../../product";
 
 
 
 export const CartList = () => {
+    const [openedModal, setOpenedModal] = useState(false)
+    const [editable, setEditable] = useState({})
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
     const products = useSelector(cartSelectors.products())
     const totalInfo = useSelector(cartSelectors.totalInfo())
 
-    const handleAddOne = (product) => {
+    const handleAddOne = (e, product) => {
+        e.stopPropagation()
         dispatch(cartActions.addToCart(product))
     }
-    const handleRemoveOne = (product) => {
+    const handleRemoveOne = (e, product) => {
+        e.stopPropagation()
         dispatch(cartActions.removeOne(product))
     }
     const handleClearCart = () => {
         dispatch(cartActions.clearCart())
     }
-    const handleRemoveProduct = (id) => {
+    const handleRemoveProduct = (e,id) => {
+        e.stopPropagation()
         dispatch(cartActions.removeProduct(id))
     }
 
+    const handleEdit = (product) => {
+        return
+        setEditable(product)
+        dispatch(productActions.setBlur(true))
+        setOpenedModal(true)
+    }
+
+    const handleCloseModal = () => {
+        setEditable({})
+        dispatch(productActions.setBlur(false))
+        setOpenedModal(false)
+    }
 
 
     return (
-        <CartBox>
-            <CartRow>
-                {products.map(item =>
-                    <CartCol
-                        key={item.name}
-                    >
-                        <Close onClick={() => handleRemoveProduct(item.id)} >
-                            <img src={closeCard} alt=""/>
-                        </Close>
-                        <CartItemAvatar src={item.image ? item.image : noPhoto } />
-                        <CartItemInfo>
-                            <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-                            {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}%</CartItemInfoDiscount>}
-                            <CartItemInfoPrice>{item.currentPrice} {currency}</CartItemInfoPrice>
-                        </CartItemInfo>
-                        <CartItemCount>
-                            <CartItemCountIcon onClick={() => handleAddOne(item)}>
-                                <Icon src={plusIcon} />
-                            </CartItemCountIcon>
-                            <CartItemCountValue>{item.count} {item.unit}</CartItemCountValue>
-                            <CartItemCountIcon onClick={() => handleRemoveOne(item)} red >
-                                <Icon src={minusIcon} />
-                            </CartItemCountIcon>
-                        </CartItemCount>
-                    </CartCol>
-                )}
-            </CartRow>
-            {!!products.length &&
+        <>
+            <CartBox>
+                <CartRow>
+                    {products.map(item =>
+                        <CartCol
+                            key={item.name}
+                            onClick={() => handleEdit(item)}
+                            active={editable.id === item.id}
+                        >
+                            <Close
+                                onClick={(e) => handleRemoveProduct(e, item.id)}
+                                active={editable.id === item.id}
+                            >
+                                <img src={closeCard} alt=""/>
+                            </Close>
+                            <CartItemAvatar src={item.image ? item.image : noPhoto } />
+                            <CartItemInfo>
+                                <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
+                                {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}%</CartItemInfoDiscount>}
+                                <CartItemInfoPrice>{item.currentPrice} {currency}</CartItemInfoPrice>
+                            </CartItemInfo>
+                            <CartItemCount>
+                                <CartItemCountIcon
+                                    onClick={(e) => handleAddOne(e, item)}
+                                    active={editable.id === item.id}
+                                >
+                                    <Icon>+</Icon>
+                                </CartItemCountIcon>
+                                <CartItemCountValue>{item.count} {item.unit}</CartItemCountValue>
+                                <CartItemCountIcon2 onClick={(e) => handleRemoveOne(e, item)} >
+                                    <IconImg src={minusIcon} />
+                                </CartItemCountIcon2>
+                            </CartItemCount>
+                        </CartCol>
+                    )}
+                </CartRow>
+                {!!products.length &&
                 <CartTotal>
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
@@ -90,10 +117,24 @@ export const CartList = () => {
                         </Button>
                     </CartBtnBox>
                 </CartTotal>
+                }
+            </CartBox>
+
+
+
+            {openedModal &&
+            <Modal
+                onClose={handleCloseModal}
+                noPadding
+            >
+                <NewProduct
+                    onClose={handleCloseModal}
+                    editable={editable}
+                />
+            </Modal>
             }
 
-        </CartBox>
-
+        </>
     )
 }
 
@@ -127,9 +168,16 @@ const Close = styled.div`
     background-color: #B5B5B5;
     cursor: pointer;
     
-    :hover {
-    background-color: #b0b0b0;
-    }
+    ${(p) =>
+    p.active &&
+    css`
+      background-color: #e6e6e6;
+    `}
+    
+`
+const CartItemInfoDiscount = styled.div`
+    font-size: 15px;
+    color: #6D82A3; 
 `
 const CartCol = styled.div`
   display: flex;
@@ -142,15 +190,29 @@ const CartCol = styled.div`
   padding: 0 20px;
   border-radius: 30px;
   box-sizing: border-box;
+  color: var(--canvas-text);
   background-color: #ffffff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
   cursor: pointer;
   
   :hover {
     ${Close} {
-      display: flex;
+      display: ${p => p.active ? 'none' : 'flex' };
     }
   }
+  
+   
+   ${(p) =>
+    p.active &&
+    css`
+      background-color: var(--green);
+      color: #ffffff;
+      
+      ${CartItemInfoDiscount} {
+          color: #ffffff;
+          opacity: 0.7;
+      }
+    `}
 `
 const CartTotal = styled.div`
     position: absolute;
@@ -183,10 +245,6 @@ const CartItemInfoTitle = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: GilroyBold, sans-serif;
-`
-const CartItemInfoDiscount = styled.div`
-    font-size: 15px;
-    color: #6D82A3; 
 `
 const CartItemInfoPrice = styled.div`
     font-size: 28px;
@@ -240,34 +298,39 @@ const CartBtnBox = styled.div`
 const CartItemCountIcon = styled.div`
    width: 22px;
    height: 22px;
-   font-size: 18px;
+   font-size: 16px;
+   line-height: 22px;
    border-radius: 11px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   //padding-left: 7px;
    
    color: #ffffff;
    background-color: var(--green);
    cursor: pointer;
    
-   &:hover {
-    background-color: var(--green-hover);
-   }
    
    ${(p) =>
-    p.red &&
+    p.active &&
     css`
-      background-color: var(--red);
-      
-      &:hover {
-        background-color: var(--red-hover);
-       }
+      background-color: #ffffff;
+      color: var(--green);
     `}
 `
+const CartItemCountIcon2 = styled(CartItemCountIcon)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--red);
+`
+
 const CartItemCountValue = styled.div`
    font-size: 28px;
    margin: 5px 0;
 `
-const Icon = styled.img``
+const Icon = styled.span`
+    position: relative;
+    left: 6px;
+    top: -1px;
+`
 
+const IconImg = styled.img`
+    
+`

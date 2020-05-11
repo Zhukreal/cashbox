@@ -16,6 +16,7 @@ export const Input = ({
     isForm,
     isInputMask,
     isSearch,
+    isUnderline,
     mask,
     alwaysShowMask,
     error
@@ -44,6 +45,7 @@ export const Input = ({
                     readOnly={readOnly}
                     size={size}
                     isSearch={isSearch}
+                    isUnderline={isUnderline}
                 />
             }
             {(isSearch && !value) && <SearchIcon src={searchIcon} />}
@@ -105,9 +107,27 @@ const sharedStyle = css`
             height: 54px;
             border-radius: 20px;
         }
-        
     `}
     
+    ${(p) =>
+    p.isUnderline &&
+    css`
+        border: none;
+        border-bottom: 2px solid var(--canvas-text);
+        border-radius: 0!important;
+        background: none;
+        box-shadow: none; 
+        padding-top: 20px!important;
+          
+    `}
+    
+    
+    @media ${device.laptop} { 
+            font-size: 16px;
+            height: 54px;
+            border-radius: 20px;
+            padding: 0 25px;
+        }
     
     @media ${device.mobileTablet} { 
         height: 40px;
@@ -115,6 +135,8 @@ const sharedStyle = css`
         padding: 0 20px;
         font-size: 15px;
     }
+    
+    
 `
 
 export const StyledInput = styled.input`
@@ -132,7 +154,7 @@ export const BoxInput = styled.div`
     ${(p) =>
     p.isForm &&
     css`
-      margin-bottom: 3rem;
+      margin-bottom: 30px;
     `}
   
 `

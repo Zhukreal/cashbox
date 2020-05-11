@@ -12,3 +12,6 @@ export const removeProduct = (id) => dispatch => {
 export const clearCart = () => dispatch => {
     dispatch(cartReducer.clearCart())
 }
+export const editProduct = (product) => dispatch => {
+    dispatch(cartReducer.editProduct(product))
+}

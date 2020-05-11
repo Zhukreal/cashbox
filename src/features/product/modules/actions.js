@@ -74,7 +74,9 @@ export const checkCashStatus = () => async dispatch => {
 export const getSections = () => async dispatch => {
     try {
         const CASHBOX = localStorage.getItem('cashbox')
-        let res = await apiGetListSections(CASHBOX);
+        const STORE = localStorage.getItem('store')
+
+        let res = await apiGetListSections(STORE);
         dispatch(productReducer.setSections(res.data))
     } catch (e){
         console.log(e)
@@ -94,6 +96,9 @@ export const setSorting = (sort) => dispatch => {
 }
 export const resetFilters = () => dispatch => {
     dispatch(productReducer.resetFilters())
+}
+export const setBlur = (value) => dispatch => {
+    dispatch(productReducer.setBlur(value))
 }
 
 

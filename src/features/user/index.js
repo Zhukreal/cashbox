@@ -9,3 +9,4 @@ export {
 }
 
 export {UsersList} from './orgamisms/usersList'
+export {AddUser} from './orgamisms/addUser'

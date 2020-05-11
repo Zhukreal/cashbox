@@ -14,9 +14,14 @@ const cart = createSlice({
             if(addedProduct){
                 addedProduct.count++
             } else {
-                product.count = 1
+                product.count = product.count ? product.count : 1
                 state.products.unshift(product)
             }
+        },
+        editProduct(state, action) {
+            const productEditable = action.payload
+            state.products = state.products.map(item => item.id === productEditable.id ? productEditable : item)
+
         },
         removeOne(state, action) {
             const productCart = action.payload
@@ -41,6 +46,7 @@ const cart = createSlice({
 
 export const {
     addProduct,
+    editProduct,
     removeOne,
     removeProduct,
     clearCart

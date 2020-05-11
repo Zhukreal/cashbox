@@ -8,8 +8,8 @@ export const CashBoxList = ({ list, active, setActive }) => {
             {list.map(item =>
                 <CashBoxItem
                     key={item.id}
-                    active={item.store_id === active}
-                    onClick={() => setActive(item.store_id)}
+                    active={item.id === active.id}
+                    onClick={() => setActive(item)}
                 >
                     {item.name}
                 </CashBoxItem>

@@ -4,7 +4,8 @@ import {toModel} from './model'
 let initialState = {
     users: [],
     searchUser: '',
-    isLoadingUsers: false
+    isLoadingUsers: false,
+    showedModalAdd: false
 }
 
 const user = createSlice({
@@ -21,6 +22,9 @@ const user = createSlice({
         },
         setLoadingList(state, action) {
             state.isLoadingUsers = action.payload
+        },
+        setShowedAdd(state, action) {
+            state.showedModalAdd = action.payload
         }
     }
 })
@@ -28,7 +32,8 @@ const user = createSlice({
 export const {
     setUsers,
     setSearch,
-    setLoadingList
+    setLoadingList,
+    setShowedAdd
 } = user.actions
 
 

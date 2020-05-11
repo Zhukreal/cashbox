@@ -19,7 +19,8 @@ let initialState = {
     activeSection: {},
     searchFilter: '',
     sorting: ['popularity', 'name'],
-    activeSorting: initialSorting ? initialSorting : 'name'
+    activeSorting: initialSorting ? initialSorting : 'name',
+    isBlurredProducts: false
 }
 
 const product = createSlice({
@@ -82,7 +83,10 @@ const product = createSlice({
         resetFilters(state, action) {
             state.skip = 0
             state.take = state.initialTake
-        }
+        },
+        setBlur(state, action) {
+            state.isBlurredProducts = action.payload
+        },
     }
 })
 
@@ -99,7 +103,8 @@ export const {
     setSection,
     setSearchFilter,
     setSorting,
-    resetFilters
+    resetFilters,
+    setBlur
 } = product.actions
 
 

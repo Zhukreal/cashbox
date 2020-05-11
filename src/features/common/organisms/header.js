@@ -4,13 +4,12 @@ import styled, {css} from "styled-components"
 import {device, useDetectDevice} from 'lib/mediaDevice'
 import {useDebounce} from 'lib/customHooks/useDebounce'
 import {authActions} from 'features/auth'
-import {userActions} from 'features/user'
+import {userActions, UsersList, AddUser} from 'features/user'
 import {productActions, ShiftStatus} from 'features/product'
 import {commonActions} from 'features/common'
 import {ProductSections, ProductSorting} from 'features/product'
-import {UsersList} from 'features/user'
 import {Sidebar} from "./sidebar";
-import {Container, Input, BoxInput } from "ui";
+import {Container, Input, BoxInput, InputDatepicker } from "ui";
 import logo from 'static/img/logo.png'
 import add from 'static/img/add.png'
 
@@ -80,9 +79,7 @@ export const Header = () => {
                             placeholder='Введите номер/ФИО клиента'
                             isSearch
                         />
-                        <ProfileBtn>
-                            <ProfileAddImg src={add}/>
-                        </ProfileBtn>
+                        <AddUser />
                     </RightBox>
                 </HeaderRow>
                 }
@@ -222,29 +219,6 @@ const RightBox = styled.div`
     @media ${device.laptop} { 
       width: 400px;
     }
-`
-const ProfileBtn = styled.div`
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 86px;
-  border-radius: 22px;
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
-  
-  &:hover {
-    background-color: #fafafa;
-  }
-  
-  @media ${device.laptop} { 
-      height: 54px;
-      min-width: 64px;
-      border-radius: 20px;
-  }
-`
-const ProfileAddImg = styled.img`
-  
 `
 const HML = styled.div`
   display: flex;

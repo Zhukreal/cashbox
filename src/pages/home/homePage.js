@@ -11,7 +11,9 @@ export const HomePage = () => {
     const dispatch = useDispatch()
     const { isOpenedSidebar } = useSelector(state => state.common)
     const { searchUser } = useSelector(state => state.user)
+    const { isBlurredProducts } = useSelector(state => state.product)
     const isBlurred = isOpenedSidebar || searchUser
+    const isBlurred2 = isBlurredProducts
     const currentDevice = useDetectDevice()
 
     const handleCloseSidebar = () => {
@@ -32,6 +34,7 @@ export const HomePage = () => {
                     <CartList />
                 </CartBox>
                 { isBlurred && <Blur onClick={() => handleCloseSidebar()} />}
+                { isBlurred2 && <Blur2 />}
             </FlexBlock>
         </Common>
     )
@@ -93,4 +96,13 @@ const Blur = styled.div`
     -ms-filter: blur(0px);
     -moz-filter: blur(0px);
     -webkit-filter: blur(0x);
+`
+const Blur2 = styled(Blur)`
+  width: calc(100% - 480px);
+  max-width: calc(100% - 480px);
+  
+  @media ${device.laptop} { 
+      width: calc(100% - 400px);
+      max-width: calc(100% - 400px);
+    }
 `

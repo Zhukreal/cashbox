@@ -10,19 +10,21 @@ import arrowRight from 'static/img/icons/arrow-right.png'
 
 export const ChooseCashbox = () => {
     const { cashes } = useSelector( state => state.profile )
-    const [activeCashbox, setActiveCashbox] = useState(null)
+    const [activeCashbox, setActiveCashbox] = useState({})
     const currentDevice = useDetectDevice()
 
     useEffect(() => {
         if(cashes.length === 1) {
-            localStorage.setItem('cashbox', cashes[0].store_id)
+            localStorage.setItem('cashbox', cashes[0].id)
+            localStorage.setItem('store', cashes[0].store_id)
             history.push('/')
         }
     }, [cashes])
 
     const handleChooseCashbox = () => {
-        if(!activeCashbox) return
-        localStorage.setItem('cashbox', activeCashbox)
+        if(!activeCashbox.id) return
+        localStorage.setItem('cashbox', activeCashbox.id)
+        localStorage.setItem('store', activeCashbox.store_id)
         history.push('/')
     }
 

@@ -66,11 +66,11 @@ export const ButtonIcon = (
 export const StyledButton = styled.button`
     position: relative;
     height: 68px;
-    font-size: 1.8rem;
+    font-size: 20px;
     color: #ffffff;
     background-color: var(--blue);
     outline: none;
-    padding: 0 5rem;
+    padding: 0 30px;
     border: none;
     border-radius: 34px;
     text-transform: ${p => p.isUpperCase? 'uppercase' : ''};
@@ -106,8 +106,8 @@ export const StyledButton = styled.button`
     css`
         height: 32px;
         border-radius: 16px;
-        padding: 0 2rem;
-        font-size: 1.2rem;
+        padding: 0 20px;
+        font-size: 12px;
     `}
     
     @media ${device.laptop} { 
