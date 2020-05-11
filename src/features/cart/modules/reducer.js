@@ -15,7 +15,7 @@ const cart = createSlice({
                 addedProduct.count++
             } else {
                 product.count = 1
-                state.products.push(product)
+                state.products.unshift(product)
             }
         },
         removeOne(state, action) {
@@ -27,13 +27,23 @@ const cart = createSlice({
                 return item
             })
             state.products = list.filter(item => ((item.id !== productCart.id) || item.count))
+        },
+        removeProduct(state, action) {
+            const productId = action.payload
+            state.products = state.products.filter(item => ((item.id !== productId)))
+        },
+        clearCart(state) {
+            state.products = []
         }
+
     }
 })
 
 export const {
     addProduct,
-    removeOne
+    removeOne,
+    removeProduct,
+    clearCart
 } = cart.actions
 
 export default cart.reducer

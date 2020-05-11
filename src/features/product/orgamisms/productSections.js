@@ -129,6 +129,9 @@ const List = styled.div `
       top: 20px;
       min-height: 55px;
     }
+    @media ${device.laptop} { 
+      top: 38px;
+    }
 `
 const Not = styled.div`
   text-align: center;

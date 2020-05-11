@@ -1,76 +1,95 @@
-import React, {useEffect, useCallback} from "react"
+import React, {useEffect, useState} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
-import {productActions} from "features/product";
+import {productActions, productSelectors, Skeleton} from "features/product";
 import {cartActions} from "features/cart";
+import { Modal, Confirm } from "ui"
 import plusIcon from 'static/img/icons/plus.png'
 import emptyPhoto from 'static/img/no-photo.png'
 
 export const ProductList = () => {
+    const [productConfirm, setProductConfirm] = useState({})
     const dispatch = useDispatch()
-    const { products, isLoading, skip, take, hasMore, searchFilter } = useSelector(state => state.product)
+    const { isLoading, skip, take, hasMore, searchFilter, activeSorting, activeGroup } = useSelector(state => state.product)
+    const products  = useSelector(productSelectors.products())
     const { currency } = useSelector(state => state.profile)
 
-    useEffect(() => {
-        const obj = {
-            search: searchFilter,
-            skip: skip,
-            take: take
-        }
-        dispatch(productActions.getProducts(obj))
-    }, [dispatch, searchFilter])
+    useEffect( () => {
+        dispatch(productActions.resetFilters())
+        dispatch(productActions.getProducts({}))
+    }, [dispatch, searchFilter, activeSorting, activeGroup.id])
+
 
     const fetchMoreListItems = async () => {
-        console.log('hm', hasMore)
-        if(!hasMore) return
-        const obj = {
-            search: searchFilter,
-            skip: skip,
-            take: take
+        console.log('hasMore', hasMore)
+        if(!hasMore) {
+            setIsFetching(false);
+            return
         }
         setIsFetching(true);
-        await dispatch(productActions.getProductsMore(obj))
+        await dispatch(productActions.getProducts({isMore: true}))
         setIsFetching(false);
     }
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
 
     const handleAddToCart = (product) => {
-        dispatch(cartActions.addToCart(product))
+        const currentCount = product.currentCount
+        console.log(currentCount)
+        if(currentCount) {
+            dispatch(cartActions.addToCart(product))
+        } else {
+            setProductConfirm(product)
+        }
+    }
+    const handleAddToCartAfterConfirm = () => {
+        dispatch(cartActions.addToCart(productConfirm))
+        setProductConfirm({})
     }
 
-
-    if(isLoading && !products.length) return <Loading>Загрузка...</Loading>
+    if(isLoading && !products.length) return <Skeleton />
     if(searchFilter && !products.length) return <Loading>По вышему запросу ничего не найдено...</Loading>
     return (
         <>
-        <ProductsRow>
-            {products.map((item, key) =>
-                <ProductCol
-                    key={`${item.id}-${key}`}
-                    url={item.image}
-                >
-                    <ProductInfo>
-                        <ProductName>{item.name}</ProductName>
-                        <ProductCode>Код: {item.barcode}</ProductCode>
-                        <ProductCode>Остаток: {item.min_rest} {item.unit}</ProductCode>
-                        <ProductPrice>{item.base_price} {currency}</ProductPrice>
-                        <AddIcon onClick={() => handleAddToCart(item)}>
-                            <PlusIcon src={plusIcon} />
-                        </AddIcon>
-                    </ProductInfo>
+            <ProductsRow>
+                {products.map((item, key) =>
+                    <ProductCol
+                        key={`${item.id}-${key}`}
+                        url={item.image}
+                    >
+                        <ProductInfo>
+                            <ProductName>{item.name}</ProductName>
+                            <ProductCode>Код: {item.barcode}</ProductCode>
+                            <ProductCode>Остаток: {item.currentCount} {item.unit}</ProductCode>
+                            <ProductPrice>{item.base_price} {currency}</ProductPrice>
+                            <AddIcon onClick={() => handleAddToCart(item)}>
+                                <PlusIcon src={plusIcon} />
+                            </AddIcon>
+                        </ProductInfo>
 
-                </ProductCol>
-            )}
-            <LoadingMore>
-                {hasMore ?
-                    isFetching && 'Загружаем еще...'
-                    :
-                    ''
-                }
-            </LoadingMore>
-        </ProductsRow>
+                    </ProductCol>
+                )}
+                <LoadingMore>
+                    {hasMore ?
+                        isFetching && 'Загружаем еще...'
+                        :
+                        ''
+                    }
+                </LoadingMore>
+            </ProductsRow>
+
+            {productConfirm.id &&
+                <Modal onClose={() => setProductConfirm({})}>
+                    <Confirm
+                        title={'Количество превышает наличие. Продолжить?'}
+                        onOk={handleAddToCartAfterConfirm}
+                        onCancel={() => setProductConfirm({})}
+                    >
+
+                    </Confirm>
+                </Modal>
+            }
 
         </>
     )
@@ -143,6 +162,7 @@ const ProductName = styled.div`
     word-wrap: break-word;
     
     @media ${device.mobileTablet} { 
+      height: 40px;
       font-size: 20px;
       margin-bottom: 15px;
     }

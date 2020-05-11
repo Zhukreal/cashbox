@@ -27,10 +27,6 @@ export const useInfiniteScroll = (callback) => {
 
         if(isTimeToCb && !isFetching) setIsFetching(true);
 
-
-        //
-        // if ((wIH + scrT !== ofsH) || isFetching) return;
-
     }
 
     return [isFetching, setIsFetching];

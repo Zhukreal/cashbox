@@ -2,12 +2,24 @@ import {productReducer} from '../index'
 import {apiGetListProducts, apiGetListGroups, apiCheckCashStatus, apiGetListSections} from "api/product";
 import {store} from 'lib/store/store'
 
-export const getProducts = (obj) => async dispatch => {
+export const getProducts = ({ isMore }) => async dispatch => {
     try {
-        // const { product } = store.getState()
-        dispatch(productReducer.setLoading(true))
+        const { product } = store.getState()
+        const obj = {
+            search: product.searchFilter,
+            skip: product.skip,
+            take: product.take,
+            ordering: product.activeSorting,
+            group: product.activeGroup.id
+        }
+        if(!isMore) dispatch(productReducer.setLoading(true))
         let res = await apiGetListProducts(obj);
-        dispatch(productReducer.setProducts(res.data))
+        if(isMore) {
+            dispatch(productReducer.setMoreProducts(res.data))
+        } else {
+            dispatch(productReducer.setProducts(res.data))
+        }
+
     } catch (e){
         console.log(e)
     } finally {
@@ -15,10 +27,15 @@ export const getProducts = (obj) => async dispatch => {
     }
 };
 
-export const getProductsMore = (obj) => async dispatch => {
+export const getProductsMore = () => async dispatch => {
     try {
-        // const { product } = store.getState()
+        const { product } = store.getState()
         // console.log('product', product)
+        const obj = {
+            search: product.searchFilter,
+            skip: product.skip,
+            take: product.take
+        }
         let res = await apiGetListProducts(obj);
         dispatch(productReducer.setMoreProducts(res.data))
     } catch (e){
@@ -65,13 +82,19 @@ export const getSections = () => async dispatch => {
 
     }
 }
-export const setSection = (section) => async dispatch => {
+export const setSection = (section) => dispatch => {
     dispatch(productReducer.setSection(section))
 }
-export const setGroup = (group) => async dispatch => {
+export const setGroup = (group) => dispatch => {
     dispatch(productReducer.setGroup(group))
 }
-
+export const setSorting = (sort) => dispatch => {
+    localStorage.setItem('activeSorting', sort)
+    dispatch(productReducer.setSorting(sort))
+}
+export const resetFilters = () => dispatch => {
+    dispatch(productReducer.resetFilters())
+}
 
 
 

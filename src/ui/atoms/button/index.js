@@ -8,7 +8,7 @@ export const Button = (
     {
         type,
         variant = 'contained',
-        color = 'blue',
+        color = 'blue', // blue, green, red
         size = 'medium' ,
         disabled,
         isLoading,

@@ -1,17 +1,20 @@
 import React from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
+import {cartActions, cartSelectors} from "../index";
 import { Button, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 import noPhoto from 'static/img/no-photo.png'
-import {cartActions} from "../index";
+import closeCard from 'static/img/icons/close-card.png'
+
 
 
 export const CartList = () => {
     const dispatch = useDispatch()
-    const { products } = useSelector(state => state.cart)
     const { currency } = useSelector(state => state.profile)
+    const products = useSelector(cartSelectors.products())
+    const totalInfo = useSelector(cartSelectors.totalInfo())
 
     const handleAddOne = (product) => {
         dispatch(cartActions.addToCart(product))
@@ -19,6 +22,13 @@ export const CartList = () => {
     const handleRemoveOne = (product) => {
         dispatch(cartActions.removeOne(product))
     }
+    const handleClearCart = () => {
+        dispatch(cartActions.clearCart())
+    }
+    const handleRemoveProduct = (id) => {
+        dispatch(cartActions.removeProduct(id))
+    }
+
 
 
     return (
@@ -28,11 +38,14 @@ export const CartList = () => {
                     <CartCol
                         key={item.name}
                     >
+                        <Close onClick={() => handleRemoveProduct(item.id)} >
+                            <img src={closeCard} alt=""/>
+                        </Close>
                         <CartItemAvatar src={item.image ? item.image : noPhoto } />
                         <CartItemInfo>
                             <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-                            {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}</CartItemInfoDiscount>}
-                            <CartItemInfoPrice>{item.base_price} {currency}</CartItemInfoPrice>
+                            {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}%</CartItemInfoDiscount>}
+                            <CartItemInfoPrice>{item.currentPrice} {currency}</CartItemInfoPrice>
                         </CartItemInfo>
                         <CartItemCount>
                             <CartItemCountIcon onClick={() => handleAddOne(item)}>
@@ -51,21 +64,22 @@ export const CartList = () => {
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
                         <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer>2309</CartTotalRowValuer>
+                        <CartTotalRowValuer>{totalInfo.sum}</CartTotalRowValuer>
                     </CartTotalRow>
                     <CartTotalRow>
                         <CartTotalRowTitle>Скидка</CartTotalRowTitle>
                         <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer>2309</CartTotalRowValuer>
+                        <CartTotalRowValuer>{totalInfo.discount}</CartTotalRowValuer>
                     </CartTotalRow>
                     <CartTotalRow>
                         <CartTotalRowTitle bold>Итого</CartTotalRowTitle>
                         <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer bold>2309</CartTotalRowValuer>
+                        <CartTotalRowValuer bold>{totalInfo.total}</CartTotalRowValuer>
                     </CartTotalRow>
                     <CartBtnBox>
                         <Button
                             color='red'
+                            onClick={handleClearCart}
                         >
                             Отмена
                         </Button>
@@ -99,6 +113,24 @@ const CartRow = styled.div`
     padding: 0 5px;
     overflow-y: auto;
 `
+
+const Close = styled.div`
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    top: 10px;
+    left: 10px;
+    background-color: #B5B5B5;
+    cursor: pointer;
+    
+    :hover {
+    background-color: #b0b0b0;
+    }
+`
 const CartCol = styled.div`
   display: flex;
   align-items: center;
@@ -112,6 +144,13 @@ const CartCol = styled.div`
   box-sizing: border-box;
   background-color: #ffffff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
+  cursor: pointer;
+  
+  :hover {
+    ${Close} {
+      display: flex;
+    }
+  }
 `
 const CartTotal = styled.div`
     position: absolute;
@@ -199,13 +238,15 @@ const CartBtnBox = styled.div`
    }
 `
 const CartItemCountIcon = styled.div`
-   width: 20px;
-   height: 20px;
+   width: 22px;
+   height: 22px;
    font-size: 18px;
-   border-radius: 10px;
+   border-radius: 11px;
    display: flex;
    align-items: center;
    justify-content: center;
+   //padding-left: 7px;
+   
    color: #ffffff;
    background-color: var(--green);
    cursor: pointer;

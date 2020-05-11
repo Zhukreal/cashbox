@@ -1,0 +1,1 @@
+export const mathRound2 = num => Math.round(num * 100) / 100

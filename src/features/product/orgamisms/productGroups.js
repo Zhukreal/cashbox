@@ -9,17 +9,29 @@ import groupIcon from 'static/img/icons/group.png'
 
 export const ProductGroups = () => {
     const [opened, setOpened] = useState(false)
+    const [shortList, setShortList] = useState([])
     const dispatch = useDispatch()
     const { groups, activeGroup, isLoadingGroups } = useSelector(state => state.product)
     const ref = useRef(null)
     useOnClickOutside(ref, () => setOpened(false))
     const currentDevice = useDetectDevice()
     const isHasIcon = groups.length > 3
-    const shortList = groups.slice(0, 3)
 
     useEffect(() => {
         dispatch(productActions.getGroups())
     }, [dispatch])
+
+    useEffect(() => {
+        const short = groups.slice(0, 3)
+        const index = short.findIndex(item => item.id === activeGroup.id)
+        if(activeGroup.id && index === -1) {
+            short.unshift(activeGroup)
+            const newShort = short.slice(0, 3)
+            setShortList(newShort)
+        } else {
+            setShortList(short)
+        }
+    }, [groups, activeGroup])
 
     const toggleFull = () => {
         setOpened(!opened)
@@ -42,9 +54,9 @@ export const ProductGroups = () => {
 
     if(isDesktopView) {
         return (
-            <GroupBox>
+            <GroupBox ref={ref}>
                 {opened &&
-                <FullListWrapper ref={ref}>
+                <FullListWrapper>
                     <Title>Категории товара:</Title>
                     <FullList>
                         {groups.map((item) =>
@@ -247,7 +259,7 @@ const GroupBoxMobile = styled.div`
 const GroupItemMobile = styled.div`
   height: 50px;
   line-height: 50px;
-  font-size: 20px;
+  font-size: 18px;
   padding-right: 20px;
   color: var(--canvas-text);
   

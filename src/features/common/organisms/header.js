@@ -7,7 +7,7 @@ import {authActions} from 'features/auth'
 import {userActions} from 'features/user'
 import {productActions, ShiftStatus} from 'features/product'
 import {commonActions} from 'features/common'
-import {ProductSections} from 'features/product'
+import {ProductSections, ProductSorting} from 'features/product'
 import {UsersList} from 'features/user'
 import {Sidebar} from "./sidebar";
 import {Container, Input, BoxInput } from "ui";
@@ -68,6 +68,7 @@ export const Header = () => {
                             placeholder='Поиск товара/кода'
                             isSearch
                         />
+                        <ProductSorting />
                         <ProductSections/>
                     </LeftBox>
                     <RightBox>
@@ -109,7 +110,6 @@ export const Header = () => {
                     </HeaderRowMobileSearch>
                 </HeaderRowMobile>
                 }
-
             </Container>
         </HeaderBox>
     )
@@ -170,6 +170,10 @@ const LeftBoxControls = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
+    
+    @media ${device.laptop} { 
+         min-width: 250px;
+    }
 `
 const Logo = styled.img`
   width: 144px;
@@ -181,7 +185,7 @@ const Logo = styled.img`
     width: 124px;
   }
 `
-const FilterCategory = styled.div`
+const Sorting = styled.div`
   font-size: 16px;
 `
 const LeftBox = styled.div`
@@ -192,6 +196,10 @@ const LeftBox = styled.div`
     
     ${BoxInput} {
       margin: 0 20px 0 50px;
+      
+      @media ${device.laptop} { 
+          margin-left: 20px;
+        }
     }
     
     @media ${device.laptop} { 
