@@ -1,18 +1,22 @@
 import React, {useState} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
-import {cartActions, cartSelectors} from "../index";
+import {commonActions} from "features/common";
+import {NewProduct, productActions} from "features/product";
+import {cartActions, cartSelectors, Payment} from "../index";
 import {Button, Modal, StyledButton} from 'ui'
 import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 import noPhoto from 'static/img/no-photo.png'
 import closeCard from 'static/img/icons/close-card.png'
-import {NewProduct, productActions} from "../../product";
 
 
 
-export const CartList = () => {
+
+
+export const Cart = () => {
     const [openedModal, setOpenedModal] = useState(false)
+    const [openedModalPayment, setOpenedModalPayment] = useState(false)
     const [editable, setEditable] = useState({})
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
@@ -36,7 +40,6 @@ export const CartList = () => {
     }
 
     const handleEdit = (product) => {
-        return
         setEditable(product)
         dispatch(productActions.setBlur(true))
         setOpenedModal(true)
@@ -46,6 +49,15 @@ export const CartList = () => {
         setEditable({})
         dispatch(productActions.setBlur(false))
         setOpenedModal(false)
+    }
+
+    const handleOpenModalPayment = () => {
+        dispatch(commonActions.setBlurredAll(true))
+        setOpenedModalPayment(true)
+    }
+    const handleCloseModalPayment = () => {
+        dispatch(commonActions.setBlurredAll(false))
+        setOpenedModalPayment(false)
     }
 
 
@@ -86,7 +98,6 @@ export const CartList = () => {
                         </CartCol>
                     )}
                 </CartRow>
-                {!!products.length &&
                 <CartTotal>
                     <CartTotalRow>
                         <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
@@ -103,6 +114,7 @@ export const CartList = () => {
                         <CartTotalRowDivider></CartTotalRowDivider>
                         <CartTotalRowValuer bold>{totalInfo.total}</CartTotalRowValuer>
                     </CartTotalRow>
+                    {!!products.length &&
                     <CartBtnBox>
                         <Button
                             color='red'
@@ -111,15 +123,15 @@ export const CartList = () => {
                             Отмена
                         </Button>
                         <Button
+                            onClick={handleOpenModalPayment}
                             color='green'
                         >
                             Оплата
                         </Button>
                     </CartBtnBox>
+                    }
                 </CartTotal>
-                }
             </CartBox>
-
 
 
             {openedModal &&
@@ -133,6 +145,19 @@ export const CartList = () => {
                 />
             </Modal>
             }
+
+            {openedModalPayment &&
+            <Modal
+                onClose={handleCloseModalPayment}
+                noPadding
+            >
+                <Payment
+                    onClose={handleCloseModalPayment}
+                />
+            </Modal>
+            }
+
+
 
         </>
     )
@@ -292,7 +317,7 @@ const CartBtnBox = styled.div`
    justify-content: space-between;
    
    ${StyledButton} {
-    width: 49%;
+    width: 48%;
    }
 `
 const CartItemCountIcon = styled.div`

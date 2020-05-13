@@ -6,3 +6,6 @@ export const toggleSidebar = () => dispatch => {
 export const showSidebar = (param) => dispatch => {
     dispatch(commonReducer.showSidebar(param))
 };
+export const setBlurredAll = (param) => dispatch => {
+    dispatch(commonReducer.setBlurredAll(param))
+};

@@ -11,7 +11,7 @@ import {ProductSections, ProductSorting} from 'features/product'
 import {Sidebar} from "./sidebar";
 import {Container, Input, BoxInput, InputDatepicker } from "ui";
 import logo from 'static/img/logo.png'
-import add from 'static/img/add.png'
+import ImgClose from 'static/img/icons/close-gray.png'
 
 
 export const Header = () => {
@@ -20,7 +20,7 @@ export const Header = () => {
     const [searchU, setSearchU] = useState('')
     const debouncedSearchU = useDebounce(searchU, 300);
     const debouncedSearchP = useDebounce(searchP, 300);
-    const { searchUser } = useSelector(state => state.user)
+    const { searchUser, client } = useSelector(state => state.user)
     const currentDevice = useDetectDevice()
 
     useEffect(() => {
@@ -45,6 +45,11 @@ export const Header = () => {
         const {value} = e.target
         setSearchP(value)
     }
+    const handleClearClient = () => {
+        setSearchU('')
+        dispatch(userActions.setClient({}))
+    }
+
 
     const isMobileView = currentDevice.isMobile || currentDevice.isTablet
     const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
@@ -72,14 +77,28 @@ export const Header = () => {
                     </LeftBox>
                     <RightBox>
                         {searchUser && <UsersList/>}
-                        <Input
-                            type='search'
-                            value={searchU}
-                            onChange={onChangeSearchUsers}
-                            placeholder='Введите номер/ФИО клиента'
-                            isSearch
-                        />
-                        <AddUser />
+                        {client.id ?
+                            <ClientInfo>
+                                <ClientName>{client.name}</ClientName>
+                                <ClientPhone>{client.phone}</ClientPhone>
+                            </ClientInfo>
+                            :
+                            <Input
+                                type='search'
+                                value={searchU}
+                                onChange={onChangeSearchUsers}
+                                placeholder='Введите номер/ФИО клиента'
+                                isSearch
+                            />
+                        }
+                        {client.id ?
+                            <ClearClient onClick={handleClearClient}>
+                                <img src={ImgClose} alt=""/>
+                            </ClearClient>
+                            :
+                            <AddUser />
+                        }
+
                     </RightBox>
                 </HeaderRow>
                 }
@@ -229,3 +248,60 @@ const HML = styled.div`
 const HMR = styled(HML)`
   width: 95px;
 `
+
+const ClientInfo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  width: 100%;
+  margin-right: 20px;
+  padding: 5%;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  
+  @media ${device.laptop} { 
+      height: 54px;
+  }
+`
+const ClientName = styled.div`
+   font-size: 18px;
+   
+    @media ${device.laptop} { 
+      font-size: 16px;
+    }
+`
+const ClientPhone = styled.div`
+  font-size: 16px;
+  width: 150px;
+  
+  @media ${device.laptop} { 
+      font-size: 14px;
+      width: 130px;
+    }
+`
+
+const ClearClient = styled.div`
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 86px;
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  
+  &:hover {
+    background-color: #fafafa;
+  }
+  
+  @media ${device.laptop} { 
+      height: 54px;
+      min-width: 64px;
+      border-radius: 20px;
+  }
+`
+
+
+

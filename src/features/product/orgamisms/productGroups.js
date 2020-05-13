@@ -134,7 +134,7 @@ const GroupItem = styled.div`
     width: 250px;
     margin-right: 20px;
     padding: 0 20px;
-    border-radius: 30px;
+    border-radius: 20px;
     font-size: 26px;
     box-shadow: var(--shadow-card);
     overflow: hidden;

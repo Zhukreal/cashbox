@@ -3,11 +3,13 @@ import noPhoto from 'static/img/test.png'
 
 export const toModel = ( product ) => {
     let rest = null,
+        price = 0,
         stores = product.stores || []
     const storeId = localStorage.getItem('store')
-    product.stores.forEach((store) => {
+    stores.forEach((store) => {
         if(storeId === store.id && store.rest !== null) {
             rest = store.rest
+            price = store.price
         }
     })
 
@@ -15,6 +17,7 @@ export const toModel = ( product ) => {
         ...product,
         discount: product.discount || 0,
         rest: rest,
+        price: price,
         image: product.image_url ? `${PATH_TO_FILE}/${product.image_url}` : null
     }
 }

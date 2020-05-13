@@ -4,7 +4,7 @@ const cartState = state => state.cart
 
 export const products = () => state => {
     return cartState(state).products.map(product => {
-        const totalPrice = product.base_price * product.count
+        const totalPrice = product.price * product.count
         const totalDiscount = totalPrice * (product.discount / 100)
         const currentPrice = mathRound2(totalPrice - totalDiscount)
         return {...product,
@@ -23,7 +23,7 @@ export const totalInfo = () => state => {
     }
 
     cartState(state).products.forEach(product => {
-        const totalPrice = product.base_price * product.count
+        const totalPrice = product.price * product.count
         const totalDiscount = totalPrice * (product.discount / 100)
         const currentPrice = mathRound2(totalPrice - totalDiscount)
         total.sum += totalPrice

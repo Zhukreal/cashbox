@@ -1,34 +1,46 @@
-import React, {useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 import styled, { css } from "styled-components"
 import DatePicker from "react-datepicker"
 import { device } from 'lib/mediaDevice'
+import { emailValidator } from 'lib/validators'
 import {Input, StyledInput, Button, StyledButton, InputDatepicker, Select} from 'ui'
 import add from "static/img/add.png";
 import {userActions} from "../index";
 import "react-datepicker/dist/react-datepicker.css";
+import {authActions} from "../../auth";
 
+const initial = {
+    name: '',
+    phone: '',
+    email: '',
+    gender: '',
+    birth_date: ''
+}
 
 export const AddUser = () => {
-    const [user, setUser] = useState( {
-        name: '',
-        phone: '',
-        email: '',
-        gender: '',
-        birth_date: ''
-    })
+    const [user, setUser] = useState(initial)
     const genders = [
-        {value: 1, label: 1},
-        {value: 2, label: 2}
+        {value: 'MALE', label: 'М'},
+        {value: 'FEMALE', label: 'Ж'}
     ]
-    const { showedModalAdd } = useSelector(state => state.user)
+    const [errorEmail, setErrorEmail] = useState(null)
+    const { showedModalAdd, isLoadingAddNew } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const ref = useRef(null)
     useOnClickOutside(ref, () => dispatch(userActions.setShowedAdd(false)))
 
+    useEffect(() => {
+        if(user.email) {
+            const error = emailValidator(user.email)
+            setErrorEmail(error)
+        } else {
+            setErrorEmail(null)
+        }
+    }, [user.email])
+
     const toggleShowed = () => {
-        return
         dispatch(userActions.setShowedAdd(!showedModalAdd))
     }
 
@@ -41,6 +53,19 @@ export const AddUser = () => {
         setUser({...user, birth_date: value})
     }
 
+    const handleSave = async () => {
+        const copy = {...user}
+        try {
+            await dispatch(userActions.addNewUser(copy))
+            setUser(initial)
+        } catch (e) {
+            debugger
+        }
+
+    }
+
+
+    const disabled = !user.name || !user.phone || errorEmail
 
     return (
         <Box ref={ref}>
@@ -60,6 +85,7 @@ export const AddUser = () => {
                             isUnderline
                         />
                         <Input
+                            type={'tel'}
                             name='phone'
                             value={user.phone}
                             onChange={onChange}
@@ -71,6 +97,7 @@ export const AddUser = () => {
                             value={user.email}
                             onChange={onChange}
                             placeholder='E-mail'
+                            error={errorEmail && 'Введите корректный e-mail'}
                             isUnderline
                         />
                         {/*<Input*/}
@@ -98,12 +125,16 @@ export const AddUser = () => {
                     <Footer>
                         <Button
                             onClick={toggleShowed}
+                            disabled={isLoadingAddNew}
                             color='red'
                         >
                             Отмена
                         </Button>
                         <Button
+                            onClick={handleSave}
                             color='green'
+                            disabled={disabled}
+                            isLoading={isLoadingAddNew}
                         >
                             Добавить
                         </Button>

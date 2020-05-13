@@ -1,11 +1,19 @@
 import React from "react"
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
+import {userActions} from "features/user";
+import {productActions} from "features/product";
 
 
 export const UsersList = () => {
     const { users, isLoadingUsers } = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    const handleSetClient = client => {
+        dispatch(userActions.setClient(client))
+        dispatch(userActions.setSearch(''))
+    }
 
     if(isLoadingUsers) return (
         <UserContainer>
@@ -18,7 +26,10 @@ export const UsersList = () => {
             {users.length ?
                 <UsersBox>
                     {users.map((item, key) =>
-                        <User key={item.id}>
+                        <User
+                            key={item.id}
+                            onClick={() => handleSetClient(item)}
+                        >
                             <Name>{item.name}</Name>
                             <Phone>{item.phone ? item.phone : 'нет номера'}</Phone>
                         </User>

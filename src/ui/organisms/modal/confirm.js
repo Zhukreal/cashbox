@@ -6,7 +6,8 @@ import {Button, StyledButton} from 'ui'
 export const Confirm = ({
     title,
     onOk,
-    onCancel
+    onCancel,
+    isLoading
     } ) => {
 
     return (
@@ -16,12 +17,14 @@ export const Confirm = ({
                 <Button
                     onClick={onCancel}
                     color={'red'}
+                    disabled={isLoading}
                 >
                     Нет
                 </Button>
                 <Button
                     onClick={onOk}
                     color={'green'}
+                    isLoading={isLoading}
                 >
                     Да
                 </Button>

@@ -3,8 +3,10 @@ import {toModel} from './model'
 
 let initialState = {
     users: [],
+    client: {},
     searchUser: '',
     isLoadingUsers: false,
+    isLoadingAddNew: false,
     showedModalAdd: false
 }
 
@@ -16,12 +18,18 @@ const user = createSlice({
             const { results } = action.payload
             state.users = results
         },
+        setClient(state, action) {
+            state.client = action.payload
+        },
         setSearch(state, action) {
             state.searchUser = action.payload
             if(!action.payload) state.users = []
         },
         setLoadingList(state, action) {
             state.isLoadingUsers = action.payload
+        },
+        setLoadingAddNew(state, action) {
+            state.isLoadingAddNew = action.payload
         },
         setShowedAdd(state, action) {
             state.showedModalAdd = action.payload
@@ -31,8 +39,10 @@ const user = createSlice({
 
 export const {
     setUsers,
+    setClient,
     setSearch,
     setLoadingList,
+    setLoadingAddNew,
     setShowedAdd
 } = user.actions
 

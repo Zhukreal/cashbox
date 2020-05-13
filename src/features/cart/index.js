@@ -8,4 +8,5 @@ export {
     selector as cartSelectors
 }
 
-export {CartList} from './orgamisms/cartList'
+export {Cart} from './orgamisms/cart'
+export {Payment} from './orgamisms/payment'

@@ -11,7 +11,9 @@ let initialState = {
     lastName: null,
     currency: null,
     cashes: [],
-    isOpenedSidebar: false
+    isLoadingCloseShift: false,
+    isLoadingReport: false,
+    currentReport: {}
 }
 
 const profile = createSlice({
@@ -37,8 +39,14 @@ const profile = createSlice({
             localStorage.removeItem(AUTHTOKEN)
             // Cookies.erase(AUTHTOKEN)
         },
-        toggleSidebar (state) {
-            state.isOpenedSidebar = !state.isOpenedSidebar
+        setIsLoadingCloseShift(state, action) {
+            state.isLoadingCloseShift = action.payload
+        },
+        setIsLoadingReport(state, action) {
+            state.isLoadingReport = action.payload
+        },
+        setCurrentReport(state, action) {
+            state.currentReport = action.payload
         }
     }
 })
@@ -46,7 +54,10 @@ const profile = createSlice({
 export const {
     setProfile,
     clearProfile,
-    toggleSidebar
+    toggleSidebar,
+    setIsLoadingCloseShift,
+    setIsLoadingReport,
+    setCurrentReport
 } = profile.actions
 
 

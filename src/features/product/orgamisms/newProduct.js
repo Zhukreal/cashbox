@@ -4,14 +4,14 @@ import {useDispatch, useSelector} from "react-redux";
 import { device } from 'lib/mediaDevice';
 import {mathRound2} from "lib/math";
 import {cartActions, cartSelectors} from "features/cart";
-import {Input, StyledInput, Button} from "ui";
+import {Input, StyledInput, Button, StyledButton} from "ui";
 import closeGray from 'static/img/icons/close-gray.png'
 
 
 
 export const NewProduct = ({onClose, editable = {}}) => {
     const [product, setProduct] = useState({
-        base_price: '',
+        price: '',
         count: ''
     })
 
@@ -38,10 +38,10 @@ export const NewProduct = ({onClose, editable = {}}) => {
 
     // Calculate total price
     useEffect(() => {
-        const totalPrice = product.base_price * product.count
+        const totalPrice = product.price * product.count
         const currentPrice = mathRound2(totalPrice - discountCurrency)
         setTotal(currentPrice)
-    }, [product.base_price, product.count, discountCurrency])
+    }, [product.price, product.count, discountCurrency])
 
     const onChange = e => {
         const {name, value} = e.target
@@ -53,7 +53,7 @@ export const NewProduct = ({onClose, editable = {}}) => {
         console.log(dotCount)
         console.log(/^[0-9]*([.][0-9]{1,2})?$/.test(value))
 
-        const isValid = /^[0-9]*([.][0-9]{1,2})?$/.test(value) || (dotCount === 1 && value[value.length - 1] === '.')
+        const isValid = /^[0-9]*([.][0-9]{1,2})?$/.test(value) || (value !== '.' && dotCount === 1 && value[value.length - 1] === '.')
 
 
         if(isValid) {
@@ -62,21 +62,21 @@ export const NewProduct = ({onClose, editable = {}}) => {
             valueN = value.slice(0, -1);
         }
 
-        const price = product.base_price * product.count
-        const base_price = product.base_price || 0
+        const totalPrice = product.price * product.count
         const count = product.count || 0
+        const price = product.price || 0
 
         switch(name) {
-            case 'base_price' :
+            case 'price' :
                 if(discount) {
                     const discountCr = mathRound2(valueN * count * (discount / 100))
                     setDiscountCurrency(discountCr)
                 }
-                setProduct({...product, base_price: valueN})
+                setProduct({...product, price: valueN})
                 break
             case 'count' :
                 if(discount) {
-                    const discountCr = mathRound2(base_price * valueN * (discount / 100))
+                    const discountCr = mathRound2(price * valueN * (discount / 100))
                     setDiscountCurrency(discountCr)
                 }
                 setProduct({...product, count: valueN})
@@ -84,13 +84,13 @@ export const NewProduct = ({onClose, editable = {}}) => {
             case 'discount' :
                 if(Number(valueN) > 100) valueN = 100
                 setDiscount(valueN)
-                const discountC = mathRound2(price * (valueN / 100))
+                const discountC = mathRound2(totalPrice * (valueN / 100))
                 setDiscountCurrency(discountC)
                break
             case 'discountCurrency' :
-                if(valueN > price) valueN = price
+                if(valueN > totalPrice) valueN = totalPrice
                 setDiscountCurrency(valueN)
-                const discountP = mathRound2((valueN/price) * 100 )
+                const discountP = mathRound2((valueN/totalPrice) * 100 )
                 setDiscount(discountP )
                 break
         }
@@ -112,10 +112,10 @@ export const NewProduct = ({onClose, editable = {}}) => {
     }
 
 
-    const disabled = !Number(product.base_price) || !Number(product.count)
+    const disabled = !Number(product.price) || !Number(product.count)
 
     return (
-        <Wrapper>
+        <Wrapper url={product.image} >
             <Close onClick={onClose}>
                 <img src={closeGray} alt=""/>
             </Close>
@@ -123,8 +123,8 @@ export const NewProduct = ({onClose, editable = {}}) => {
                 <Title>{product.name}</Title>
                 <Wrap>
                     <Input
-                        name='base_price'
-                        value={product.base_price}
+                        name='price'
+                        value={product.price}
                         onChange={onChange}
                         placeholder='Цена'
                     />
@@ -168,11 +168,14 @@ export const NewProduct = ({onClose, editable = {}}) => {
 
 const Wrapper = styled.div`
   padding: 5%;
-  background-color: #4f87de14;
+  background: #4f87de14 url(${p => p.url});
   border-radius: 30px;
   width: 480px;  
   
-  
+  ${StyledButton} {
+    width: 50%;
+    margin: 0 auto;
+  }
   
   @media ${device.mobile} {
       width: 100%;
@@ -225,6 +228,10 @@ const Close = styled.div`
     justify-content: center;
     margin: 0 auto 5% auto;
     background-color: #ffffff;
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: pointer;
+    
+    :hover {
+      opacity: 0.8;
+    }
 `

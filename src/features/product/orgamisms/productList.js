@@ -49,7 +49,6 @@ export const ProductList = () => {
     }
 
     const handleAddNew = () => {
-        return
         dispatch(productActions.setBlur(true))
         setOpenedModalNewProduct(true)
     }
@@ -85,7 +84,7 @@ export const ProductList = () => {
                             <ProductName>{item.name}</ProductName>
                             <ProductCode>Код: {item.barcode}</ProductCode>
                             {item.currentCount !== null && <ProductCode>Остаток: {item.currentCount} {item.unit}</ProductCode>}
-                            <ProductPrice>{item.base_price} {currency}</ProductPrice>
+                            <ProductPrice>{item.price} {currency}</ProductPrice>
                             <AddIcon onClick={() => handleAddToCart(item)}>
                                 <PlusIcon src={plusIcon} />
                             </AddIcon>
@@ -157,7 +156,7 @@ const ProductCol = styled.div`
   //border: 1px solid grey;
   border-radius: 30px;
   box-sizing: border-box;
-   background: #E7E9ED url(${emptyPhoto}) center 85px no-repeat;
+  background: #E7E9ED url(${emptyPhoto}) center 85px no-repeat;
   
   ${(props) =>
     props.url &&
@@ -173,6 +172,8 @@ const ProductCol = styled.div`
     
     @media ${device.laptop} { 
       flex: 0 1 calc(33.333% - 3em);
+      height: 380px;
+      background-position: center 45px;
     }
 `
 const ProductInfo = styled.div`
@@ -233,6 +234,13 @@ const AddIcon = styled.div`
   border-radius: 28px;
   color: #ffffff;
   background-color: var(--blue);
+  
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
   
   &:hover {
     cursor: pointer;

@@ -68,11 +68,12 @@ const SkeletonCol = styled.div`
   
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
-       height: 320px;
+      height: 320px;
     }
     
     @media ${device.laptop} { 
       flex: 0 1 calc(33.333% - 3em);
+      height: 380px;
     }
     
   // background: linear-gradient(90deg, #f3f3f3, #e2e2e2, #E7E9ED);

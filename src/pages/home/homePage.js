@@ -4,15 +4,15 @@ import { device, useDetectDevice } from 'lib/mediaDevice'
 import {Common} from 'features/common'
 import {ProductList, ProductGroups} from 'features/product'
 import {commonActions} from 'features/common'
-import {CartList} from 'features/cart'
+import {Cart} from 'features/cart'
 import styled from "styled-components";
 
 export const HomePage = () => {
     const dispatch = useDispatch()
-    const { isOpenedSidebar } = useSelector(state => state.common)
-    const { searchUser } = useSelector(state => state.user)
+    const { isOpenedSidebar, isBlurredAll } = useSelector(state => state.common)
+    const { searchUser, showedModalAdd } = useSelector(state => state.user)
     const { isBlurredProducts } = useSelector(state => state.product)
-    const isBlurred = isOpenedSidebar || searchUser
+    const isBlurred = isOpenedSidebar || searchUser || showedModalAdd || isBlurredAll
     const isBlurred2 = isBlurredProducts
     const currentDevice = useDetectDevice()
 
@@ -31,7 +31,7 @@ export const HomePage = () => {
                     <ProductGroups />
                 </ProductsBox>
                 <CartBox>
-                    <CartList />
+                    <Cart />
                 </CartBox>
                 { isBlurred && <Blur onClick={() => handleCloseSidebar()} />}
                 { isBlurred2 && <Blur2 />}

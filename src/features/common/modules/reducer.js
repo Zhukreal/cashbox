@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 let initialState = {
-    isOpenedSidebar: false
+    isOpenedSidebar: false,
+    isBlurredAll: false
 }
 
 const common = createSlice({
@@ -14,13 +15,17 @@ const common = createSlice({
         },
         showSidebar (state, action) {
             state.isOpenedSidebar = action.payload
+        },
+        setBlurredAll (state, action) {
+            state.isBlurredAll = action.payload
         }
     }
 })
 
 export const {
     toggleSidebar,
-    showSidebar
+    showSidebar,
+    setBlurredAll
 } = common.actions
 
 

@@ -65,12 +65,16 @@ export const ButtonIcon = (
 
 export const StyledButton = styled.button`
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 68px;
     font-size: 20px;
     color: #ffffff;
     background-color: var(--blue);
     outline: none;
     padding: 0 30px;
+    margin: 0 auto;
     border: none;
     border-radius: 34px;
     text-transform: ${p => p.isUpperCase? 'uppercase' : ''};
@@ -100,6 +104,22 @@ export const StyledButton = styled.button`
         }
     `}
     
+    ${(p) => p.color === 'white' && css`
+        color: var(--canvas-text);
+        background-color: #ffffff;
+        box-shadow: var(--shadow-card);
+    `}
+    
+    ${(p) => p.variant === 'outlined' && css`
+        background: none;
+        border: 1px solid var(--canvas-text);
+        color: var(--canvas-text);
+        &:hover {
+           
+        }
+    `}
+    
+    
   
     ${(p) =>
     p.size === 'small' &&
@@ -112,6 +132,7 @@ export const StyledButton = styled.button`
     
     @media ${device.laptop} { 
         height: 54px;
+        border-radius: 20px;
         font-size: 17px;
     }
     

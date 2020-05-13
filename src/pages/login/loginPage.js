@@ -19,10 +19,10 @@ export const LoginPage = () => {
     const currentDevice = useDetectDevice()
 
     const [data, setData] = useState({
-        phone: '',
-        password: '',
-        // phone: '1323213213',
-        // password: '111111'
+        // phone: '',
+        // password: '',
+        phone: '1323213213',
+        password: '111111'
     })
     const [error, setError] = useState(null)
     const [errors, setErrors] = useState({})
@@ -244,7 +244,7 @@ const FormBox = styled.div`
       height: auto;
       min-height: auto;
       padding: 10% 7%;
-      padding-bottom: 150px;
+      //padding-bottom: 150px;
       border-radius: 50px 50px 0 0 ;
       
       ${StyledButton} {

@@ -44,6 +44,7 @@ export const Input = ({
                     placeholder={placeholder}
                     readOnly={readOnly}
                     size={size}
+                    error={error}
                     isSearch={isSearch}
                     isUnderline={isUnderline}
                 />
@@ -113,7 +114,7 @@ const sharedStyle = css`
     p.isUnderline &&
     css`
         border: none;
-        border-bottom: 2px solid var(--canvas-text);
+        border-bottom: 2px solid ${p => p.error ? `var(--red)`  : `var(--canvas-text)` } ;
         border-radius: 0!important;
         background: none;
         box-shadow: none; 
@@ -161,10 +162,13 @@ export const BoxInput = styled.div`
 
 const Error = styled.div`
     position: absolute;
-    left: 34px;
-    bottom: -15px;
-    font-size: 1rem;
+    bottom: -13px;
+    font-size: 11px;
     color: #ff3939;
+    right: auto;
+    left: auto;
+    text-align: center;
+    width: 100%;
 `
 
 const SearchIcon = styled.img`

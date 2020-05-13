@@ -1,23 +1,11 @@
-import React, { useState } from "react";
-import test from 'static/img/logo.png'
+import React, { useState, useEffect } from "react";
 
 export const TestPage = () => {
 
 
-    return (
-        <div className="App">
 
-        </div>
-    );
+    return (
+        <div></div>
+    )
+
 }
-
-
-const CheckBox = props => {
-    return (
-        <pre>
-
-
-
-        </pre>
-    );
-};

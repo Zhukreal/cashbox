@@ -28,7 +28,7 @@ const ModalBox = styled.div`
     position:fixed;
     background: white;
     //width: 50%;
-    max-width: 650px;
+    max-width: 750px;
     padding: ${p => p.noPadding ? 0 : '30px'};
     height: auto;
     top:50%;
