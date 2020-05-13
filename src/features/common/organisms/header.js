@@ -146,7 +146,7 @@ const HeaderBox = styled.header`
   border-color: var(--borders);
   
   @media ${device.mobile} { 
-    height: 110px;
+    height: 120px;
   }
   
   @media ${device.laptop} { 
@@ -165,7 +165,7 @@ const HeaderRow = styled.div`
 
 const HeaderRowMobile = styled.div`
   display: flex;
-  height: 110px;
+  height: 120px;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;

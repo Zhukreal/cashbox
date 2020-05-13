@@ -45,16 +45,10 @@ export const NewProduct = ({onClose, editable = {}}) => {
 
     const onChange = e => {
         const {name, value} = e.target
-        // let valueN = value.replace(/\D/g, "");
         let valueN = '',
             dotCount = (value.match(/\./g) || []).length
 
-        console.log(value)
-        console.log(dotCount)
-        console.log(/^[0-9]*([.][0-9]{1,2})?$/.test(value))
-
         const isValid = /^[0-9]*([.][0-9]{1,2})?$/.test(value) || (value !== '.' && dotCount === 1 && value[value.length - 1] === '.')
-
 
         if(isValid) {
              valueN = value

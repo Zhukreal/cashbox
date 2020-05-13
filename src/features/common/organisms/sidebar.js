@@ -5,30 +5,30 @@ import {useDispatch, useSelector} from "react-redux";
 import {device, useDetectDevice} from "lib/mediaDevice";
 import {profileActions, CurrentReport} from "features/profile";
 import {commonActions} from "features/common";
-import icon1 from 'static/img/icons/s-1.png'
-import icon2 from 'static/img/icons/s-2.png'
-import icon3 from 'static/img/icons/s-3.png'
-import icon4 from 'static/img/icons/s-4.png'
-import icon5 from 'static/img/icons/s-5.png'
-import icon6 from 'static/img/icons/s-6.png'
-import icon62 from 'static/img/icons/s-6-2.png'
-import icon7 from 'static/img/icons/s-7.png'
-import icon72 from 'static/img/icons/s-7-2.png'
-import icon8 from 'static/img/icons/s-8.png'
-import icon9 from 'static/img/icons/s-9.png'
-import icon10 from 'static/img/icons/s-10.png'
+import icon1 from 'static/img/icons/icon1.svg'
+import icon2 from 'static/img/icons/icon2.svg'
+import icon3 from 'static/img/icons/icon3.svg'
+import icon4 from 'static/img/icons/icon4.svg'
+import icon5 from 'static/img/icons/icon5.svg'
+import icon6 from 'static/img/icons/icon6.svg'
+import icon62 from 'static/img/icons/icon6-2.svg'
+import icon7 from 'static/img/icons/icon7.svg'
+import icon72 from 'static/img/icons/icon7-2.svg'
+import icon8 from 'static/img/icons/icon8.svg'
+import icon9 from 'static/img/icons/icon9.svg'
+import icon10 from 'static/img/icons/icon10.svg'
 // import icon11 from 'static/img/icons/s-11.png'
-import icon1w from 'static/img/icons/icon1-w.png'
-import icon2w from 'static/img/icons/icon2-w.png'
-import icon3w from 'static/img/icons/icon3-w.png'
-import icon4w from 'static/img/icons/icon4-w.png'
-import icon5w from 'static/img/icons/icon5-w.png'
-import icon6w from 'static/img/icons/icon6-w.png'
-import icon7w from 'static/img/icons/icon7-w.png'
-import icon8w from 'static/img/icons/icon8-w.png'
-import icon9w from 'static/img/icons/icon9-w.png'
-import icon10w from 'static/img/icons/icon10-w.png'
-import icon11w from 'static/img/icons/icon11-w.png'
+import icon1w from 'static/img/icons/icon1-w.svg'
+import icon2w from 'static/img/icons/icon2-w.svg'
+import icon3w from 'static/img/icons/icon3-w.svg'
+import icon4w from 'static/img/icons/icon4-w.svg'
+import icon5w from 'static/img/icons/icon5-w.svg'
+import icon6w from 'static/img/icons/icon6-w.svg'
+import icon7w from 'static/img/icons/icon7-w.svg'
+import icon8w from 'static/img/icons/icon8-w.svg'
+import icon9w from 'static/img/icons/icon9-w.svg'
+import icon10w from 'static/img/icons/icon10-w.svg'
+import icon11w from 'static/img/icons/icon11-w.svg'
 import close from 'static/img/icons/close.png'
 import burger from "../../../static/img/burger.png";
 import burgerM from "../../../static/img/icons/burger-m.png";
@@ -92,7 +92,9 @@ export const Sidebar = ({ handleLogout }) => {
             <SidebarBox >
                 {isMobileView &&
                 <SidebarItem onClick={toggleSidebar} close >
-                    <SidebarItemIcon src={close}/>
+                    <IconWrap>
+                        <SidebarItemIcon src={close}/>
+                    </IconWrap>
                 </SidebarItem>
                 }
                 <div >
@@ -100,7 +102,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(1)}
                         active={activeItem === 1}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon1 : icon1w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon1 : icon1w}/>
+                        </IconWrap>
                         Закрытие смены (Z отчет)
                     </SidebarItem>
 
@@ -108,7 +112,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(2)}
                         active={activeItem === 2}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon2 : icon2w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon2 : icon2w}/>
+                        </IconWrap>
                         Текущий отчет (X отчет)
                     </SidebarItem>
 
@@ -116,7 +122,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(3)}
                         active={activeItem === 3}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon3 : icon3w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon3 : icon3w}/>
+                        </IconWrap>
                         Отмена последней операции
                     </SidebarItem>
 
@@ -124,7 +132,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(4)}
                         active={activeItem === 4}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon4 : icon4w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon4 : icon4w}/>
+                        </IconWrap>
                         Возврат продажи
                     </SidebarItem>
 
@@ -132,7 +142,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(5)}
                         active={activeItem === 5}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon5 : icon5w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon5 : icon5w}/>
+                        </IconWrap>
                         Возврат покупки
                     </SidebarItem>
 
@@ -141,12 +153,12 @@ export const Sidebar = ({ handleLogout }) => {
                         active={activeItem === 6}
                     >
                         {isDesktopView &&
-                        <>
+                        <IconWrap>
                             <SidebarItemIcon src={icon6} before6/>
                             <SidebarItemIcon src={icon62} after6/>
-                        </>
+                        </IconWrap>
                         }
-                        {isMobileView && <SidebarItemIcon src={icon6w} />}
+                        {isMobileView && <IconWrap><SidebarItemIcon src={icon6w} /></IconWrap>}
                         Внесение наличных в смену
                     </SidebarItem>
 
@@ -155,12 +167,12 @@ export const Sidebar = ({ handleLogout }) => {
                         active={activeItem === 7}
                     >
                         {isDesktopView &&
-                        <>
+                        <IconWrap>
                             <SidebarItemIcon src={isDesktopView ? icon72 : icon7w} before7/>
                             <SidebarItemIcon src={icon7} after7/>
-                        </>
+                        </IconWrap>
                         }
-                        {isMobileView && <SidebarItemIcon src={icon7w} />}
+                        {isMobileView && <IconWrap><SidebarItemIcon src={icon7w} /></IconWrap>}
                         Изъятие наличных из кассы
                     </SidebarItem>
 
@@ -168,7 +180,9 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(8)}
                         active={activeItem === 8}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon8 : icon8w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon8 : icon8w}/>
+                        </IconWrap>
                         Информация
                     </SidebarItem>
 
@@ -176,19 +190,25 @@ export const Sidebar = ({ handleLogout }) => {
                         onClick={() => setActiveItem(9)}
                         active={activeItem === 9}
                     >
-                        <SidebarItemIcon src={isDesktopView ? icon9 : icon9w}/>
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? icon9 : icon9w}/>
+                        </IconWrap>
                         Настройки
                     </SidebarItem>
 
-                    <LikA href="https://www.tut.by/" target="_blank">
-                        <SidebarItem>
-                            <SidebarItemIcon src={isDesktopView ? icon10 : icon10w}/>
+                    <SidebarItem isForLink>
+                        <LikA href="https://www.tut.by/" target="_blank">
+                            <IconWrap>
+                                <SidebarItemIcon src={isDesktopView ? icon10 : icon10w}/>
+                            </IconWrap>
                             Панель администратора
-                        </SidebarItem>
-                    </LikA>
+                        </LikA>
+                    </SidebarItem>
 
                     <SidebarItem onClick={handleLogout}>
-                        <SidebarItemIcon src={isDesktopView ? null : icon11w} />
+                        <IconWrap>
+                            <SidebarItemIcon src={isDesktopView ? null : icon11w} />
+                        </IconWrap>
                         Выход
                     </SidebarItem>
                 </div>
@@ -197,7 +217,7 @@ export const Sidebar = ({ handleLogout }) => {
             }
 
             {!!activeItem &&
-            <Modal onClose={hideSidebar}>
+            <Modal onClose={null}>
                 {activeItem === 1 &&
                     <Confirm
                         title={'Вы действительно хотите закрыть смену?'}
@@ -229,6 +249,13 @@ export const Sidebar = ({ handleLogout }) => {
     )
 }
 
+const IconWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  height: 50px;
+`
 const IconSidebar = styled.div`
   width: 62px;
   height: 62px;
@@ -274,7 +301,7 @@ const SidebarItem = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-    padding: 0 20px 0 75px;
+    padding: 0 20px 0 0px;
     font-size: 15px;
     border-bottom: 1px solid var(--canvas-text);
     color: ${p => p.active ? '#ffffff' : 'var(--canvas-text);' };
@@ -287,6 +314,10 @@ const SidebarItem = styled.div`
     
     ${(p) => p.close && css`
       margin-bottom: 10px;
+    `}
+    
+    ${(p) => p.isForLink && css`
+      padding-left: 0;
     `}
     
     
@@ -303,9 +334,10 @@ const SidebarItem = styled.div`
 `
 
 const SidebarItemIcon = styled.img`
-    position: absolute;
-    top: 14px;
-    left: 22px;
+    //position: relative;
+    //top: 14px;
+    //left: 22px;
+    height: 20px;
     
     ${(p) =>
     p.before6 &&
@@ -318,12 +350,14 @@ const SidebarItemIcon = styled.img`
     css`
       top: 20px;
       left: 40px;
+      height: auto;
     `}
     ${(p) =>
     p.before7 &&
     css`
       top: 20px;
       left: 17px;
+      height: auto;
     `}
     
     ${(p) =>
@@ -359,9 +393,11 @@ const SidebarBox = styled.div`
 const LikA = styled.a`
   text-decoration: none;
   color: inherit;
-  
-  ${SidebarItem} {
-    border-bottom: 1px solid var(--canvas-text)!important;
-  }
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  display: flex;
+  //padding-left: 75px;
+  padding-right: 0px;
 `
 

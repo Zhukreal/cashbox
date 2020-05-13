@@ -257,7 +257,7 @@ const Title = styled.div`
 
 const GroupBoxMobile = styled.div`
     position: fixed;
-    top: 110px;
+    top: 120px;
     height: 50px;
     max-width: 100%;
     display: flex;

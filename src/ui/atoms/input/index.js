@@ -77,6 +77,35 @@ const sharedStyle = css`
         cursor: not-allowed;
     }
     
+    
+    
+    ${(p) =>
+    p.isUnderline &&
+    css`
+        border: none;
+        border-bottom: 2px solid ${p => p.error ? `var(--red)`  : `var(--canvas-text)` } ;
+        border-radius: 0!important;
+        background: none;
+        box-shadow: none; 
+        padding-top: 20px!important;
+          
+    `}
+    
+    
+    @media ${device.laptop} { 
+            font-size: 16px;
+            height: 54px;
+            border-radius: 20px;
+            padding: 0 25px;
+        }
+    
+    @media ${device.mobileTablet} { 
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 20px;
+        font-size: 15px;
+    }
+    
     ${(p) =>
     p.isSearch &&
     css`
@@ -108,34 +137,11 @@ const sharedStyle = css`
             height: 54px;
             border-radius: 20px;
         }
-    `}
-    
-    ${(p) =>
-    p.isUnderline &&
-    css`
-        border: none;
-        border-bottom: 2px solid ${p => p.error ? `var(--red)`  : `var(--canvas-text)` } ;
-        border-radius: 0!important;
-        background: none;
-        box-shadow: none; 
-        padding-top: 20px!important;
-          
-    `}
-    
-    
-    @media ${device.laptop} { 
-            font-size: 16px;
-            height: 54px;
+        @media ${device.mobileTablet} { 
+            height: 46px;
             border-radius: 20px;
-            padding: 0 25px;
         }
-    
-    @media ${device.mobileTablet} { 
-        height: 40px;
-        border-radius: 20px;
-        padding: 0 20px;
-        font-size: 15px;
-    }
+    `}
     
     
 `
