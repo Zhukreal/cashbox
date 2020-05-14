@@ -10,3 +10,4 @@ export {
 
 export {Cart} from './orgamisms/cart'
 export {Payment} from './orgamisms/payment'
+export {Check} from './orgamisms/check'

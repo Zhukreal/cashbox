@@ -2,26 +2,25 @@ import React, {useState} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import {commonActions} from "features/common";
-import {NewProduct, productActions} from "features/product";
-import {cartActions, cartSelectors, Payment} from "../index";
+import {NewProduct, productActions, productSelectors} from "features/product";
+import {cartActions, cartSelectors, Payment, Check} from "../index";
 import {Button, Modal, StyledButton} from 'ui'
-import plusIcon from 'static/img/icons/plus-s.png'
 import minusIcon from 'static/img/icons/minus-s.png'
 import noPhoto from 'static/img/no-photo.png'
 import closeCard from 'static/img/icons/close-card.png'
 
 
-
-
-
 export const Cart = () => {
     const [openedModal, setOpenedModal] = useState(false)
     const [openedModalPayment, setOpenedModalPayment] = useState(false)
+    const [openedModalCheck, setOpenedModalCheck] = useState(false)
     const [editable, setEditable] = useState({})
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
-    const products = useSelector(cartSelectors.products())
-    const totalInfo = useSelector(cartSelectors.totalInfo())
+    const products = useSelector(state => cartSelectors.getProducts(state))
+    const totalInfo = useSelector(state => cartSelectors.getTotalInfo(state))
+
+    console.log('render cart')
 
     const handleAddOne = (e, product) => {
         e.stopPropagation()
@@ -58,8 +57,14 @@ export const Cart = () => {
     const handleCloseModalPayment = () => {
         dispatch(commonActions.setBlurredAll(false))
         setOpenedModalPayment(false)
+        setOpenedModalCheck(false)
     }
 
+    const onSuccessPayment = () => {
+        dispatch(cartActions.clearCart())
+        setOpenedModalPayment(false)
+        setOpenedModalCheck(true)
+    }
 
     return (
         <>
@@ -152,11 +157,21 @@ export const Cart = () => {
                 noPadding
             >
                 <Payment
-                    onClose={handleCloseModalPayment}
+                    onSuccess={onSuccessPayment}
                 />
             </Modal>
             }
 
+            {openedModalCheck &&
+            <Modal
+                onClose={handleCloseModalPayment}
+                noPadding
+            >
+                <Check
+                    onClose={handleCloseModalPayment}
+                />
+            </Modal>
+            }
 
 
         </>

@@ -1,55 +1,62 @@
 import React, {useState, useEffect} from 'react'
-import styled, {css} from "styled-components"
 import {useDispatch, useSelector} from "react-redux"
-import { device } from 'lib/mediaDevice'
-import {emailValidator} from "lib/validators";
-import {cartSelectors} from "features/cart"
-import {Input, StyledInput, Button, StyledButton, Textarea, StyledTextarea} from "ui"
-import IconMail from 'static/img/icons/mail.png'
-import IconWatsApp from 'static/img/icons/whatsapp.png'
+import {modifyToNumber} from "lib/modifyData/modifyToNumber";
+import {cartActions, cartSelectors} from "features/cart"
+import {Input, Button, Textarea} from "ui"
+import {Wrapper, Box, BoxLeft, BoxRight, Title, FlexBox, Type, TextCenter, Subtitle, List, Item, Block, BlockTitle, BlockValue, Divider, TextSub, Icon, Loading, SpinnerBox, Spinner} from './styled'
 
-const initial = {
-    name: '',
-    phone: '',
-    email: ''
-}
 
-export const Payment = ({onClose, editable = {}}) => {
+export const Payment = ({onSuccess, editable = {}}) => {
     const items = [500, 1000, 2000, 5000, 10000, 20000]
-    const [view, setView] = useState(1)
-    const [user, setUser] = useState(initial)
     const [typePayment, setTypePayment] = useState('cash')
-    const [activeCash, setActiveCash] = useState(500)
-    const [sum, setSum] = useState('')
+    const [activeCash, setActiveCash] = useState(null)
+    const [sumByCard, setSumByCard] = useState('')
+    const [sumByCash, setSumByCash] = useState(0)
+    const [accepted, setAccepted] = useState(0)
     const [comment, setComment] = useState('')
-    const [errorEmail, setErrorEmail] = useState(null)
+
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
-    const products = useSelector(cartSelectors.products())
-    const totalInfo = useSelector(cartSelectors.totalInfo())
+    const { isLoadingPayment } = useSelector(state => state.cart)
+    // const products = useSelector(state => cartSelectors.getProducts(state))
+    const totalInfo = useSelector(state => cartSelectors.getTotalInfo(state))
+
 
     useEffect(() => {
-        setSum(totalInfo.total)
-    }, [])
-
-    useEffect(() => {
-        if(user.email) {
-            const error = emailValidator(user.email)
-            setErrorEmail(error)
+        if(typePayment === 'cash') return
+        let cashRest = totalInfo.total - sumByCard
+        if(cashRest < 0) {
+            setSumByCash(0)
         } else {
-            setErrorEmail(null)
+            setSumByCash(cashRest)
         }
-    }, [user.email])
+    }, [sumByCard])
 
-    const onChange = e => {
-        const {name, value} = e.target
+    useEffect(() => {
+        if(activeCash) {
+            handlePayment()
+            setSumByCash(activeCash)
+        }
+    }, [activeCash])
 
-        setUser({...user, [name]: value})
-    }
+    useEffect(() => {
+        setAccepted(Number(sumByCash) + Number(sumByCard))
+    }, [sumByCash, sumByCard])
 
-    const onChangeSum = e => {
+    useEffect(() => {
+        if(typePayment === 'card') {
+            setSumByCard(totalInfo.total)
+            setActiveCash(null)
+            setSumByCash(0)
+        } else {
+            setSumByCard('')
+        }
+    }, [typePayment])
+
+    const onChangeSumByCard = e => {
         const {value} = e.target
-        setSum(value)
+        let numberView = modifyToNumber(value)
+        setSumByCard(numberView)
     }
 
     const onChangeComment = e => {
@@ -57,9 +64,37 @@ export const Payment = ({onClose, editable = {}}) => {
         setComment(value)
     }
 
+    const handleSetActiveCash = (cash) => {
+        setActiveCash(cash)
+    }
+
+    const handlePayment = async () => {
+        const data = {
+            total: totalInfo.total,
+            comment: comment
+        }
+
+        if(typePayment === 'cash') {
+            data.cash = activeCash
+            data.accepted = Number(activeCash)
+        } else {
+            data.accepted = accepted
+            data.cash = sumByCash
+            data.card = sumByCard
+        }
+
+        try{
+            await dispatch(cartActions.pay(data))
+            onSuccess()
+        } catch(e) {
+            onSuccess()
+        }
+
+    }
+
     return (
         <Wrapper>
-            {view === 1 &&
+            {isLoadingPayment && <Loading><SpinnerBox><Spinner /></SpinnerBox> Оплата...</Loading>}
             <Box>
                 <BoxLeft>
                     <Title>Прием оплаты</Title>
@@ -77,51 +112,65 @@ export const Payment = ({onClose, editable = {}}) => {
                             карта
                         </Type>
                     </FlexBox>
-                    <Input
-                        type='number'
-                        value={sum}
-                        onChange={onChangeSum}
-                        placeholder='Сумма'
-                    />
-                    <TextCenter>
-                        <Button color={'white'}>
-                            Принять
-                        </Button>
-                    </TextCenter>
-                    <Subtitle>
-                        Варианты оплаты наличными:
-                    </Subtitle>
-                    <List>
-                       {items.map((item) =>
-                           <Item
-                               key={item}
-                               onClick={() => setActiveCash(item)}
-                               active={item === activeCash}
-                           >
-                               {item}
-                           </Item>
-                       )}
-                    </List>
+
+                    {typePayment === 'card' &&
+                    <>
+                        <Input
+                            type='text'
+                            value={sumByCard}
+                            onChange={onChangeSumByCard}
+                            placeholder='Сумма'
+                        />
+                        <TextCenter>
+                            <Button
+                                onClick={handlePayment}
+                                color={'white'}
+                            >
+                                Принять
+                            </Button>
+                        </TextCenter>
+                    </>
+                    }
+
+                    {typePayment === 'cash' &&
+                    <>
+                        <Subtitle>
+                            Варианты оплаты наличными:
+                        </Subtitle>
+                        <List>
+                            {items.map((item) =>
+                                <Item
+                                    key={item}
+                                    onClick={() => handleSetActiveCash(item)}
+                                    active={item === activeCash}
+                                >
+                                    {item}
+                                </Item>
+                            )}
+                        </List>
+                    </>
+                    }
+
                 </BoxLeft>
                 <BoxRight>
                     <Title>Платежи</Title>
                     <Block>
                         <BlockTitle>Итого:</BlockTitle>
-                        <BlockValue>12323 {currency}</BlockValue>
+                        <BlockValue>{totalInfo.total} {currency}</BlockValue>
                     </Block>
                     <Block>
                         <BlockTitle>Принято:</BlockTitle>
-                        <BlockValue>2323 {currency}</BlockValue>
+                        <BlockValue>{accepted ? `${accepted} ${currency}` : '-' }</BlockValue>
                     </Block>
                     <Divider />
 
                     <Block>
                         <TextSub>Наличные:</TextSub>
-                        <TextSub>12323 {currency}</TextSub>
+                        <TextSub>{sumByCash ? `${sumByCash} ${currency}` : '-' } </TextSub>
                     </Block>
                     <Block>
                         <TextSub>Банковская карта:</TextSub>
-                        <TextSub>-</TextSub>
+                        <TextSub>{sumByCard ? `${sumByCard} ${currency}` : '-'}</TextSub>
                     </Block>
 
                     <Textarea
@@ -131,308 +180,6 @@ export const Payment = ({onClose, editable = {}}) => {
                     />
                 </BoxRight>
             </Box>
-            }
-
-            {view === 2 &&
-            <Box>
-                <BoxLeft isView2>
-                    <Title>Клиент</Title>
-                    <Input
-                        name='name'
-                        value={user.name}
-                        onChange={onChange}
-                        placeholder='ФИО'
-                        isUnderline
-                    />
-                    <Input
-                        type={'tel'}
-                        name='phone'
-                        value={user.phone}
-                        onChange={onChange}
-                        placeholder='Номер телефона'
-                        isUnderline
-                    />
-                    <Input
-                        name='email'
-                        value={user.email}
-                        onChange={onChange}
-                        placeholder='E-mail'
-                        error={errorEmail && 'Введите корректный e-mail'}
-                        isUnderline
-                    />
-                    <Subtitle isView2>Отправить: </Subtitle>
-                    <Icon>
-                        <img src={IconMail}  alt=""/>
-                    </Icon>
-                    <Icon green>
-                        <img src={IconWatsApp}  alt=""/>
-                    </Icon>
-                </BoxLeft>
-                <BoxRight>
-                    <Title>Платежи</Title>
-                    <Block>
-                        <BlockTitle>Итого:</BlockTitle>
-                        <BlockValue>12323 {currency}</BlockValue>
-                    </Block>
-                    <Block>
-                        <BlockTitle>Принято:</BlockTitle>
-                        <BlockValue>2323 {currency}</BlockValue>
-                    </Block>
-                    <Divider/>
-                    <Block>
-                        <TextSub>Наличные:</TextSub>
-                        <TextSub>12323 {currency}</TextSub>
-                    </Block>
-                    <Block>
-                        <TextSub>Банковская карта:</TextSub>
-                        <TextSub>-</TextSub>
-                    </Block>
-                    <Divider/>
-                    <Block>
-                        <BlockTitle>Сдача:</BlockTitle>
-                        <BlockValue>1951 {currency}</BlockValue>
-                    </Block>
-                    <FlexBox isView2>
-                        <Button
-                            color='red'
-                            onClick={onClose}
-                        >
-                            Закрыть
-                        </Button>
-                        <Button
-                            onClick={null}
-                            color='green'
-                        >
-                            Печать чека
-                        </Button>
-                    </FlexBox>
-
-                </BoxRight>
-            </Box>
-            }
-
-
-
         </Wrapper>
     )
 }
-
-const Wrapper = styled.div`
-  padding: 5%;
-  background: #ffffff;
-  border-radius: 30px;
-  width: 750px;  
-  text-align: left;
- 
- 
-  
-  @media ${device.mobile} {
-      //width: 100%;
-    }
-    
-    @media ${device.laptop} {
-      width: 650px
-    }
-  
-`
-const Box = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-const BoxLeft = styled.div`
-  width: 47%;
-  
-  ${StyledInput} {
-    width: 100%;
-    height: 56px;
-    font-size: 20px;
-    
-     @media ${device.laptop} {
-        height: 44px;
-      }
-  }
-  
-  ${StyledButton} {
-    height: 56px;
-    margin: 5% auto;
-    padding: 0 40px;
-    
-    @media ${device.laptop} {
-        height: 44px;
-      }
-  }
-  
-  ${(p) => p.isView2 && css`
-        ${StyledInput} { 
-          border-bottom: 1px solid var(--canvas-text);
-          padding-left: 0;
-          padding-top: 10px!important;
-          
-          @media ${device.laptop} {
-              font-size: 18px;
-          }
-        }
-  `}
-  
-  
-`
-const BoxRight = styled.div`
-  width: 47%;
-  
-  ${StyledTextarea} {
-      height: 150px;
-      margin-top: 5%;
-      
-      @media ${device.laptop} {
-          height: 133px;
-      }
-  }
-`
-const Title = styled.div`
-  font-size: 35px;
-  font-weight: bold;
-  margin-bottom: 10%;
-  
-  @media ${device.laptop} {
-      font-size: 28px;
-    }
-`
-const FlexBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10%;
-  
-  ${StyledButton} {
-    width: 48%;
-    height: 46px;
-    margin: 0;
-    font-size: 18px;
-    padding: 0;
-  }
-  
-  ${(p) => p.isView2 && css`
-       margin-top: 15%;
-       margin-bottom: 0;
-  `}
-`
-const Type = styled.div`
-  height: 50px;
-  width: 47%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: ${p => p.active ? '#ffffff' : 'var(--canvas-text)'};
-  background-color: ${p => p.active ? 'var(--green)' : '#ffffff'};
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
- 
-  
-  :hover {
-    
-  }
-`
-const TextCenter = styled.div`
-  text-align: center;
-`
-const Subtitle = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 5%;
-  margin-bottom: 10px;
-  
-  @media ${device.laptop} {
-     font-size: 17px;
-     ${(p) => p.isView2 && css`
-        margin-top: 27%;
-    `}
-    }
-    
-    ${(p) => p.isView2 && css`
-        margin-top: 18%;
-        margin-bottom: 15px;
-    `}
-    
-`
-
-const List = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  margin: 0 -5px;
-`
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 1 calc(25% - 10px);
-  margin: 5px;
-  height: 30px;
-  font-size: 20px;
-  color: ${p => p.active ? '#ffffff' : 'var(--canvas-text)'};
-  background-color: ${p => p.active ? 'var(--green)' : '#ffffff'};
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
-  
-  @media ${device.laptop} {
-    font-size: 18px;
-  }
-`
-
-const Block = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-`
-const BlockTitle = styled.div`
-    font-size: 22px;
-    font-weight: bold;
-    
-    @media ${device.laptop} {
-      font-size: 19px;
-    }
-  
-`
-const BlockValue = styled.div`
-    font-size: 28px;
-    font-weight: bold;
-    
-    @media ${device.laptop} {
-      font-size: 22px;
-    }
-`
-const Divider = styled.div`
-    height: 1px;
-    border-bottom: 1px solid black;
-    margin-bottom: 20px;
-`
-const TextSub = styled.div`
-    font-size: 18px;
-    color: rgba(14,37,74,0.51);
-    
-    @media ${device.laptop} {
-      font-size: 16px;
-    }
-`
-const Icon = styled.div`
-  height: 70px;
-  width: 70px;
-  border-radius: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  float: left;
-  margin-right: 20px;
-  background-color: ${p => p.green ? `var(--green)` : `var(--red)`};
-   box-shadow: var(--shadow-card);
-  cursor: pointer;
- 
-  
-  @media ${device.laptop} {
-       height: 60px;
-      width: 60px;
-      border-radius: 30px;
-    }
-`

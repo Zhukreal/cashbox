@@ -2,8 +2,9 @@ import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 import styled, { css } from "styled-components"
-import {device, useDetectDevice} from 'lib/mediaDevice'
-import {productActions} from "features/product";
+import {device} from 'lib/mediaDevice'
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
+import {productActions, productSelectors} from "features/product";
 import groupIcon from 'static/img/icons/group.png'
 
 
@@ -16,6 +17,8 @@ export const ProductGroups = () => {
     useOnClickOutside(ref, () => setOpened(false))
     const currentDevice = useDetectDevice()
     const isHasIcon = groups.length > 3
+
+    console.log('render productGroup')
 
     useEffect(() => {
         dispatch(productActions.getGroups())

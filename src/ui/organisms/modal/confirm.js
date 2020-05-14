@@ -46,8 +46,9 @@ export const Actions = styled.div`
     margin-top: 8%;
     
     ${StyledButton} {
+      height: 50px;
+      width: 150px;
       margin: 0 10px;
-      padding: 0 80px;
     }
 `
 

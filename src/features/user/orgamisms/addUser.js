@@ -57,11 +57,10 @@ export const AddUser = () => {
         const copy = {...user}
         try {
             await dispatch(userActions.addNewUser(copy))
-            setUser(initial)
+            // setUser(initial)
         } catch (e) {
             debugger
         }
-
     }
 
 

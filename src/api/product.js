@@ -14,4 +14,14 @@ export const apiCheckCashStatus = (id) => {
     // return axios.get(`${API_URL}/api/v1/cashes/${id}/stats/`)
     return axios.get(`${API_URL}/api/v1/current_shift/ `)
 }
+export const apiPay = (data) => {
+    return axios.post(`${API_URL}/api/v1/operations/`, data)
+}
+export const apiSendTicketEmail = () => {
+    return axios.post(`${API_URL}/api/v1/product_orders/{id}/send_ticket_email/`)
+}
+export const apiSendTicketWhatsApp = () => {
+    return axios.post(`${API_URL}/api/v1/product_orders/{id}/send_ticket_watsapp/`)
+}
+
 

@@ -14,8 +14,10 @@ export const ProductList = () => {
     const [openedModalNewProduct, setOpenedModalNewProduct] = useState(false)
     const dispatch = useDispatch()
     const { isLoading, skip, take, hasMore, searchFilter, activeSorting, activeGroup } = useSelector(state => state.product)
-    const products  = useSelector(productSelectors.products())
     const { currency } = useSelector(state => state.profile)
+    const products = useSelector(state => productSelectors.getProducts(state))
+
+    console.log('render productList')
 
     useEffect( () => {
         dispatch(productActions.resetFilters())

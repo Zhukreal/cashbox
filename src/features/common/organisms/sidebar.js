@@ -2,7 +2,8 @@ import React, {useState, useRef} from "react"
 import styled, {css} from "styled-components"
 import useOnClickOutside from "use-onclickoutside";
 import {useDispatch, useSelector} from "react-redux";
-import {device, useDetectDevice} from "lib/mediaDevice";
+import {device} from "lib/mediaDevice";
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {profileActions, CurrentReport} from "features/profile";
 import {commonActions} from "features/common";
 import icon1 from 'static/img/icons/icon1.svg'
@@ -54,7 +55,7 @@ export const Sidebar = ({ handleLogout }) => {
 
     const hideSidebar = () => {
         setActiveItem(0)
-        dispatch(commonActions.showSidebar(false))
+        if(isOpenedSidebar) dispatch(commonActions.showSidebar(false))
     }
 
     const handleCloseShift = async () => {

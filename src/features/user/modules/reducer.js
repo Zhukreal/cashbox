@@ -3,7 +3,12 @@ import {toModel} from './model'
 
 let initialState = {
     users: [],
-    client: {},
+    client: {
+        // id: 1,
+        // name: 'Жук Юрий',
+        // phone: '+3753339204234',
+        // email: 'zhukreal@gmail.com'
+    },
     searchUser: '',
     isLoadingUsers: false,
     isLoadingAddNew: false,

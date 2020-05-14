@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
 import {authActions} from 'features/auth'
 import {ChooseCashbox} from 'features/profile'
-import { device, useDetectDevice } from 'lib/mediaDevice';
+import { device } from 'lib/mediaDevice';
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {Button, ButtonIcon, StyledButton, Input, StyledInput, StyledInputMask, CashBoxList, Modal, Text} from "ui"
 import bgLogin from 'static/img/bg-login.png'
 import bgLoginLaptop from 'static/img/bg-login-laptop.png'
@@ -70,12 +71,15 @@ export const LoginPage = () => {
         dispatch(authActions.setFailureConnection(false))
     }
 
+    console.log('render login')
+
     const isMobileView = currentDevice.isMobile || currentDevice.isTablet
     const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     if(isExpiredSession || isFailureConnection) {
         return (
             <LoginContainer>
+
                 {isMobileView &&
                 <FormBox>
                     {isExpiredSession &&

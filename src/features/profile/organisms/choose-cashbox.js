@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 import {history} from "lib/routing";
-import {useDetectDevice} from "lib/mediaDevice";
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {Button, ButtonIcon, CashBoxList} from "ui";
 import arrowRight from 'static/img/icons/arrow-right.png'
 

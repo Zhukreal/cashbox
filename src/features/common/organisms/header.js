@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
-import {device, useDetectDevice} from 'lib/mediaDevice'
+import {device} from 'lib/mediaDevice'
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {useDebounce} from 'lib/customHooks/useDebounce'
 import {authActions} from 'features/auth'
 import {userActions, UsersList, AddUser} from 'features/user'

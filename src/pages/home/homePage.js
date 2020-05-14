@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { device, useDetectDevice } from 'lib/mediaDevice'
+import { device } from 'lib/mediaDevice'
+import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {Common} from 'features/common'
 import {ProductList, ProductGroups} from 'features/product'
 import {commonActions} from 'features/common'
@@ -20,8 +21,7 @@ export const HomePage = () => {
         dispatch(commonActions.showSidebar(false))
     }
 
-    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
-    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+    console.log('render home page')
 
     return (
         <Common>

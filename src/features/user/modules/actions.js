@@ -1,6 +1,6 @@
 import {apiGetListUsers, apiAddNewUser} from "api/user";
 import {formatDate} from  'lib/modifyData/formatDate'
-import {userReducer} from '../index'
+import {userActions, userReducer} from '../index'
 
 export const getUsers = (search) => async dispatch => {
     try {
@@ -31,7 +31,8 @@ export const addNewUser = (user) => async dispatch => {
         }
         if(!user.email) delete user.email
         if(!user.gender) delete user.gender
-        await apiAddNewUser(user);
+        const res = await apiAddNewUser(user);
+        dispatch(setClient(res.data))
         dispatch(userReducer.setShowedAdd(false))
     } catch (e){
         console.log(e)
