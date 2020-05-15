@@ -19,7 +19,7 @@ export const getProducts = createSelector(
 )
 
 export const getTotalInfo = createSelector(
-    cartSelector,
+    getProducts,
     (products) => {
         const total = {
             sum: 0,
@@ -27,12 +27,9 @@ export const getTotalInfo = createSelector(
             total: 0
         }
         products.forEach(product => {
-            const totalPrice = product.price * product.count
-            const totalDiscount = totalPrice * (product.discount / 100)
-            const currentPrice = mathRound2(totalPrice - totalDiscount)
-            total.sum += totalPrice
-            total.discount += totalDiscount
-            total.total += currentPrice
+            total.sum += product.totalPrice
+            total.discount += product.totalDiscount
+            total.total += product.currentPrice
         })
         return total
 

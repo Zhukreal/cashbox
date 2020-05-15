@@ -19,13 +19,13 @@ export const NewProduct = ({onClose, editable = {}}) => {
     const [discountCurrency, setDiscountCurrency] = useState('')
     const [total, setTotal] = useState(0)
     const dispatch = useDispatch()
-    const products = useSelector(cartSelectors.products())
+    const products = useSelector(state => cartSelectors.getProducts(state))
 
     useEffect(() => {
         if(editable.id) {
             setProduct({...editable})
-            setDiscount(editable.discount)
-            setDiscountCurrency(editable.totalDiscount)
+            setDiscount(editable.discount || '')
+            setDiscountCurrency(editable.totalDiscount || '')
         } else {
             let largest = 0;
             products.forEach((item) => {

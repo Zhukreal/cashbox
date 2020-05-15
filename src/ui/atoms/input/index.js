@@ -103,7 +103,7 @@ const sharedStyle = css`
         height: 40px;
         border-radius: 20px;
         padding: 0 20px;
-        font-size: 15px;
+        font-size: 16px;
     }
     
     ${(p) =>
