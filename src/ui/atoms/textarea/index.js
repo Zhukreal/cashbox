@@ -62,6 +62,10 @@ export const StyledTextarea = styled.textarea`
         cursor: not-allowed;
     }
    
+   
+     @media ${device.mobileTablet} { 
+        font-size: 16px;
+    }
     
     
     @media ${device.laptop} { 
@@ -69,13 +73,7 @@ export const StyledTextarea = styled.textarea`
             
         }
     
-    @media ${device.mobileTablet} { 
-        //height: 40px;
-        //border-radius: 20px;
-        //padding: 0 20px;
-        //font-size: 15px;
-    }
-    
+   
     
 `
 

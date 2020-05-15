@@ -159,6 +159,7 @@ export const Cart = () => {
             >
                 <Payment
                     onSuccess={onSuccessPayment}
+                    onClose={handleCloseModalPayment}
                 />
             </Modal>
             }
@@ -193,6 +194,7 @@ const CartWrapper = styled.div`
       position: fixed;
       width: 100%;
       height: auto;
+      z-index: 1002;
       
       ${p => p.isShowedMobileCart && css`
          height: 100vh;

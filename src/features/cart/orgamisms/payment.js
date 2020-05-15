@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
+import styled from 'styled-components'
+import {device} from "lib/mediaDevice";
 import {modifyToNumber} from "lib/modifyData/modifyToNumber";
+import {useDetectDevice} from "lib/customHooks/useDetectDevice";
 import {cartActions, cartSelectors} from "features/cart"
-import {Input, Button, Textarea} from "ui"
-import {Wrapper, Box, BoxLeft, BoxRight, Title, FlexBox, Type, TextCenter, Subtitle, List, Item, Block, BlockTitle, BlockValue, Divider, TextSub, Icon, Loading, SpinnerBox, Spinner} from './styled'
+import {Input, Button, Textarea, FooterMobile, IconArrowLeft} from "ui"
+import {Wrapper, Box, BoxLeft, BoxRight, Title, FlexBox, Type, TextCenter, Subtitle, List, Item, Block, BlockTitle, BlockValue, Divider, TextSub, Icon, Loading, SpinnerBox, Spinner, HMobile} from './styled'
 
 
-export const Payment = ({onSuccess, editable = {}}) => {
+export const Payment = ({onSuccess, onClose}) => {
     const items = [500, 1000, 2000, 5000, 10000, 20000]
     const [typePayment, setTypePayment] = useState('cash')
     const [activeCash, setActiveCash] = useState(null)
@@ -21,6 +24,9 @@ export const Payment = ({onSuccess, editable = {}}) => {
     // const products = useSelector(state => cartSelectors.getProducts(state))
     const totalInfo = useSelector(state => cartSelectors.getTotalInfo(state))
 
+    const currentDevice = useDetectDevice()
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     useEffect(() => {
         if(typePayment === 'cash') return
@@ -94,7 +100,12 @@ export const Payment = ({onSuccess, editable = {}}) => {
 
     return (
         <Wrapper>
-            {isLoadingPayment && <Loading><SpinnerBox><Spinner /></SpinnerBox> Оплата...</Loading>}
+            {isMobileView &&
+            <HMobile>
+                <IconArrowLeft onClick={onClose}  />
+            </HMobile>
+            }
+            {(isLoadingPayment && isDesktopView) && <Loading><SpinnerBox><Spinner /></SpinnerBox> Оплата...</Loading>}
             <Box>
                 <BoxLeft>
                     <Title>Прием оплаты</Title>
@@ -121,6 +132,8 @@ export const Payment = ({onSuccess, editable = {}}) => {
                             onChange={onChangeSumByCard}
                             placeholder='Сумма'
                         />
+
+                        {isDesktopView &&
                         <TextCenter>
                             <Button
                                 onClick={handlePayment}
@@ -129,6 +142,16 @@ export const Payment = ({onSuccess, editable = {}}) => {
                                 Принять
                             </Button>
                         </TextCenter>
+                        }
+
+                        {isMobileView &&
+                        <FooterMobile
+                            title={'Принять'}
+                            onOk={handlePayment}
+                            disabled={null}
+                            isLoading={isLoadingPayment}
+                        />
+                        }
                     </>
                     }
 

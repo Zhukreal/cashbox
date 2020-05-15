@@ -7,7 +7,7 @@ import {useDetectDevice} from "lib/customHooks/useDetectDevice";
 import {productActions, productSelectors, Skeleton, NewProduct} from "features/product";
 import {cartActions} from "features/cart";
 import { Modal, Confirm } from "ui"
-import plusIcon from 'static/img/icons/plus.png'
+import plusIcon from 'static/img/icons/plus.svg'
 import emptyPhoto from 'static/img/no-photo.png'
 
 

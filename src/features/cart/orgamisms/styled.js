@@ -13,7 +13,11 @@ export const Wrapper = styled.div`
  
   
   @media ${device.mobile} {
-      //width: 100%;
+      width: 100%;
+      height: 100vh;
+      overflow-y: auto;
+      border-radius: 0;
+      padding: 0;
     }
     
     @media ${device.laptop} {
@@ -24,9 +28,31 @@ export const Wrapper = styled.div`
 export const Box = styled.div`
   display: flex;
   justify-content: space-between;
+  
+  @media ${device.mobile} {
+      flex-direction: column;
+      //height: 510px;
+      margin-top: calc(100vh - 510px);
+      height: 510px;
+      border-radius: 30px 30px 0 0 ;
+      box-shadow: var(--shadow-card);
+      padding: 5%;
+      justify-content: flex-start;
+      
+      ${p => p.isView2 && css`
+      margin-top: calc(100vh - 550px);
+      height: 550px;
+    `}
+    }
+  
 `
 export const BoxLeft = styled.div`
   width: 47%;
+  
+  @media ${device.mobile} {
+      width: 100%;
+      order: 2
+    }
   
   ${StyledInput} {
     width: 100%;
@@ -65,9 +91,19 @@ export const BoxLeft = styled.div`
 export const BoxRight = styled.div`
   width: 47%;
   
+   @media ${device.mobile} {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  
   ${StyledTextarea} {
       height: 150px;
       margin-top: 5%;
+      
+      
+       @media ${device.mobileTablet} {
+          height: 70px;
+      }
       
       @media ${device.laptop} {
           height: 133px;
@@ -79,6 +115,10 @@ export const Title = styled.div`
   font-weight: bold;
   margin-bottom: 10%;
   
+  @media ${device.mobile} {
+      display: none;
+    }
+  
   @media ${device.laptop} {
       font-size: 28px;
     }
@@ -87,6 +127,10 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10%;
+  
+   @media ${device.mobile} {
+       margin-bottom: 20px;
+    }
   
   ${StyledButton} {
     width: 48%;
@@ -128,17 +172,25 @@ export const Subtitle = styled.div`
   margin-top: 5%;
   margin-bottom: 10px;
   
+  @media ${device.mobileTablet} {
+     ${(p) => p.isView2 && css`
+        display: none;
+    `}
+  }
+  
   @media ${device.laptop} {
      font-size: 17px;
      ${(p) => p.isView2 && css`
         margin-top: 27%;
     `}
-    }
+  }
     
     ${(p) => p.isView2 && css`
         margin-top: 18%;
         margin-bottom: 15px;
     `}
+    
+    
     
 `
 export const List = styled.div`
@@ -174,6 +226,10 @@ export const BlockTitle = styled.div`
     font-size: 22px;
     font-weight: bold;
     
+    @media ${device.mobile} {
+      font-size: 18px;
+    }
+    
     @media ${device.laptop} {
       font-size: 19px;
     }
@@ -186,6 +242,10 @@ export const BlockValue = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: bold;
+    
+     @media ${device.mobile} {
+      font-size: 20px;
+    }
     
     @media ${device.laptop} {
       font-size: 22px;
@@ -203,6 +263,10 @@ export const TextSub = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     color: rgba(14,37,74,0.51);
+    
+     @media ${device.mobile} {
+      font-size: 14px;
+    }
     
     @media ${device.laptop} {
       font-size: 16px;
@@ -226,6 +290,15 @@ export const Icon = styled.div`
       cursor: progress;
    `}
  
+ @media ${device.mobile} {
+      height: 40px;
+      width: 40px;
+      border-radius: 20px;
+      
+      img {
+        width: 20px;
+      }
+    }
   
   @media ${device.laptop} {
        height: 60px;
@@ -259,6 +332,14 @@ export const SpinnerBox = styled.span`
     //left: 50%;
     margin-top: -12px;
     margin-left: -12px;
+`
+export const HMobile = styled.div`
+ 
+  @media ${device.mobile} {
+      position: absolute;
+      top: 20px;
+      left: 5%;
+    }
 `
 export const Spinner = () => <svg className="circular" viewBox="22 22 44 44">
     <circle className="path" fill="none" r="20" cx="44" cy="44" strokeWidth="3"/>

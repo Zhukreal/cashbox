@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import styled from "styled-components";
 import {mathRound2} from "lib/math";
+import {device} from "lib/mediaDevice";
 import {emailValidator} from "lib/validators";
 import {cartActions, cartSelectors} from "features/cart"
-import {Input, Button} from "ui"
+import {Input, Button, IconArrowLeft, StyledInput, FooterMobile} from "ui"
 import IconMail from 'static/img/icons/mail.png'
 import IconWatsApp from 'static/img/icons/whatsapp.png'
-import {Wrapper, Box, BoxLeft, BoxRight, Title, FlexBox, Type, TextCenter, Subtitle, List, Item, Block, BlockTitle, BlockValue, Divider, TextSub, Icon, Loading, SpinnerBox, Spinner} from './styled'
+import {Wrapper, Box, BoxLeft, BoxRight, Title, FlexBox, Type, TextCenter, Subtitle, List, Item, Block, BlockTitle, BlockValue, Divider, TextSub, Icon, Loading, SpinnerBox, Spinner, HMobile} from './styled'
+import {useDetectDevice} from "../../../lib/customHooks/useDetectDevice";
 
 
 const initial = {
@@ -29,6 +31,9 @@ export const Check = ({onClose, editable = {}}) => {
 
     const changeCheck = mathRound2(currentPayment.accepted - currentPayment.total)
 
+    const currentDevice = useDetectDevice()
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     // console.log('currentPayment', currentPayment)
 
@@ -81,7 +86,12 @@ export const Check = ({onClose, editable = {}}) => {
 
     return (
         <Wrapper>
-            <Box>
+            {isMobileView &&
+            <HMobile>
+                <IconArrowLeft onClick={onClose}  />
+            </HMobile>
+            }
+            <Box isView2 >
                 <BoxLeft isView2>
                     <Title>Клиент</Title>
 
@@ -92,13 +102,14 @@ export const Check = ({onClose, editable = {}}) => {
                         <ClientPhone>{client.email}</ClientPhone>
                     </ClientInfo>
                     :
-                    <>
+                    <WrapInputs>
                         <Input
                             name='name'
                             value={user.name}
                             onChange={onChange}
                             placeholder='ФИО'
-                            isUnderline
+                            isUnderline={isDesktopView}
+                            isForm={isMobileView}
                         />
                         <Input
                             type={'tel'}
@@ -106,7 +117,8 @@ export const Check = ({onClose, editable = {}}) => {
                             value={user.phone}
                             onChange={onChange}
                             placeholder='Номер телефона'
-                            isUnderline
+                            isUnderline={isDesktopView}
+                            isForm={isMobileView}
                         />
                         <Input
                             name='email'
@@ -114,26 +126,39 @@ export const Check = ({onClose, editable = {}}) => {
                             onChange={onChange}
                             placeholder='E-mail'
                             error={errorEmail && 'Введите корректный e-mail'}
-                            isUnderline
+                            isUnderline={isDesktopView}
+                            isForm={isMobileView}
                         />
-                    </>
+                    </WrapInputs>
                     }
 
 
                     <Subtitle isView2>Отправить: </Subtitle>
-                    <Icon
-                        onClick={handleSendTicketEmail}
-                        isLoading={isLoadingTicketEmail}
-                    >
-                        <img src={IconMail}  alt=""/>
-                    </Icon>
-                    <Icon
-                        green
-                        onClick={handleSendTicketWhatsApp}
-                        isLoading={isLoadingTicketWhatsApp}
-                    >
-                        <img src={IconWatsApp}  alt=""/>
-                    </Icon>
+
+                    <TempWrap>
+                        <Icon
+                            onClick={handleSendTicketEmail}
+                            isLoading={isLoadingTicketEmail}
+                        >
+                            <img src={IconMail}  alt=""/>
+                        </Icon>
+                        <Icon
+                            green
+                            onClick={handleSendTicketWhatsApp}
+                            isLoading={isLoadingTicketWhatsApp}
+                        >
+                            <img src={IconWatsApp}  alt=""/>
+                        </Icon>
+                    </TempWrap>
+
+                    {isMobileView &&
+                    <FooterMobile
+                        title={'Печать чека'}
+                        onOk={handlePrintCheck}
+                        disabled={null}
+                        // isLoading={isLoadingPayment}
+                    />
+                    }
                 </BoxLeft>
                 <BoxRight>
                     <Title>Платежи</Title>
@@ -159,6 +184,8 @@ export const Check = ({onClose, editable = {}}) => {
                         <BlockTitle>Сдача:</BlockTitle>
                         <BlockValue>{changeCheck} {currency}</BlockValue>
                     </Block>
+
+                    {isDesktopView &&
                     <FlexBox isView2>
                         <Button
                             color='red'
@@ -173,6 +200,7 @@ export const Check = ({onClose, editable = {}}) => {
                             Печать чека
                         </Button>
                     </FlexBox>
+                    }
 
                 </BoxRight>
             </Box>
@@ -192,4 +220,26 @@ const ClientPhone = styled.div`
   font-size: 16px;
   color: #444444;
   margin-bottom: 10px;
+`
+const WrapInputs = styled.div`
+  @media ${device.mobileTablet} {
+      
+      
+      ${StyledInput} {
+        height: 40px;
+        border-radius: 20px;
+        padding: 0 20px!important;
+        font-size: 16px;
+        border: none;
+      }
+    }
+`
+
+const TempWrap = styled.div`
+  @media ${device.mobileTablet} { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
 `
