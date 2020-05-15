@@ -11,9 +11,9 @@ export const getProducts = createSelector(
             const totalDiscount = totalPrice * (product.discount / 100)
             const currentPrice = mathRound2(totalPrice - totalDiscount)
             return {...product,
-                totalPrice: totalPrice,
-                totalDiscount: totalDiscount,
-                currentPrice: currentPrice
+                totalPrice: totalPrice || 0,
+                totalDiscount: totalDiscount || 0,
+                currentPrice: currentPrice || 0
             }
         })
 )
@@ -27,9 +27,9 @@ export const getTotalInfo = createSelector(
             total: 0
         }
         products.forEach(product => {
-            total.sum += product.totalPrice
-            total.discount += product.totalDiscount
-            total.total += product.currentPrice
+            total.sum += product.totalPrice || 0
+            total.discount += product.totalDiscount || 0
+            total.total += product.currentPrice || 0
         })
         return total
 

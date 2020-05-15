@@ -116,6 +116,7 @@ export const Header = () => {
                             <Logo src={logo} />
                         </HMR>
                     </HeaderRowMobileTop>
+                    <ProductSorting />
                     <HeaderRowMobileSearch>
                         <Input
                             type='search'
@@ -146,8 +147,8 @@ const HeaderBox = styled.header`
   background-color: var(--card);
   border-color: var(--borders);
   
-  @media ${device.mobile} { 
-    height: 120px;
+  @media ${device.mobileTablet} { 
+    height: 160px;
   }
   
   @media ${device.laptop} { 
@@ -166,7 +167,7 @@ const HeaderRow = styled.div`
 
 const HeaderRowMobile = styled.div`
   display: flex;
-  height: 120px;
+  min-height: 160px;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;

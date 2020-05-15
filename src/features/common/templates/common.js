@@ -26,6 +26,6 @@ export const ContentBox = styled.div`
   background-color: var(--canvas);
   
   @media ${device.mobileTablet} { 
-      padding-top: 170px;
+      padding-top: 210px;
   }
 `

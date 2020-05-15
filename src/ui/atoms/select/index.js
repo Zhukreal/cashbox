@@ -10,6 +10,7 @@ export const Select = (
         onChange,
         options,
         placeholder,
+        isUnderline
     }) => {
 
     return (
@@ -19,6 +20,7 @@ export const Select = (
             onChange={onChange}
             options={options}
             placeholder={placeholder}
+            isUnderline={isUnderline}
         >
             <option value="" disabled selected>{placeholder}</option>
             {options.map((item) => <option key={item.value} value={item.value}>{item.label}</option> )}
@@ -46,8 +48,13 @@ export const StyledSelect = styled.select`
     color: ${p => p.value? 'inherit' : 'rgba(14,37,74,0.302)'};
     
     @media ${device.mobileTablet} { 
-        height: 40px;
-        font-size: 15px;
+            height: 40px;
+        font-size: 16px;
+        border-bottom: none;
+        box-shadow: var(--shadow-card);
+        padding-top: 5px;
+        border-radius: 20px;
+        
     }
     
     @media ${device.laptop} { 

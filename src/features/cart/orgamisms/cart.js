@@ -1,26 +1,43 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
+import {useDetectDevice} from "lib/customHooks/useDetectDevice"
 import {commonActions} from "features/common";
 import {NewProduct, productActions, productSelectors} from "features/product";
 import {cartActions, cartSelectors, Payment, Check} from "../index";
 import {Button, Modal, StyledButton} from 'ui'
-import minusIcon from 'static/img/icons/minus-s.png'
-import noPhoto from 'static/img/no-photo.png'
-import closeCard from 'static/img/icons/close-card.png'
+import { DesktopView } from '../ui/desktop-view'
+import { MobileView } from '../ui/mobile-view'
+import {device} from "../../../lib/mediaDevice";
+import {useDebounce} from "../../../lib/customHooks/useDebounce";
+import {userActions, UsersList} from "../../user";
+
 
 
 export const Cart = () => {
+    const [isShowedMobileCart, setShowedMobileCart] = useState(false)
     const [openedModal, setOpenedModal] = useState(false)
     const [openedModalPayment, setOpenedModalPayment] = useState(false)
     const [openedModalCheck, setOpenedModalCheck] = useState(false)
     const [editable, setEditable] = useState({})
-    const dispatch = useDispatch()
+    const [searchU, setSearchU] = useState('')
+    const debouncedSearchU = useDebounce(searchU, 300);
+
     const { currency } = useSelector(state => state.profile)
+    const { searchUser, client, showedModalAdd } = useSelector(state => state.user)
     const products = useSelector(state => cartSelectors.getProducts(state))
     const totalInfo = useSelector(state => cartSelectors.getTotalInfo(state))
+    const dispatch = useDispatch()
+    const currentDevice = useDetectDevice()
 
-    console.log('render cart')
+    useEffect(() => {
+            dispatch(userActions.getUsers(debouncedSearchU))
+        },[debouncedSearchU]
+    );
+    const onChangeSearchUsers = (e) => {
+        const {value} = e.target
+        setSearchU(value)
+    }
 
     const handleAddOne = (e, product) => {
         e.stopPropagation()
@@ -31,6 +48,7 @@ export const Cart = () => {
         dispatch(cartActions.removeOne(product))
     }
     const handleClearCart = () => {
+        setShowedMobileCart(false)
         dispatch(cartActions.clearCart())
     }
     const handleRemoveProduct = (e,id) => {
@@ -66,77 +84,60 @@ export const Cart = () => {
         setOpenedModalCheck(true)
     }
 
+    const handleClearClient = () => {
+        setSearchU('')
+        dispatch(userActions.setClient({}))
+    }
+
+    const handleClickBlur = (e) => {
+        console.log('click')
+    }
+
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+
     return (
-        <>
-            <CartBox>
-                <CartRow>
-                    {products.map(item =>
-                        <CartCol
-                            key={item.name}
-                            onClick={() => handleEdit(item)}
-                            active={editable.id === item.id}
-                        >
-                            <Close
-                                onClick={(e) => handleRemoveProduct(e, item.id)}
-                                active={editable.id === item.id}
-                            >
-                                <img src={closeCard} alt=""/>
-                            </Close>
-                            <CartItemAvatar src={item.image ? item.image : noPhoto } />
-                            <CartItemInfo>
-                                <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-                                {!!item.discount && <CartItemInfoDiscount>Скидка: {item.discount}%</CartItemInfoDiscount>}
-                                <CartItemInfoPrice>{item.currentPrice} {currency}</CartItemInfoPrice>
-                            </CartItemInfo>
-                            <CartItemCount>
-                                <CartItemCountIcon
-                                    onClick={(e) => handleAddOne(e, item)}
-                                    active={editable.id === item.id}
-                                >
-                                    <Icon>+</Icon>
-                                </CartItemCountIcon>
-                                <CartItemCountValue>{item.count} {item.unit}</CartItemCountValue>
-                                <CartItemCountIcon2 onClick={(e) => handleRemoveOne(e, item)} >
-                                    <IconImg src={minusIcon} />
-                                </CartItemCountIcon2>
-                            </CartItemCount>
-                        </CartCol>
-                    )}
-                </CartRow>
-                <CartTotal>
-                    <CartTotalRow>
-                        <CartTotalRowTitle>Итого без скидки</CartTotalRowTitle>
-                        <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer>{totalInfo.sum}</CartTotalRowValuer>
-                    </CartTotalRow>
-                    <CartTotalRow>
-                        <CartTotalRowTitle>Скидка</CartTotalRowTitle>
-                        <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer>{totalInfo.discount}</CartTotalRowValuer>
-                    </CartTotalRow>
-                    <CartTotalRow>
-                        <CartTotalRowTitle bold>Итого</CartTotalRowTitle>
-                        <CartTotalRowDivider></CartTotalRowDivider>
-                        <CartTotalRowValuer bold>{totalInfo.total}</CartTotalRowValuer>
-                    </CartTotalRow>
-                    {!!products.length &&
-                    <CartBtnBox>
-                        <Button
-                            color='red'
-                            onClick={handleClearCart}
-                        >
-                            Отмена
-                        </Button>
-                        <Button
-                            onClick={handleOpenModalPayment}
-                            color='green'
-                        >
-                            Оплата
-                        </Button>
-                    </CartBtnBox>
-                    }
-                </CartTotal>
-            </CartBox>
+        <CartWrapper
+            isShowedMobileCart={isShowedMobileCart && products.length}
+        >
+            {isDesktopView  &&
+                <DesktopView
+                    products={products}
+                    editable={editable}
+                    currency={currency}
+                    totalInfo={totalInfo}
+                    handleEdit={handleEdit}
+                    handleRemoveProduct={handleRemoveProduct}
+                    handleAddOne={handleAddOne}
+                    handleRemoveOne={handleRemoveOne}
+                    handleClearCart={handleClearCart}
+                    handleOpenModalPayment={handleOpenModalPayment}
+                />
+            }
+            {isMobileView &&
+                <>
+                    <MobileView
+                        isShowedMobileCart={isShowedMobileCart}
+                        setShowedMobileCart={setShowedMobileCart}
+                        client={client}
+                        searchU={searchU}
+                        onChangeSearchUsers={onChangeSearchUsers}
+                        products={products}
+                        editable={editable}
+                        currency={currency}
+                        totalInfo={totalInfo}
+                        handleEdit={handleEdit}
+                        handleRemoveProduct={handleRemoveProduct}
+                        handleAddOne={handleAddOne}
+                        handleRemoveOne={handleRemoveOne}
+                        handleClearCart={handleClearCart}
+                        handleOpenModalPayment={handleOpenModalPayment}
+                        handleClearClient={handleClearClient}
+                    />
+                    {searchUser && <UsersList/>}
+                    {(searchUser || showedModalAdd) && <Blur onClick={handleClickBlur} />}
+                </>
+            }
 
 
             {openedModal &&
@@ -174,203 +175,53 @@ export const Cart = () => {
             }
 
 
-        </>
+        </CartWrapper>
     )
 }
 
-const CartBox = styled.div`
-    width: 100%;
-    //width: 270px;
-    max-width: inherit;
-    position: fixed;
-    height: calc(100vh - 150px);
-    padding-top: 5px;
-`
-const CartRow = styled.div`
-    //display: flex;
-    //flex-wrap: wrap;
-    //justify-content: space-between;
-    height: calc(100vh - 450px);
-    padding: 0 5px;
-    overflow-y: auto;
-`
 
-const Close = styled.div`
-    position: absolute;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 14px;
-    top: 10px;
-    left: 10px;
-    background-color: #B5B5B5;
-    cursor: pointer;
-    
-    ${(p) =>
-    p.active &&
-    css`
-      background-color: #e6e6e6;
-    `}
-    
-`
-const CartItemInfoDiscount = styled.div`
-    font-size: 15px;
-    color: #6D82A3; 
-`
-const CartCol = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
+const CartWrapper = styled.div`
   width: 100%;
-  height: 170px;
-  margin-bottom: 2em;
-  padding: 0 20px;
-  border-radius: 30px;
-  box-sizing: border-box;
-  color: var(--canvas-text);
-  background-color: #ffffff;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.161);
-  cursor: pointer;
+  max-width: 480px;
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  position: relative;
+  //padding-left: 30px;
+  //background-color: #f0faff;
   
-  :hover {
-    ${Close} {
-      display: ${p => p.active ? 'none' : 'flex' };
-    }
+  @media ${device.mobileTablet} { 
+      position: fixed;
+      width: 100%;
+      height: auto;
+      
+      ${p => p.isShowedMobileCart && css`
+         height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        background-color: #ffffff;
+        z-index: 1002;
+      ` }
+     
   }
   
-   
-   ${(p) =>
-    p.active &&
-    css`
-      background-color: var(--green);
-      color: #ffffff;
-      
-      ${CartItemInfoDiscount} {
-          color: #ffffff;
-          opacity: 0.7;
-      }
-    `}
+  @media ${device.laptop} { 
+      max-width: 400px;
+  }
 `
-const CartTotal = styled.div`
+
+const Blur = styled.div`
+    width: 100%;
+    height: calc(100% - 100px);
     position: absolute;
     bottom: 0;
-    width: 100%;
-    height: 250px;
-    border-radius: 30px;
-    padding: 30px;
-    background-color: #ffffff;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
-`
-const CartItemAvatar = styled.img`
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-`
-const CartItemInfo = styled.div`
-    font-size: 18px;
-    width: 180px;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    //align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-`
-const CartItemInfoTitle = styled.div`
-    font-size: 22px;
-    max-height: 75px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: GilroyBold, sans-serif;
-`
-const CartItemInfoPrice = styled.div`
-    font-size: 28px;
-`
-const CartItemCount = styled.div`
-    width: 80px;
-    min-width: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-const CartTotalRow = styled.div`
-   display: flex;
-   justify-content: space-between;
-   margin-bottom: 20px;
-`
-const CartTotalRowTitle = styled.div`
-   white-space: nowrap;
-   font-size: 20px;
-   
-   ${(p) =>
-    p.bold &&
-    css`
-      font-family: GilroyBold, sans-serif;
-    `}
-`
-const CartTotalRowDivider = styled.div`
-     width: 100%;
-    border-bottom: 1px solid #7d7d7d;
-    position: relative;
-    top: -5px;
-    margin: 0 5px;
-`
-const CartTotalRowValuer = styled.div`
-   font-size: 20px;
-   
-   ${(p) =>
-    p.bold &&
-    css`
-      font-family: GilroyBold, sans-serif;
-    `}
-`
-const CartBtnBox = styled.div`
-   display: flex;
-   justify-content: space-between;
-   
-   ${StyledButton} {
-    width: 48%;
-   }
-`
-const CartItemCountIcon = styled.div`
-   width: 22px;
-   height: 22px;
-   font-size: 16px;
-   line-height: 22px;
-   border-radius: 11px;
-   
-   color: #ffffff;
-   background-color: var(--green);
-   cursor: pointer;
-   
-   
-   ${(p) =>
-    p.active &&
-    css`
-      background-color: #ffffff;
-      color: var(--green);
-    `}
-`
-const CartItemCountIcon2 = styled(CartItemCountIcon)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--red);
-`
-
-const CartItemCountValue = styled.div`
-   font-size: 28px;
-   margin: 5px 0;
-`
-const Icon = styled.span`
-    position: relative;
-    left: 6px;
-    top: -1px;
-`
-
-const IconImg = styled.img`
-    
+    left: 0;
+    background: rgba(255,255,255,0.9);
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    -o-filter: blur(0px);
+    -ms-filter: blur(0px);
+    -moz-filter: blur(0px);
+    -webkit-filter: blur(0x);
+    z-index: 2;
 `

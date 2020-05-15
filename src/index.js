@@ -7,7 +7,6 @@ import { history } from "./lib/routing"
 import { App } from "./app"
 import {store} from './lib/store/store'
 
-
 const root = document.querySelector("#root")
 
 const render = () => {

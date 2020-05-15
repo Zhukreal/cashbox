@@ -27,23 +27,6 @@ export const getProducts = ({ isMore }) => async dispatch => {
     }
 };
 
-export const getProductsMore = () => async dispatch => {
-    try {
-        const { product } = store.getState()
-        // console.log('product', product)
-        const obj = {
-            search: product.searchFilter,
-            skip: product.skip,
-            take: product.take
-        }
-        let res = await apiGetListProducts(obj);
-        dispatch(productReducer.setMoreProducts(res.data))
-    } catch (e){
-        console.log(e)
-    } finally {
-
-    }
-};
 export const setSearch = (str) => async dispatch => {
     dispatch(productReducer.setSearchFilter(str))
 }

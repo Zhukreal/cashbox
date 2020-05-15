@@ -18,7 +18,6 @@ export const ProductGroups = () => {
     const currentDevice = useDetectDevice()
     const isHasIcon = groups.length > 3
 
-    console.log('render productGroup')
 
     useEffect(() => {
         dispatch(productActions.getGroups())
@@ -260,9 +259,10 @@ const Title = styled.div`
 
 const GroupBoxMobile = styled.div`
     position: fixed;
-    top: 120px;
+    top: 160px;
     height: 50px;
     max-width: 100%;
+    min-width: 100%;
     display: flex;
     align-items: center;
     white-space: nowrap;

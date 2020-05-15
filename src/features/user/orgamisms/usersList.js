@@ -52,11 +52,17 @@ const UserContainer = styled.div`
     border-radius: 30px;
     background: #ffffff;
     box-shadow: var(--shadow-card);
+    z-index: 3;
     
     @media ${device.laptop} { 
         width: 315px;
         max-height: 350px;
         top: 90px;
+    }
+    
+    @media ${device.mobileTablet} { 
+        width: 90%;
+        left: 5%;
     }
     
 `

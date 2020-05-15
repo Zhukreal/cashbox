@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { device } from 'lib/mediaDevice'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
@@ -21,7 +21,6 @@ export const HomePage = () => {
         dispatch(commonActions.showSidebar(false))
     }
 
-    console.log('render home page')
 
     return (
         <Common>
@@ -30,9 +29,7 @@ export const HomePage = () => {
                     <ProductList />
                     <ProductGroups />
                 </ProductsBox>
-                <CartBox>
-                    <Cart />
-                </CartBox>
+                <Cart />
                 { isBlurred && <Blur onClick={() => handleCloseSidebar()} />}
                 { isBlurred2 && <Blur2 />}
             </FlexBlock>
@@ -65,24 +62,6 @@ const ProductsBox = styled.div`
       width: calc(100% - 400px);
       max-width: calc(100% - 400px);
     }
-`
-const CartBox = styled.div`
-  width: 100%;
-  max-width: 480px;
-  height: calc(100vh - 120px);
-  overflow-y: auto;
-  position: relative;
-  //padding-left: 30px;
-  //background-color: #f0faff;
-  
-  @media ${device.mobileTablet} { 
-      max-width: 100%;
-      display: none;
-  }
-  
-  @media ${device.laptop} { 
-      max-width: 400px;
-  }
 `
 const Blur = styled.div`
     width: 100%;

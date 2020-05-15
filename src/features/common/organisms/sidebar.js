@@ -31,10 +31,10 @@ import icon9w from 'static/img/icons/icon9-w.svg'
 import icon10w from 'static/img/icons/icon10-w.svg'
 import icon11w from 'static/img/icons/icon11-w.svg'
 import close from 'static/img/icons/close.png'
-import burger from "../../../static/img/burger.png";
-import burgerM from "../../../static/img/icons/burger-m.png";
-import {Modal} from "../../../ui/organisms/modal";
-import {Confirm} from "../../../ui/organisms";
+import burger from "static/img/icons/burger-desktop.svg"
+import burgerM from "static/img/icons/burger-mobile.svg"
+import {Modal} from "ui/organisms/modal";
+import {Confirm} from "ui/organisms";
 import {set} from "browser-cookies";
 
 
@@ -264,7 +264,8 @@ const IconSidebar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--green);
+  background-color: #ffffff;
+  box-shadow: var(--shadow-card);
   cursor: pointer;
   
   -webkit-touch-callout: none; /* iOS Safari */

@@ -162,7 +162,12 @@ export const BoxInput = styled.div`
     p.isForm &&
     css`
       margin-bottom: 30px;
+      
+    @media ${device.mobileTablet} { 
+        margin-bottom: 10px;
+    }
     `}
+    
   
 `
 

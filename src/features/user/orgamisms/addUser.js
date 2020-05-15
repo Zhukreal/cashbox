@@ -4,12 +4,14 @@ import useOnClickOutside from "use-onclickoutside";
 import styled, { css } from "styled-components"
 import DatePicker from "react-datepicker"
 import { device } from 'lib/mediaDevice'
+import {useDetectDevice} from "lib/customHooks/useDetectDevice";
 import { emailValidator } from 'lib/validators'
-import {Input, StyledInput, Button, StyledButton, InputDatepicker, Select} from 'ui'
-import add from "static/img/add.png";
+import {Input, StyledInput, Button, StyledButton, InputDatepicker, Select, FooterMobile, IconAddPerson, StyledSelect} from 'ui'
+import add from "static/img/icons/add-person.svg";
 import {userActions} from "../index";
 import "react-datepicker/dist/react-datepicker.css";
-import {authActions} from "../../auth";
+
+
 
 const initial = {
     name: '',
@@ -30,6 +32,7 @@ export const AddUser = () => {
     const dispatch = useDispatch()
     const ref = useRef(null)
     useOnClickOutside(ref, () => dispatch(userActions.setShowedAdd(false)))
+    const currentDevice = useDetectDevice()
 
     useEffect(() => {
         if(user.email) {
@@ -63,14 +66,20 @@ export const AddUser = () => {
         }
     }
 
-
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
     const disabled = !user.name || !user.phone || errorEmail
 
     return (
         <Box ref={ref}>
+
+            {isMobileView && <IconAddPerson onClick={toggleShowed} /> }
+            {isDesktopView &&
             <ProfileBtn onClick={toggleShowed}>
                 <ProfileAddImg src={add}/>
             </ProfileBtn>
+            }
+
 
             { showedModalAdd &&
                 <UserContainer>
@@ -81,7 +90,8 @@ export const AddUser = () => {
                             value={user.name}
                             onChange={onChange}
                             placeholder='ФИО'
-                            isUnderline
+                            isUnderline={isDesktopView}
+                            isForm={isMobileView}
                         />
                         <Input
                             type={'tel'}
@@ -89,7 +99,8 @@ export const AddUser = () => {
                             value={user.phone}
                             onChange={onChange}
                             placeholder='Номер телефона'
-                            isUnderline
+                            isUnderline={isDesktopView}
+                            isForm={isMobileView}
                         />
                         <Input
                             name='email'
@@ -97,7 +108,7 @@ export const AddUser = () => {
                             onChange={onChange}
                             placeholder='E-mail'
                             error={errorEmail && 'Введите корректный e-mail'}
-                            isUnderline
+                            isForm={isMobileView}
                         />
                         {/*<Input*/}
                         {/*    type='date'*/}
@@ -111,6 +122,7 @@ export const AddUser = () => {
                             selected={user.birth_date}
                             onChange={onChangeBd}
                             placeholderText='Дата рождения'
+                            isUnderline={isDesktopView}
                         />
                         <Select
                             name='gender'
@@ -118,9 +130,22 @@ export const AddUser = () => {
                             onChange={onChange}
                             options={genders}
                             placeholder='Пол'
+                            isUnderline={isDesktopView}
                         />
                     </BoxInputs>
 
+
+
+                    {isMobileView &&
+                    <FooterMobile
+                        title={'Добавить'}
+                        onOk={handleSave}
+                        disabled={disabled}
+                        isLoading={isLoadingAddNew}
+                    />
+                    }
+
+                    {isDesktopView &&
                     <Footer>
                         <Button
                             onClick={toggleShowed}
@@ -138,6 +163,11 @@ export const AddUser = () => {
                             Добавить
                         </Button>
                     </Footer>
+                    }
+
+
+
+
                 </UserContainer>
 
             }
@@ -151,6 +181,10 @@ const Box = styled.div`
 const BoxInputs = styled.div`
   width: 80%;
   margin: 0 auto;
+  
+  @media ${device.mobileTablet} { 
+        width: 100%;
+    }
 `
 
 const UserContainer = styled.div`
@@ -163,6 +197,24 @@ const UserContainer = styled.div`
     border-radius: 30px;
     background: #ffffff;
     box-shadow: var(--shadow-card);
+    
+    
+    @media ${device.mobileTablet} { 
+        width: 100%;
+        left: 0;
+        top: auto;
+        bottom: 0;
+        z-index: 3;
+        border-radius: 30px 30px 0 0;
+        
+        ${StyledInput} {
+          border: none;
+        }
+        
+        ${StyledSelect} {
+            margin-top: 10px;
+        }
+    }
     
     @media ${device.laptop} { 
         width: 400px;
@@ -202,6 +254,10 @@ const Title = styled.div`
   font-size: 25px;
   font-weight: bold;
   margin-bottom: 5%;
+  
+  @media ${device.mobileTablet} { 
+        font-size: 20px;
+    }
 `
 const Footer = styled.div`
   display: flex;

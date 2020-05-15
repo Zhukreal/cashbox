@@ -3,12 +3,12 @@ import styled from "styled-components"
 import useOnClickOutside from "use-onclickoutside"
 import { device } from 'lib/mediaDevice';
 
-export const Modal = ({ children, onClose, noPadding }) => {
+export const Modal = ({ children, onClose, noPadding, noBorderRadius }) => {
     const ref = useRef(null)
     useOnClickOutside(ref, onClose)
 
     return (
-            <ModalBox ref={ref} noPadding={noPadding} >
+            <ModalBox ref={ref} noPadding={noPadding} noBorderRadius={noBorderRadius} >
                 {children}
             </ModalBox>
     )
@@ -40,7 +40,15 @@ const ModalBox = styled.div`
     z-index: 1001;
     
     @media ${device.mobile} {
-      width: 90%;
+        width: 100%;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        transform: none;
+        border-radius: ${p => p.noBorderRadius ? 0 : '30px 30px 0 0'};
     }
+    
+    
+    
 `
 

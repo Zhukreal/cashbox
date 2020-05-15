@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react'
 import styled, {css} from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import { device } from 'lib/mediaDevice';
+import {useDetectDevice} from "lib/customHooks/useDetectDevice";
 import {mathRound2} from "lib/math";
 import {cartActions, cartSelectors} from "features/cart";
-import {Input, StyledInput, Button, StyledButton} from "ui";
+import {Input, StyledInput, Button, StyledButton, FooterMobile, IconArrowLeft} from "ui";
 import closeGray from 'static/img/icons/close-gray.png'
+
 
 
 
@@ -20,6 +22,7 @@ export const NewProduct = ({onClose, editable = {}}) => {
     const [total, setTotal] = useState(0)
     const dispatch = useDispatch()
     const products = useSelector(state => cartSelectors.getProducts(state))
+    const currentDevice = useDetectDevice()
 
     useEffect(() => {
         if(editable.id) {
@@ -106,63 +109,97 @@ export const NewProduct = ({onClose, editable = {}}) => {
     }
 
 
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
     const disabled = !Number(product.price) || !Number(product.count)
 
     return (
         <Wrapper url={product.image} >
+
+            {isMobileView &&
+                <HMobile>
+                    <IconArrowLeft onClick={onClose} />
+                </HMobile>
+            }
+            {isDesktopView &&
             <Close onClick={onClose}>
                 <img src={closeGray} alt=""/>
             </Close>
-            <Box>
-                <Title>{product.name}</Title>
-                <Wrap>
-                    <Input
-                        name='price'
-                        value={product.price}
-                        onChange={onChange}
-                        placeholder='Цена'
-                    />
-                </Wrap>
-                <Wrap>
-                    <Input
-                        name='count'
-                        value={product.count}
-                        onChange={onChange}
-                        placeholder='Количество'
-                    />
-                </Wrap>
-                <FlexBox>
-                    <Input
-                        name='discount'
-                        value={discount}
-                        onChange={onChange}
-                        placeholder='Скидка в %'
-                    />
-                    <Input
-                        name='discountCurrency'
-                        value={discountCurrency}
-                        onChange={onChange}
-                        placeholder='Скидка в тнг'
-                    />
-                </FlexBox>
-                <Total>Итого: {total} тнг</Total>
-            </Box>
-            <Footer>
-                <Button
-                    onClick={handleSave}
+            }
+
+
+            <MobileBoxWrapper>
+                <Box>
+                    <Title>{product.name}</Title>
+                    <Wrap>
+                        <Input
+                            name='price'
+                            value={product.price}
+                            onChange={onChange}
+                            placeholder='Цена'
+                        />
+                    </Wrap>
+                    <Wrap>
+                        <Input
+                            name='count'
+                            value={product.count}
+                            onChange={onChange}
+                            placeholder='Количество'
+                        />
+                    </Wrap>
+                    <FlexBox>
+                        <Input
+                            name='discount'
+                            value={discount}
+                            onChange={onChange}
+                            placeholder='Скидка в %'
+                        />
+                        <Input
+                            name='discountCurrency'
+                            value={discountCurrency}
+                            onChange={onChange}
+                            placeholder='Скидка в тнг'
+                        />
+                    </FlexBox>
+                    <Total>Итого: {total} тнг</Total>
+                </Box>
+
+
+                {isMobileView &&
+                <FooterMobile
+                    title={'Сохранить'}
+                    onOk={handleSave}
                     disabled={disabled}
-                    color={'green'}
-                >
-                    Сохранить
-                </Button>
-            </Footer>
+                    isLoading={null}
+                />
+                }
+
+                {isDesktopView &&
+                <Footer>
+                    <Button
+                        onClick={handleSave}
+                        disabled={disabled}
+                        color={'green'}
+                    >
+                        Сохранить
+                    </Button>
+                </Footer>
+                }
+            </MobileBoxWrapper>
+
+
+
+
+
+
+
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
   padding: 5%;
-  background: #4f87de14 url(${p => p.url});
+  background: #cbd8ff26 url(${p => p.url});
   border-radius: 30px;
   width: 480px;  
   
@@ -171,8 +208,11 @@ const Wrapper = styled.div`
     margin: 0 auto;
   }
   
-  @media ${device.mobile} {
+  @media ${device.mobileTablet} {
       width: 100%;
+      height: 100vh;
+      border-radius: 0;
+      padding: 0;
     }
     
     @media ${device.desktop} {
@@ -184,7 +224,27 @@ const Box = styled.div`
   background-color: #ffffff;
   padding: 5%;
   border-radius: 30px;
+  
+   @media ${device.mobileTablet} {
+        padding: 0;
+        
+    }
 `
+const MobileBoxWrapper = styled.div`
+   @media ${device.mobileTablet} {
+        background: #ffffff;
+        border-radius: 30px 30px 0 0;
+        padding: 5%;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    ${StyledInput} {
+      border-color: transparent;
+    }
+`
+
 const Wrap = styled.div`
   margin: 5% 0;
 `
@@ -228,4 +288,7 @@ const Close = styled.div`
     :hover {
       opacity: 0.8;
     }
+`
+const HMobile = styled.div`
+    padding: 5%
 `

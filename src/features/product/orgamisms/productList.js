@@ -3,11 +3,13 @@ import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import { device } from 'lib/mediaDevice'
 import { useInfiniteScroll } from 'lib/customHooks/useInfinityScroll'
+import {useDetectDevice} from "lib/customHooks/useDetectDevice";
 import {productActions, productSelectors, Skeleton, NewProduct} from "features/product";
 import {cartActions} from "features/cart";
 import { Modal, Confirm } from "ui"
 import plusIcon from 'static/img/icons/plus.png'
 import emptyPhoto from 'static/img/no-photo.png'
+
 
 export const ProductList = () => {
     const [productConfirm, setProductConfirm] = useState({})
@@ -16,8 +18,8 @@ export const ProductList = () => {
     const { isLoading, skip, take, hasMore, searchFilter, activeSorting, activeGroup } = useSelector(state => state.product)
     const { currency } = useSelector(state => state.profile)
     const products = useSelector(state => productSelectors.getProducts(state))
+    const currentDevice = useDetectDevice()
 
-    console.log('render productList')
 
     useEffect( () => {
         dispatch(productActions.resetFilters())
@@ -60,7 +62,10 @@ export const ProductList = () => {
         setOpenedModalNewProduct(false)
     }
 
-    if(isLoading && !products.length) return <Skeleton />
+    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+
+    if(isLoading) return <Skeleton />
     if(searchFilter && !products.length) return <Loading>По вышему запросу ничего не найдено...</Loading>
     return (
         <>
@@ -118,6 +123,7 @@ export const ProductList = () => {
             <Modal
                 onClose={handleCloseModal}
                 noPadding
+                noBorderRadius
             >
                 <NewProduct
                     onClose={handleCloseModal}
