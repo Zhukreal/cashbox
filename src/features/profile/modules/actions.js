@@ -1,5 +1,8 @@
-import {apiGetAccount, apiCloseShift, apiLoadCurrentReport, apiCloseLastProcedure} from 'api/account'
+import {apiGetAccount, apiCloseShift, apiLoadCurrentReport, apiCloseLastProcedure, apiCheckCashStatus, apiAddCashToKassa,
+    apiRemoveCashFromKassa, apiGetInfoKassa} from 'api/account'
 import {profileReducer} from 'features/profile'
+import {showNotification} from "lib/notification";
+
 
 export const getAccount = token => async dispatch => {
     try {
@@ -10,11 +13,24 @@ export const getAccount = token => async dispatch => {
     }
 };
 
+export const checkCashStatus = () => async dispatch => {
+    try {
+        const CASHBOX = localStorage.getItem('cashbox')
+        let res = await apiCheckCashStatus(CASHBOX);
+        dispatch(profileReducer.setCashStatus(res.data))
+    } catch (e){
+        console.log(e)
+    } finally {
+
+    }
+};
+
 export const closeShift = () => async dispatch => {
     try {
         dispatch(profileReducer.setIsLoadingCloseShift(true))
         let res = await apiCloseShift();
     } catch (e){
+        showNotification('error', e)
         throw new Error(e)
     } finally {
         dispatch(profileReducer.setIsLoadingCloseShift(false))
@@ -39,11 +55,44 @@ export const closeLastProcedure = () => async dispatch => {
         dispatch(profileReducer.setIsLoadingCloseShift(true))
         let res = await apiCloseLastProcedure();
     } catch (e){
+        showNotification('error', e)
         throw new Error(e)
     } finally {
         dispatch(profileReducer.setIsLoadingCloseShift(false))
     }
 };
-
-
+export const addCashToKassa = () => async dispatch => {
+    try {
+        dispatch(profileReducer.setIsLoadingCashKassa(true))
+        await apiAddCashToKassa();
+    } catch (e){
+        showNotification('error', e)
+        throw new Error(e)
+    } finally {
+        dispatch(profileReducer.setIsLoadingCashKassa(false))
+    }
+};
+export const removeCashFromKassa = () => async dispatch => {
+    try {
+        dispatch(profileReducer.setIsLoadingCashKassa(true))
+        await apiRemoveCashFromKassa();
+    } catch (e){
+        showNotification('error', e)
+        throw new Error(e)
+    } finally {
+        dispatch(profileReducer.setIsLoadingCashKassa(false))
+    }
+};
+export const getKassaInfo = () => async dispatch => {
+    try {
+        const CASHBOX = localStorage.getItem('cashbox');
+        dispatch(profileReducer.setIsLoadingInfoKassa(true))
+        const res = await apiGetInfoKassa(CASHBOX);
+        dispatch(profileReducer.setInfoKassa(res.data))
+    } catch (e){
+        showNotification('error', e)
+    } finally {
+        // dispatch(profileReducer.setIsLoadingInfoKassa(false))
+    }
+};
 

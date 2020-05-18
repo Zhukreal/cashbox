@@ -19,6 +19,7 @@ export const AccountLoader = ({ children }) => {
             dispatch(getAccount(TOKEN))
         } else {
             history.push('/login')
+
         }
     }
 

@@ -9,6 +9,8 @@ import {cartActions} from "features/cart";
 import { Modal, Confirm } from "ui"
 import plusIcon from 'static/img/icons/plus.svg'
 import emptyPhoto from 'static/img/no-photo.png'
+import {Link} from "react-router-dom";
+import {Common} from "../../common/organisms";
 
 
 export const ProductList = () => {
@@ -21,11 +23,10 @@ export const ProductList = () => {
     const currentDevice = useDetectDevice()
 
 
-    useEffect( () => {
-        dispatch(productActions.resetFilters())
-        dispatch(productActions.getProducts({}))
-    }, [dispatch, searchFilter, activeSorting, activeGroup.id])
-
+    // useEffect( () => {
+    //     dispatch(productActions.resetFilters())
+    //     dispatch(productActions.getProducts({}))
+    // }, [dispatch, searchFilter, activeSorting, activeGroup.id])
 
     const fetchMoreListItems = async () => {
         console.log('hasMore', hasMore)

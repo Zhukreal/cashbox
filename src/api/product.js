@@ -10,12 +10,8 @@ export const apiGetListGroups = ()  => {
 export const apiGetListSections = (id)  => {
     return axios.get(`${API_URL}/api/v1/stores/${id}/get_sections/`)
 }
-export const apiCheckCashStatus = (id) => {
-    // return axios.get(`${API_URL}/api/v1/cashes/${id}/stats/`)
-    return axios.get(`${API_URL}/api/v1/current_shift/ `)
-}
-export const apiPay = (data) => {
-    return axios.post(`${API_URL}/api/v1/operations/`, data)
+export const apiPay = (data, receiptWidth) => {
+    return axios.post(`${API_URL}/api/v1/operations/?receipt_width=${receiptWidth}`, data)
 }
 export const apiSendTicketEmail = () => {
     return axios.post(`${API_URL}/api/v1/product_orders/{id}/send_ticket_email/`)

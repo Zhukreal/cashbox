@@ -13,7 +13,11 @@ let initialState = {
     cashes: [],
     isLoadingCloseShift: false,
     isLoadingReport: false,
-    currentReport: {}
+    currentReport: {},
+    currentShift: {},
+    isLoadingCashKassa: false,
+    isLoadingInfoKassa: false,
+    infoKassa: []
 }
 
 const profile = createSlice({
@@ -39,6 +43,9 @@ const profile = createSlice({
             localStorage.removeItem(AUTHTOKEN)
             // Cookies.erase(AUTHTOKEN)
         },
+        setCashStatus(state, action) {
+            state.currentShift = action.payload
+        },
         setIsLoadingCloseShift(state, action) {
             state.isLoadingCloseShift = action.payload
         },
@@ -47,7 +54,16 @@ const profile = createSlice({
         },
         setCurrentReport(state, action) {
             state.currentReport = action.payload
-        }
+        },
+        setIsLoadingCashKassa(state, action) {
+            state.isLoadingCashKassa = action.payload
+        },
+        setIsLoadingInfoKassa(state, action) {
+            state.isLoadingInfoKassa = action.payload
+        },
+        setInfoKassa(state, action) {
+            state.infoKassa = action.payload
+        },
     }
 })
 
@@ -57,7 +73,11 @@ export const {
     toggleSidebar,
     setIsLoadingCloseShift,
     setIsLoadingReport,
-    setCurrentReport
+    setCurrentReport,
+    setCashStatus,
+    setIsLoadingCashKassa,
+    setIsLoadingInfoKassa,
+    setInfoKassa
 } = profile.actions
 
 

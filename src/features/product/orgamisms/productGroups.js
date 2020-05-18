@@ -19,9 +19,9 @@ export const ProductGroups = () => {
     const isHasIcon = groups.length > 3
 
 
-    useEffect(() => {
-        dispatch(productActions.getGroups())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(productActions.getGroups())
+    // }, [dispatch])
 
     useEffect(() => {
         const short = groups.slice(0, 3)

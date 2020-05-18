@@ -52,12 +52,10 @@ const product = createSlice({
         setLoadingGroups(state, action) {
             state.isLoadingGroups = action.payload
         },
-        setCashStatus(state, action) {
-            state.currentShift = action.payload
-        },
         setSections(state, action) {
             const { results } = action.payload
             state.sections = results
+            if(results.length) state.activeSection = results[0]
         },
         setSearchFilter(state, action) {
             state.skip = 0

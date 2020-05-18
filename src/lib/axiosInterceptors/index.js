@@ -22,7 +22,6 @@ axios.interceptors.response.use(
     async (error) => {
         const status = error.response.status
         if (status === 401) {
-            console.log(store)
             store.dispatch(authActions.logout())
         }
         if (status === 403) {

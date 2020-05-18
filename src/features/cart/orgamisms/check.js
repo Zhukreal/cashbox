@@ -26,7 +26,7 @@ export const Check = ({onClose, editable = {}}) => {
 
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
-    const { currentPayment } = useSelector(state => state.cart)
+    const { currentPayment, currentReceipt } = useSelector(state => state.cart)
     const { client } = useSelector(state => state.user)
 
     const changeCheck = mathRound2(currentPayment.accepted - currentPayment.total)
@@ -35,7 +35,8 @@ export const Check = ({onClose, editable = {}}) => {
     const isMobileView = currentDevice.isMobile || currentDevice.isTablet
     const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
-    // console.log('currentPayment', currentPayment)
+    console.log('currentPayment', currentPayment)
+    console.log('currentReceipt', currentReceipt)
 
 
     useEffect(() => {

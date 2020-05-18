@@ -17,11 +17,12 @@ export const Payment = ({onSuccess, onClose}) => {
     const [sumByCash, setSumByCash] = useState(0)
     const [accepted, setAccepted] = useState(0)
     const [comment, setComment] = useState('')
+    const [showedErrorCash, setShowedErrorCash] = useState(false)
 
     const dispatch = useDispatch()
     const { currency } = useSelector(state => state.profile)
     const { isLoadingPayment } = useSelector(state => state.cart)
-    // const products = useSelector(state => cartSelectors.getProducts(state))
+    const products = useSelector(state => cartSelectors.getProducts(state))
     const totalInfo = useSelector(state => cartSelectors.getTotalInfo(state))
 
     const currentDevice = useDetectDevice()
@@ -40,8 +41,13 @@ export const Payment = ({onSuccess, onClose}) => {
 
     useEffect(() => {
         if(activeCash) {
-            handlePayment()
-            setSumByCash(activeCash)
+            if (activeCash > totalInfo.total) {
+                handlePayment()
+                setSumByCash(activeCash)
+                setShowedErrorCash(false)
+            } else {
+                setShowedErrorCash(true)
+            }
         }
     }, [activeCash])
 
@@ -76,12 +82,16 @@ export const Payment = ({onSuccess, onClose}) => {
 
     const handlePayment = async () => {
         const data = {
+            ticketType: 'SELL',
             total: totalInfo.total,
-            comment: comment
+            comment: comment,
+            products: products,
+            typePayment: typePayment
         }
 
         if(typePayment === 'cash') {
             data.cash = activeCash
+            data.card = 0
             data.accepted = Number(activeCash)
         } else {
             data.accepted = accepted
@@ -93,9 +103,8 @@ export const Payment = ({onSuccess, onClose}) => {
             await dispatch(cartActions.pay(data))
             onSuccess()
         } catch(e) {
-            onSuccess()
-        }
 
+        }
     }
 
     return (
@@ -171,6 +180,7 @@ export const Payment = ({onSuccess, onClose}) => {
                                 </Item>
                             )}
                         </List>
+                        {showedErrorCash && <ErrorCash>Сумма должны быть больше или равной итоговой</ErrorCash> }
                     </>
                     }
 
@@ -206,3 +216,9 @@ export const Payment = ({onSuccess, onClose}) => {
         </Wrapper>
     )
 }
+
+const ErrorCash = styled.div`
+  color: var(--red);
+  font-size: 14px;
+  margin-top: 10px;
+`

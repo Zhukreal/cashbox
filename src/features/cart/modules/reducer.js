@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 let initialState = {
     products: [],
     isLoadingPayment: false,
-    currentPayment: {}
+    currentPayment: {},
+    currentReceipt: null
 }
 
 const cart = createSlice({
@@ -47,6 +48,9 @@ const cart = createSlice({
         },
         setCurrentPayment (state, action) {
             state.currentPayment = action.payload
+        },
+        setCurrentReceipt (state, action) {
+            state.currentReceipt = action.payload
         }
     }
 })
@@ -58,7 +62,8 @@ export const {
     removeProduct,
     clearCart,
     setIsLoadingPayment,
-    setCurrentPayment
+    setCurrentPayment,
+    setCurrentReceipt
 } = cart.actions
 
 export default cart.reducer

@@ -43,6 +43,10 @@ export const GlobalStyles = createGlobalStyle`
         min-height: 100vh;
         font-size: 10px;
     }
+    
+    .notification-container  {
+      font-family: Gilroy, sans-serif;
+    }
   
 `
 

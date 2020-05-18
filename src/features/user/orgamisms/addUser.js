@@ -108,6 +108,7 @@ export const AddUser = () => {
                             onChange={onChange}
                             placeholder='E-mail'
                             error={errorEmail && 'Введите корректный e-mail'}
+                            isUnderline={isDesktopView}
                             isForm={isMobileView}
                         />
                         {/*<Input*/}

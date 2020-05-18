@@ -15,7 +15,7 @@ export const ProductSections = () => {
     useOnClickOutside(ref, () => setOpened(false))
 
     useEffect(() => {
-        dispatch(productActions.getSections())
+        // dispatch(productActions.getSections())
     }, [])
 
     const toggleFull = () => {
@@ -37,14 +37,18 @@ export const ProductSections = () => {
                 <List>
                     {sections.length ?
                         <>
-                            {sections.map((item, key) =>
-                                <Item
-                                    key={item.id}
-                                    onClick={() => handleSetSection(item)}
-                                    active={activeSection.id === item.id}
-                                >
-                                    {item.name}
-                                </Item>
+                            {sections.map((item, key) => {
+                                if(item.id === activeSection.id) return null
+                                return (
+                                    <Item
+                                        key={item.id}
+                                        onClick={() => handleSetSection(item)}
+                                        active={activeSection.id === item.id}
+                                    >
+                                        {item.name}
+                                    </Item>
+                                )
+                            }
                             )}
                         </>
                         :

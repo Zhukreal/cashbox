@@ -31,7 +31,7 @@ export const Cart = () => {
     const currentDevice = useDetectDevice()
 
     useEffect(() => {
-            dispatch(userActions.getUsers(debouncedSearchU))
+           if(debouncedSearchU) dispatch(userActions.getUsers(debouncedSearchU))
         },[debouncedSearchU]
     );
     const onChangeSearchUsers = (e) => {

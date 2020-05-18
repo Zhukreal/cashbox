@@ -1,8 +1,10 @@
 import React, {useState, useRef} from "react"
+import {Link} from 'react-router-dom'
 import styled, {css} from "styled-components"
 import useOnClickOutside from "use-onclickoutside";
 import {useDispatch, useSelector} from "react-redux";
 import {device} from "lib/mediaDevice";
+import {history} from "lib/routing";
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {profileActions, CurrentReport} from "features/profile";
 import {commonActions} from "features/common";
@@ -35,6 +37,7 @@ import burger from "static/img/icons/burger-desktop.svg"
 import burgerM from "static/img/icons/burger-mobile.svg"
 import {Modal} from "ui/organisms/modal";
 import {Confirm} from "ui/organisms";
+import {CashKassa, InfoKassa} from "features/profile";
 import {set} from "browser-cookies";
 
 
@@ -50,7 +53,7 @@ export const Sidebar = ({ handleLogout }) => {
     const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     const toggleSidebar = (e) => {
-        dispatch(commonActions.toggleSidebar())
+        // dispatch(commonActions.toggleSidebar())
     }
 
     const hideSidebar = () => {
@@ -77,6 +80,11 @@ export const Sidebar = ({ handleLogout }) => {
 
     const handleCloseContent = () => {
         setActiveItem(0)
+    }
+
+    const goToSettings = () => {
+        hideSidebar()
+        history.push('/settings')
     }
 
 
@@ -188,8 +196,7 @@ export const Sidebar = ({ handleLogout }) => {
                     </SidebarItem>
 
                     <SidebarItem
-                        onClick={() => setActiveItem(9)}
-                        active={activeItem === 9}
+                        onClick={goToSettings}
                     >
                         <IconWrap>
                             <SidebarItemIcon src={isDesktopView ? icon9 : icon9w}/>
@@ -241,6 +248,39 @@ export const Sidebar = ({ handleLogout }) => {
                         onCancel={handleCloseContent}
                         isLoading={isLoadingCloseShift}
                     />
+                }
+
+                {activeItem === 6 &&
+                <CashKassa
+                    type={1}
+                    title={'Наличных в кассе:'}
+                    cancelText={'Отмена'}
+                    okText={'Внести'}
+                    onCancel={handleCloseContent}
+                    onSuccess={hideSidebar}
+                />
+                }
+
+                {activeItem === 7 &&
+                <CashKassa
+                    type={2}
+                    title={'Наличных в кассе:'}
+                    cancelText={'Отмена'}
+                    okText={'Изъять'}
+                    onCancel={handleCloseContent}
+                    onSuccess={hideSidebar}
+                />
+                }
+
+                {activeItem === 8 &&
+                <InfoKassa
+                    type={2}
+                    title={'Наличных в кассе:'}
+                    cancelText={'Отмена'}
+                    okText={'Изъять'}
+                    onCancel={handleCloseContent}
+                    onSuccess={hideSidebar}
+                />
                 }
             </Modal>
             }

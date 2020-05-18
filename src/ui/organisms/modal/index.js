@@ -1,14 +1,15 @@
 import React, { useRef } from "react"
-import styled from "styled-components"
+import styled, {css} from "styled-components"
 import useOnClickOutside from "use-onclickoutside"
 import { device } from 'lib/mediaDevice';
+import iconLockBg from "static/img/lock-bg.png";
 
-export const Modal = ({ children, onClose, noPadding, noBorderRadius }) => {
+export const Modal = ({ children, onClose, noPadding, noBorderRadius, bgLock }) => {
     const ref = useRef(null)
     useOnClickOutside(ref, onClose)
 
     return (
-            <ModalBox ref={ref} noPadding={noPadding} noBorderRadius={noBorderRadius} >
+            <ModalBox ref={ref} noPadding={noPadding} noBorderRadius={noBorderRadius} bgLock={bgLock} >
                 {children}
             </ModalBox>
     )
@@ -39,6 +40,12 @@ const ModalBox = styled.div`
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
     z-index: 1001;
     
+    ${p => p.bgLock && css`
+      background: url(${iconLockBg}) left center no-repeat;
+      background-size: 100% 100%;
+      
+    `}
+    
     @media ${device.mobile} {
         width: 100%;
         bottom: 0;
@@ -47,8 +54,5 @@ const ModalBox = styled.div`
         transform: none;
         border-radius: ${p => p.noBorderRadius ? 0 : '30px 30px 0 0'};
     }
-    
-    
-    
 `
 

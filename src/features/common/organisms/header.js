@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from "react"
+import {Link, useLocation} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import styled, {css} from "styled-components"
 import {device} from 'lib/mediaDevice'
@@ -24,8 +25,12 @@ export const Header = () => {
     const { searchUser, client } = useSelector(state => state.user)
     const currentDevice = useDetectDevice()
 
+    const location = useLocation()
+    const isHomePage = location.pathname === '/'
+
     useEffect(() => {
-        dispatch(userActions.getUsers(debouncedSearchU))
+        console.log('debouncedSearchU', debouncedSearchU)
+        if(debouncedSearchU) dispatch(userActions.getUsers(debouncedSearchU))
         },[debouncedSearchU]
     );
 
@@ -63,19 +68,29 @@ export const Header = () => {
                     <LeftBox>
                         <LeftBoxControls>
                             <Sidebar handleLogout={handleLogout}/>
-                            <Logo src={logo}/>
+                            <Link to={'/'}>
+                                <Logo src={logo}/>
+                            </Link>
                             <ShiftStatus />
                         </LeftBoxControls>
-                        <Input
-                            type='search'
-                            value={searchP}
-                            onChange={onChangeSearchProducts}
-                            placeholder='Поиск товара/кода'
-                            isSearch
-                        />
-                        <ProductSorting />
-                        <ProductSections/>
+                        {isHomePage &&
+                            <>
+                                <WrapSearch>
+                                    <Input
+                                        type='search'
+                                        value={searchP}
+                                        onChange={onChangeSearchProducts}
+                                        placeholder='Поиск товара/кода'
+                                        isSearch
+                                    />
+                                </WrapSearch>
+                                <ProductSorting />
+                                <ProductSections/>
+                            </>
+                        }
                     </LeftBox>
+
+                    {isHomePage &&
                     <RightBox>
                         {searchUser && <UsersList/>}
                         {client.id ?
@@ -97,10 +112,10 @@ export const Header = () => {
                                 <img src={ImgClose} alt=""/>
                             </ClearClient>
                             :
-                            <AddUser />
+                            <AddUser/>
                         }
-
                     </RightBox>
+                    }
                 </HeaderRow>
                 }
 
@@ -212,18 +227,28 @@ const LeftBox = styled.div`
     align-items: center;
     justify-content: space-between;
     
-    ${BoxInput} {
-      margin: 0 20px 0 50px;
-      
-      @media ${device.laptop} { 
-          margin-left: 20px;
-        }
-    }
+    // ${BoxInput} {
+    //   margin: 0 20px 0 50px;
+    //  
+    //   @media ${device.laptop} { 
+    //       margin-left: 20px;
+    //     }
+    // }
     
     @media ${device.laptop} { 
       width: calc(100% - 450px);
     }
 `
+const WrapSearch = styled.div`
+  width: 100%;
+    position: relative;
+
+    margin: 0 20px 0 50px;
+    @media ${device.laptop} {
+      margin-left: 20px;
+    }
+`
+
 
 const RightBox = styled.div`
     width: 480px;

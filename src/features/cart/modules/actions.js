@@ -1,5 +1,9 @@
-import {cartReducer} from "../index";
+import { v4 as uuidv4 } from 'uuid';
+import {showNotification} from 'lib/notification'
 import {apiPay, apiSendTicketEmail, apiSendTicketWhatsApp} from "api/product";
+import {cartReducer} from "../index";
+import {store} from 'lib/store/store'
+
 
 export const addToCart = (product) => dispatch => {
     dispatch(cartReducer.addProduct(product))
@@ -18,11 +22,57 @@ export const editProduct = (product) => dispatch => {
 }
 export const pay = (data) => async dispatch => {
     try {
+        const { product } = store.getState()
+        const receiptWidth = 57
+        const activeSection = product.activeSection && product.activeSection.id ? product.activeSection.id : null
+        const items = data.products.map(product => {
+            return {
+                total_price: product.currentPrice,
+                name: product.name,
+                base_price: product.price,
+                amount: product.count,
+                discount: product.discount,
+                section: activeSection,
+                product: product.id
+            }
+        })
+        const payments = []
+        if(data.typePayment === 'cash') {
+            payments.push({
+                payment_type: "CASH",
+                sum: data.total
+            })
+        } else {
+            payments.push({
+                payment_type: "CARD",
+                sum: data.card
+            })
+            if(data.cash) {
+                payments.push({
+                    payment_type: "CASH",
+                    sum: data.cash
+                })
+            }
+        }
+
+        const obj = {
+            request_id: uuidv4(),
+            ticket_type: data.ticketType,
+            cash: localStorage.getItem('cashbox'),
+            total_sum: data.total,
+            taken_sum: data.accepted,
+            change_sum: data.accepted - data.total,
+            items: items,
+            payments: payments,
+            comment: data.comment
+        }
+
         dispatch(cartReducer.setIsLoadingPayment(true))
         dispatch(cartReducer.setCurrentPayment(data))
-        let res = await apiPay(data);
+        let res = await apiPay(obj, receiptWidth);
+        dispatch(cartReducer.setCurrentReceipt(res.data))
     } catch (e){
-        console.log(e)
+        showNotification('error', e)
         throw new Error(e)
     } finally {
         dispatch(cartReducer.setIsLoadingPayment(false))

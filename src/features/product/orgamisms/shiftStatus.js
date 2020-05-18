@@ -6,7 +6,7 @@ import {device} from 'lib/mediaDevice'
 
 export const ShiftStatus = () => {
     const [isHover, setIsHover] = useState(false)
-    const { currentShift } = useSelector(state => state.product)
+    const { currentShift } = useSelector(state => state.profile)
 
     let status = '',
         color = ''

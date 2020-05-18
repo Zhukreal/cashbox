@@ -17,7 +17,8 @@ export const ChooseCashbox = () => {
         if(cashes.length === 1) {
             localStorage.setItem('cashbox', cashes[0].id)
             localStorage.setItem('store', cashes[0].store_id)
-            history.push('/')
+            window.location.href = '/'
+            // history.push('/')
         }
     }, [cashes])
 
@@ -25,7 +26,8 @@ export const ChooseCashbox = () => {
         if(!activeCashbox.id) return
         localStorage.setItem('cashbox', activeCashbox.id)
         localStorage.setItem('store', activeCashbox.store_id)
-        history.push('/')
+        window.location.href = '/'
+        // history.push('/')
     }
 
     const isMobileView = currentDevice.isMobile || currentDevice.isTablet
