@@ -44,7 +44,7 @@ export const ChooseCashbox = () => {
             <EMText>Далее</EMText>
             <ButtonIcon
               onClick={handleChooseCashbox}
-              disabled={!activeCashbox}
+              disabled={!activeCashbox.id}
               icon={arrowRight}
             ></ButtonIcon>
           </EnterMobile>
@@ -52,7 +52,7 @@ export const ChooseCashbox = () => {
         {isDesktopView && (
           <Button
             onClick={handleChooseCashbox}
-            disabled={!activeCashbox}
+            disabled={!activeCashbox.id}
             isLoading={false}
             isUpperCase
           >
