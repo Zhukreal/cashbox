@@ -4,7 +4,7 @@ let initialState = {
     products: [],
     isLoadingPayment: false,
     currentPayment: {},
-    currentReceipt: null
+    currentReceipt: {}
 }
 
 const cart = createSlice({

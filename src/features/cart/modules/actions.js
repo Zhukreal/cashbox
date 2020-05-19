@@ -78,19 +78,19 @@ export const pay = (data) => async dispatch => {
         dispatch(cartReducer.setIsLoadingPayment(false))
     }
 };
-export const sendTicketEmail = (data) => async dispatch => {
+export const sendTicketEmail = (id) => async dispatch => {
     try {
-        let res = await apiSendTicketEmail(data);
+        let res = await apiSendTicketEmail(id);
     } catch (e){
-        console.log(e)
+        showNotification('error', e)
         throw new Error(e)
     }
 };
-export const sendTicketWhatsApp = (data) => async dispatch => {
+export const sendTicketWhatsApp = (id) => async dispatch => {
     try {
-        let res = await apiSendTicketWhatsApp(data);
+        let res = await apiSendTicketWhatsApp(id);
     } catch (e){
-        console.log(e)
+        showNotification('error', e)
         throw new Error(e)
     }
 };

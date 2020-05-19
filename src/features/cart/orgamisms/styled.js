@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   padding: 5%;
   background: #ffffff;
   border-radius: 30px;
-  width: 750px;  
+  width: ${p => p.isReceipt ? '400px' : '750px'}
   text-align: left;
  
  
@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
     }
     
     @media ${device.laptop} {
-      width: 650px
+      width: ${p => p.isReceipt ? '400px' : '650px'}
     }
   
 `
@@ -312,7 +312,7 @@ export const Loading = styled.div`
     height: 100%;
     color: white;
     background: rgba(0,0,0,0.98);
-    opacity: 0.4;
+    opacity: 0.3;
     border-radius: 30px;
     left: 0;
     top: 0;

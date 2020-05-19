@@ -114,7 +114,7 @@ export const Payment = ({onSuccess, onClose}) => {
                 <IconArrowLeft onClick={onClose}  />
             </HMobile>
             }
-            {(isLoadingPayment && isDesktopView) && <Loading><SpinnerBox><Spinner /></SpinnerBox> Оплата...</Loading>}
+            {isLoadingPayment && <Loading><SpinnerBox><Spinner /></SpinnerBox></Loading>}
             <Box>
                 <BoxLeft>
                     <Title>Прием оплаты</Title>

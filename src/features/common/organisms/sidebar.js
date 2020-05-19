@@ -53,7 +53,7 @@ export const Sidebar = ({ handleLogout }) => {
     const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
     const toggleSidebar = (e) => {
-        // dispatch(commonActions.toggleSidebar())
+        dispatch(commonActions.toggleSidebar())
     }
 
     const hideSidebar = () => {

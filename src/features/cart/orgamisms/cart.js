@@ -2,16 +2,15 @@ import React, {useState, useEffect} from "react"
 import {useDispatch, useSelector} from "react-redux";
 import styled, { css } from "styled-components"
 import {useDetectDevice} from "lib/customHooks/useDetectDevice"
+import {device} from "lib/mediaDevice";
+import {useDebounce} from "lib/customHooks/useDebounce";
 import {commonActions} from "features/common";
+import {userActions, UsersList} from "features/user";
 import {NewProduct, productActions, productSelectors} from "features/product";
-import {cartActions, cartSelectors, Payment, Check} from "../index";
+import {cartActions, cartSelectors, Payment, Check} from "features/cart";
 import {Button, Modal, StyledButton} from 'ui'
 import { DesktopView } from '../ui/desktop-view'
 import { MobileView } from '../ui/mobile-view'
-import {device} from "../../../lib/mediaDevice";
-import {useDebounce} from "../../../lib/customHooks/useDebounce";
-import {userActions, UsersList} from "../../user";
-
 
 
 export const Cart = () => {

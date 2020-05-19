@@ -13,11 +13,11 @@ export const apiGetListSections = (id)  => {
 export const apiPay = (data, receiptWidth) => {
     return axios.post(`${API_URL}/api/v1/operations/?receipt_width=${receiptWidth}`, data)
 }
-export const apiSendTicketEmail = () => {
-    return axios.post(`${API_URL}/api/v1/product_orders/{id}/send_ticket_email/`)
+export const apiSendTicketEmail = (id) => {
+    return axios.post(`${API_URL}/api/v1/product_orders/${id}/send_ticket_email/`)
 }
-export const apiSendTicketWhatsApp = () => {
-    return axios.post(`${API_URL}/api/v1/product_orders/{id}/send_ticket_watsapp/`)
+export const apiSendTicketWhatsApp = (id) => {
+    return axios.post(`${API_URL}/api/v1/product_orders/${id}/send_ticket_whatsapp/`)
 }
 
 
