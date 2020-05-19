@@ -1,4 +1,4 @@
-import { css } from "styled-components"
+import { css } from 'styled-components'
 
 export const prismcssDark = css`
   /* это надо убрать отсюда потом, ибо эт не подсветка для кода */
@@ -20,11 +20,11 @@ export const prismcssDark = css`
     margin: 1.5em 10px;
     padding: 0.5em 10px;
   }
-  code[class*="language-"],
-  pre[class*="language-"] {
+  code[class*='language-'],
+  pre[class*='language-'] {
     color: white;
     background: none;
-    font-family: Hasklig, Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
+    font-family: Hasklig, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
       monospace;
     text-align: left;
     white-space: pre;
@@ -44,19 +44,19 @@ export const prismcssDark = css`
   }
 
   @media print {
-    code[class*="language-"],
-    pre[class*="language-"] {
+    code[class*='language-'],
+    pre[class*='language-'] {
       text-shadow: none;
     }
   }
 
-  pre[class*="language-"],
-  :not(pre) > code[class*="language-"] {
+  pre[class*='language-'],
+  :not(pre) > code[class*='language-'] {
     /* background: hsl(30, 20%, 25%); */
   }
 
   /* Code blocks */
-  pre[class*="language-"] {
+  pre[class*='language-'] {
     padding: 1em;
     margin: 0.5em 0;
     overflow: auto;
@@ -68,7 +68,7 @@ export const prismcssDark = css`
   }
 
   /* Inline code */
-  :not(pre) > code[class*="language-"] {
+  :not(pre) > code[class*='language-'] {
     padding: 0.15em 0.2em 0.05em;
     padding: 4rem 2rem;
     color: var(--canvas-text);
@@ -190,11 +190,11 @@ export const prismcssLight = css`
     margin: 1.5em 10px;
     padding: 0.5em 10px;
   }
-  code[class*="language-"],
-  pre[class*="language-"] {
+  code[class*='language-'],
+  pre[class*='language-'] {
     color: black;
     background: none;
-    font-family: Hasklig, Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
+    font-family: Hasklig, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
       monospace;
     text-align: left;
     white-space: pre;
@@ -214,19 +214,19 @@ export const prismcssLight = css`
   }
 
   @media print {
-    code[class*="language-"],
-    pre[class*="language-"] {
+    code[class*='language-'],
+    pre[class*='language-'] {
       text-shadow: none;
     }
   }
 
-  pre[class*="language-"],
-  :not(pre) > code[class*="language-"] {
+  pre[class*='language-'],
+  :not(pre) > code[class*='language-'] {
     /* background: hsl(30, 20%, 25%); */
   }
 
   /* Code blocks */
-  pre[class*="language-"] {
+  pre[class*='language-'] {
     padding: 1em;
     margin: 0.5em 0;
     overflow: auto;
@@ -237,7 +237,7 @@ export const prismcssLight = css`
   }
 
   /* Inline code */
-  :not(pre) > code[class*="language-"] {
+  :not(pre) > code[class*='language-'] {
     padding: 0.15em 0.2em 0.05em;
     border-radius: 0.3em;
     box-shadow: 1px 1px 0.3em -0.1em black inset;

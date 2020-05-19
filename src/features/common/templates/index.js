@@ -1,1 +1,1 @@
-export { CommonContentTemplate } from "./common"
+export { CommonContentTemplate } from './common'

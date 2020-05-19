@@ -1,10 +1,8 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react'
+import styled from 'styled-components'
 
 export const ControlContainerTemplate = ({ children }) => (
-    <ControlContainer>
-        {children}
-    </ControlContainer>
+  <ControlContainer>{children}</ControlContainer>
 )
 
 const ControlContainer = styled.div`

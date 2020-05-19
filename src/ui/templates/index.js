@@ -1,6 +1,6 @@
-export { ContentContainer } from "./pages-containers"
-export { CenterContentTemplate } from "./center-content"
-export { CardTemplate } from "./card"
-export { FlexContainer } from "./flex-conteiners"
-export { ControlContainerTemplate } from "./control-container"
-export { Container, Row, Col } from "./layout"
+export { ContentContainer } from './pages-containers'
+export { CenterContentTemplate } from './center-content'
+export { CardTemplate } from './card'
+export { FlexContainer } from './flex-conteiners'
+export { ControlContainerTemplate } from './control-container'
+export { Container, Row, Col } from './layout'

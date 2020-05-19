@@ -1,18 +1,29 @@
-import React, { useRef } from "react"
-import styled, {css} from "styled-components"
-import useOnClickOutside from "use-onclickoutside"
-import { device } from 'lib/mediaDevice';
-import iconLockBg from "static/img/lock-bg.png";
+import React, { useRef } from 'react'
+import styled, { css } from 'styled-components'
+import useOnClickOutside from 'use-onclickoutside'
+import { device } from 'lib/mediaDevice'
+import iconLockBg from 'static/img/lock-bg.png'
 
-export const Modal = ({ children, onClose, noPadding, noBorderRadius, bgLock }) => {
-    const ref = useRef(null)
-    useOnClickOutside(ref, onClose)
+export const Modal = ({
+  children,
+  onClose,
+  noPadding,
+  noBorderRadius,
+  bgLock,
+}) => {
+  const ref = useRef(null)
+  useOnClickOutside(ref, onClose)
 
-    return (
-            <ModalBox ref={ref} noPadding={noPadding} noBorderRadius={noBorderRadius} bgLock={bgLock} >
-                {children}
-            </ModalBox>
-    )
+  return (
+    <ModalBox
+      ref={ref}
+      noPadding={noPadding}
+      noBorderRadius={noBorderRadius}
+      bgLock={bgLock}
+    >
+      {children}
+    </ModalBox>
+  )
 }
 
 // const Overlay = styled.div`
@@ -30,7 +41,7 @@ const ModalBox = styled.div`
     background: white;
     //width: 50%;
     max-width: 750px;
-    padding: ${p => p.noPadding ? 0 : '30px'};
+    padding: ${(p) => (p.noPadding ? 0 : '30px')};
     height: auto;
     top:50%;
     left:50%;
@@ -40,11 +51,12 @@ const ModalBox = styled.div`
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
     z-index: 1001;
     
-    ${p => p.bgLock && css`
-      background: url(${iconLockBg}) left center no-repeat;
-      background-size: 100% 100%;
-      
-    `}
+    ${(p) =>
+      p.bgLock &&
+      css`
+        background: url(${iconLockBg}) left center no-repeat;
+        background-size: 100% 100%;
+      `}
     
     @media ${device.mobile} {
         width: 100%;
@@ -52,7 +64,6 @@ const ModalBox = styled.div`
         top: auto;
         left: 0;
         transform: none;
-        border-radius: ${p => p.noBorderRadius ? 0 : '30px 30px 0 0'};
+        border-radius: ${(p) => (p.noBorderRadius ? 0 : '30px 30px 0 0')};
     }
 `
-

@@ -1,38 +1,38 @@
 import React from 'react'
-import styled, {css} from "styled-components"
-import { device } from 'lib/mediaDevice';
+import styled, { css } from 'styled-components'
+import { device } from 'lib/mediaDevice'
 
 export const CashBoxList = ({ list, active, setActive }) => {
-    return (
-        <CashBox>
-            {list.map(item =>
-                <CashBoxItem
-                    key={item.id}
-                    active={item.id === active.id}
-                    onClick={() => setActive(item)}
-                >
-                    {item.name}
-                </CashBoxItem>
-            )}
-        </CashBox>
-    )
+  return (
+    <CashBox>
+      {list.map((item) => (
+        <CashBoxItem
+          key={item.id}
+          active={item.id === active.id}
+          onClick={() => setActive(item)}
+        >
+          {item.name}
+        </CashBoxItem>
+      ))}
+    </CashBox>
+  )
 }
 
 const CashBox = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    max-height: 280px;
-    margin-bottom: 50px;
-    padding: 3px;
-    overflow-y: auto;
-    
-    @media ${device.mobile} {       
-      flex-direction: row;
-      margin-bottom: 30px;
-      max-height: 310px;
-    }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-height: 280px;
+  margin-bottom: 50px;
+  padding: 3px;
+  overflow-y: auto;
+
+  @media ${device.mobile} {
+    flex-direction: row;
+    margin-bottom: 30px;
+    max-height: 310px;
+  }
 `
 
 const CashBoxItem = styled.div`
@@ -51,12 +51,12 @@ const CashBoxItem = styled.div`
     text-overflow: ellipsis;
    
    ${(p) =>
-    p.active &&
-    css`
-        border: 1px solid var(--blue);
-        //box-shadow: 0px 3px 6px #4f87de59;
-        color: var(--blue);
-    `}
+     p.active &&
+     css`
+       border: 1px solid var(--blue);
+       //box-shadow: 0px 3px 6px #4f87de59;
+       color: var(--blue);
+     `}
    
    @media ${device.mobile} {       
       width: 100%;
@@ -70,4 +70,3 @@ const CashBoxItem = styled.div`
       font-size: 22px;
    }
 `
-

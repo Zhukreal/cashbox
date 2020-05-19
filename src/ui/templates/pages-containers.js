@@ -1,7 +1,5 @@
-import React from "react"
+import React from 'react'
 
 export const ContentContainer = ({ children }) => (
-  <div className='center-content-template'>
-    {children}
-  </div>
+  <div className="center-content-template">{children}</div>
 )

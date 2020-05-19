@@ -1,38 +1,33 @@
-import React from "react"
-import styled, { css, keyframes } from "styled-components"
+import React from 'react'
+import styled, { css, keyframes } from 'styled-components'
 import { device } from 'lib/mediaDevice'
 
 export const Skeleton = () => {
-    const cards = [1,2,3,4,5,6,7,8]
+  const cards = [1, 2, 3, 4, 5, 6, 7, 8]
 
-    return (
-        <>
-            <SkeletonRow>
-                {cards.map(item =>
-                    <SkeletonCol
-                        key={item}
-                    >
-                    </SkeletonCol>
-                )}
-            </SkeletonRow>
-
-        </>
-    )
+  return (
+    <>
+      <SkeletonRow>
+        {cards.map((item) => (
+          <SkeletonCol key={item}></SkeletonCol>
+        ))}
+      </SkeletonRow>
+    </>
+  )
 }
-
 
 const SkeletonRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   padding-bottom: 110px;
-  
-   @media ${device.mobileTablet} { 
-     padding: 0 10%;
+
+  @media ${device.mobileTablet} {
+    padding: 0 10%;
   }
-  
-  @media ${device.laptop} { 
-     padding-bottom: 90px;
+
+  @media ${device.laptop} {
+    padding-bottom: 90px;
   }
 `
 const Gradient = keyframes`
@@ -53,7 +48,6 @@ const Gradient = keyframes`
     background-position: 500px 0;
   }
 `
-
 
 const SkeletonCol = styled.div`
   display: flex;
@@ -85,6 +79,3 @@ const SkeletonCol = styled.div`
    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
    background-size: 1000px 100%;
 `
-
-
-

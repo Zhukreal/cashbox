@@ -1,10 +1,8 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react'
+import styled from 'styled-components'
 
 export const CenterContentTemplate = ({ children }) => (
-    <CenterContent>
-       {children}
-    </CenterContent>
+  <CenterContent>{children}</CenterContent>
 )
 
 export const CenterContent = styled.div`

@@ -1,5 +1,5 @@
-import styled from "styled-components"
-import { device } from 'lib/mediaDevice';
+import styled from 'styled-components'
+import { device } from 'lib/mediaDevice'
 
 export const Container = styled.div`
   //max-width: 120rem;
@@ -9,9 +9,9 @@ export const Container = styled.div`
   flex-flow: inherit;
   flex-direction: column;
   padding: 0 3%;
-  
-  @media ${device.laptop} { 
-       padding: 0 2%;
+
+  @media ${device.laptop} {
+    padding: 0 2%;
   }
 `
 

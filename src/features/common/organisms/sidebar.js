@@ -1,13 +1,13 @@
-import React, {useState, useRef} from "react"
-import {Link} from 'react-router-dom'
-import styled, {css} from "styled-components"
-import useOnClickOutside from "use-onclickoutside";
-import {useDispatch, useSelector} from "react-redux";
-import {device} from "lib/mediaDevice";
-import {history} from "lib/routing";
+import React, { useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import styled, { css } from 'styled-components'
+import useOnClickOutside from 'use-onclickoutside'
+import { useDispatch, useSelector } from 'react-redux'
+import { device } from 'lib/mediaDevice'
+import { history } from 'lib/routing'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
-import {profileActions, CurrentReport} from "features/profile";
-import {commonActions} from "features/common";
+import { profileActions, CurrentReport } from 'features/profile'
+import { commonActions } from 'features/common'
 import icon1 from 'static/img/icons/icon1.svg'
 import icon2 from 'static/img/icons/icon2.svg'
 import icon3 from 'static/img/icons/icon3.svg'
@@ -20,7 +20,7 @@ import icon72 from 'static/img/icons/icon7-2.svg'
 import icon8 from 'static/img/icons/icon8.svg'
 import icon9 from 'static/img/icons/icon9.svg'
 import icon10 from 'static/img/icons/icon10.svg'
-// import icon11 from 'static/img/icons/s-11.png'
+import icon11 from 'static/img/icons/logout.svg'
 import icon1w from 'static/img/icons/icon1-w.svg'
 import icon2w from 'static/img/icons/icon2-w.svg'
 import icon3w from 'static/img/icons/icon3-w.svg'
@@ -33,261 +33,254 @@ import icon9w from 'static/img/icons/icon9-w.svg'
 import icon10w from 'static/img/icons/icon10-w.svg'
 import icon11w from 'static/img/icons/icon11-w.svg'
 import close from 'static/img/icons/close.png'
-import burger from "static/img/icons/burger-desktop.svg"
-import burgerM from "static/img/icons/burger-mobile.svg"
-import {Modal} from "ui/organisms/modal";
-import {Confirm} from "ui/organisms";
-import {CashKassa, InfoKassa} from "features/profile";
-import {set} from "browser-cookies";
-
-
+import burger from 'static/img/icons/burger-desktop.svg'
+import burgerM from 'static/img/icons/burger-mobile.svg'
+import { Modal } from 'ui/organisms/modal'
+import { Confirm } from 'ui/organisms'
+import { CashKassa, InfoKassa } from 'features/profile'
+import { set } from 'browser-cookies'
 
 export const Sidebar = ({ handleLogout }) => {
-    const [activeItem, setActiveItem] = useState(0)
-    const dispatch = useDispatch()
+  const [activeItem, setActiveItem] = useState(0)
+  const dispatch = useDispatch()
 
-    const { isOpenedSidebar } = useSelector(state => state.common)
-    const { isLoadingCloseShift } = useSelector(state => state.profile)
-    const currentDevice = useDetectDevice()
-    const isMobileView = currentDevice.isMobile || currentDevice.isTablet
-    const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+  const { isOpenedSidebar } = useSelector((state) => state.common)
+  const { isLoadingCloseShift } = useSelector((state) => state.profile)
+  const currentDevice = useDetectDevice()
+  const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+  const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
-    const toggleSidebar = (e) => {
-        dispatch(commonActions.toggleSidebar())
-    }
+  const toggleSidebar = (e) => {
+    dispatch(commonActions.toggleSidebar())
+  }
 
-    const hideSidebar = () => {
-        setActiveItem(0)
-        if(isOpenedSidebar) dispatch(commonActions.showSidebar(false))
-    }
+  const hideSidebar = () => {
+    setActiveItem(0)
+    if (isOpenedSidebar) dispatch(commonActions.showSidebar(false))
+  }
 
-    const handleCloseShift = async () => {
-        try {
-            await dispatch(profileActions.closeShift())
-            setActiveItem(2)
-        } catch (e) {
+  const handleCloseShift = async () => {
+    try {
+      await dispatch(profileActions.closeShift())
+      setActiveItem(2)
+    } catch (e) {}
+  }
+  const handleCloseLast = async () => {
+    try {
+      await dispatch(profileActions.closeLastProcedure())
+    } catch (e) {}
+  }
 
-        }
-    }
-    const handleCloseLast = async () => {
-        try {
-            await dispatch(profileActions.closeLastProcedure())
-        } catch (e) {
+  const handleCloseContent = () => {
+    setActiveItem(0)
+  }
 
-        }
-    }
+  const goToSettings = () => {
+    hideSidebar()
+    history.push('/settings')
+  }
 
+  const ref = useRef(null)
+  useOnClickOutside(ref, hideSidebar)
+  return (
+    <div ref={isMobileView ? null : ref}>
+      <Burger src={burgerM} onClick={toggleSidebar} />
+      <IconSidebar onClick={toggleSidebar}>
+        <IconBurger src={burger} />
+      </IconSidebar>
+      {isOpenedSidebar && (
+        <SidebarBox>
+          {isMobileView && (
+            <SidebarItem onClick={toggleSidebar} close>
+              <IconWrap>
+                <SidebarItemIcon src={close} />
+              </IconWrap>
+            </SidebarItem>
+          )}
+          <div>
+            <SidebarItem
+              onClick={() => setActiveItem(1)}
+              active={activeItem === 1}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon1 : icon1w} />
+              </IconWrap>
+              Закрытие смены (Z отчет)
+            </SidebarItem>
 
-    const handleCloseContent = () => {
-        setActiveItem(0)
-    }
+            <SidebarItem
+              onClick={() => setActiveItem(2)}
+              active={activeItem === 2}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon2 : icon2w} />
+              </IconWrap>
+              Текущий отчет (X отчет)
+            </SidebarItem>
 
-    const goToSettings = () => {
-        hideSidebar()
-        history.push('/settings')
-    }
+            <SidebarItem
+              onClick={() => setActiveItem(3)}
+              active={activeItem === 3}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon3 : icon3w} />
+              </IconWrap>
+              Отмена последней операции
+            </SidebarItem>
 
+            <SidebarItem
+              onClick={() => setActiveItem(4)}
+              active={activeItem === 4}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
+              </IconWrap>
+              Возврат продажи
+            </SidebarItem>
 
+            <SidebarItem
+              onClick={() => setActiveItem(5)}
+              active={activeItem === 5}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />
+              </IconWrap>
+              Возврат покупки
+            </SidebarItem>
 
-    const ref = useRef(null)
-    useOnClickOutside(ref, hideSidebar)
-    return (
-        <div ref={isMobileView ? null : ref}>
-            <Burger src={burgerM} onClick={toggleSidebar} />
-            <IconSidebar onClick={toggleSidebar} >
-                <IconBurger src={burger} />
-            </IconSidebar>
-            {isOpenedSidebar &&
-            <SidebarBox >
-                {isMobileView &&
-                <SidebarItem onClick={toggleSidebar} close >
-                    <IconWrap>
-                        <SidebarItemIcon src={close}/>
-                    </IconWrap>
-                </SidebarItem>
-                }
-                <div >
-                    <SidebarItem
-                        onClick={() => setActiveItem(1)}
-                        active={activeItem === 1}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon1 : icon1w}/>
-                        </IconWrap>
-                        Закрытие смены (Z отчет)
-                    </SidebarItem>
+            <SidebarItem
+              onClick={() => setActiveItem(6)}
+              active={activeItem === 6}
+            >
+              {isDesktopView && (
+                <IconWrap>
+                  <SidebarItemIcon src={icon6} before6 />
+                  <SidebarItemIcon src={icon62} after6 />
+                </IconWrap>
+              )}
+              {isMobileView && (
+                <IconWrap>
+                  <SidebarItemIcon src={icon6w} />
+                </IconWrap>
+              )}
+              Внесение наличных в смену
+            </SidebarItem>
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(2)}
-                        active={activeItem === 2}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon2 : icon2w}/>
-                        </IconWrap>
-                        Текущий отчет (X отчет)
-                    </SidebarItem>
+            <SidebarItem
+              onClick={() => setActiveItem(7)}
+              active={activeItem === 7}
+            >
+              {isDesktopView && (
+                <IconWrap>
+                  <SidebarItemIcon
+                    src={isDesktopView ? icon72 : icon7w}
+                    before7
+                  />
+                  <SidebarItemIcon src={icon7} after7 />
+                </IconWrap>
+              )}
+              {isMobileView && (
+                <IconWrap>
+                  <SidebarItemIcon src={icon7w} />
+                </IconWrap>
+              )}
+              Изъятие наличных из кассы
+            </SidebarItem>
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(3)}
-                        active={activeItem === 3}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon3 : icon3w}/>
-                        </IconWrap>
-                        Отмена последней операции
-                    </SidebarItem>
+            <SidebarItem
+              onClick={() => setActiveItem(8)}
+              active={activeItem === 8}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon8 : icon8w} />
+              </IconWrap>
+              Информация
+            </SidebarItem>
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(4)}
-                        active={activeItem === 4}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon4 : icon4w}/>
-                        </IconWrap>
-                        Возврат продажи
-                    </SidebarItem>
+            <SidebarItem onClick={goToSettings}>
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon9 : icon9w} />
+              </IconWrap>
+              Настройки
+            </SidebarItem>
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(5)}
-                        active={activeItem === 5}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon5 : icon5w}/>
-                        </IconWrap>
-                        Возврат покупки
-                    </SidebarItem>
+            <SidebarItem isForLink>
+              <LikA href="https://www.tut.by/" target="_blank">
+                <IconWrap>
+                  <SidebarItemIcon src={isDesktopView ? icon10 : icon10w} />
+                </IconWrap>
+                Панель администратора
+              </LikA>
+            </SidebarItem>
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(6)}
-                        active={activeItem === 6}
-                    >
-                        {isDesktopView &&
-                        <IconWrap>
-                            <SidebarItemIcon src={icon6} before6/>
-                            <SidebarItemIcon src={icon62} after6/>
-                        </IconWrap>
-                        }
-                        {isMobileView && <IconWrap><SidebarItemIcon src={icon6w} /></IconWrap>}
-                        Внесение наличных в смену
-                    </SidebarItem>
+            <SidebarItem onClick={handleLogout}>
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon11 : icon11w} />
+              </IconWrap>
+              Выход
+            </SidebarItem>
+          </div>
+        </SidebarBox>
+      )}
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(7)}
-                        active={activeItem === 7}
-                    >
-                        {isDesktopView &&
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon72 : icon7w} before7/>
-                            <SidebarItemIcon src={icon7} after7/>
-                        </IconWrap>
-                        }
-                        {isMobileView && <IconWrap><SidebarItemIcon src={icon7w} /></IconWrap>}
-                        Изъятие наличных из кассы
-                    </SidebarItem>
+      {!!activeItem && (
+        <Modal onClose={null}>
+          {activeItem === 1 && (
+            <Confirm
+              title={'Вы действительно хотите закрыть смену?'}
+              onOk={handleCloseShift}
+              onCancel={handleCloseContent}
+              isLoading={isLoadingCloseShift}
+            />
+          )}
 
-                    <SidebarItem
-                        onClick={() => setActiveItem(8)}
-                        active={activeItem === 8}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon8 : icon8w}/>
-                        </IconWrap>
-                        Информация
-                    </SidebarItem>
+          {activeItem === 2 && <CurrentReport onClose={handleCloseContent} />}
 
-                    <SidebarItem
-                        onClick={goToSettings}
-                    >
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? icon9 : icon9w}/>
-                        </IconWrap>
-                        Настройки
-                    </SidebarItem>
+          {activeItem === 3 && (
+            <Confirm
+              title={'Вы действительно хотите отменить?'}
+              onOk={handleCloseLast}
+              onCancel={handleCloseContent}
+              isLoading={isLoadingCloseShift}
+            />
+          )}
 
-                    <SidebarItem isForLink>
-                        <LikA href="https://www.tut.by/" target="_blank">
-                            <IconWrap>
-                                <SidebarItemIcon src={isDesktopView ? icon10 : icon10w}/>
-                            </IconWrap>
-                            Панель администратора
-                        </LikA>
-                    </SidebarItem>
+          {activeItem === 6 && (
+            <CashKassa
+              type={1}
+              title={'Наличных в кассе:'}
+              cancelText={'Отмена'}
+              okText={'Внести'}
+              onCancel={handleCloseContent}
+              onSuccess={hideSidebar}
+            />
+          )}
 
-                    <SidebarItem onClick={handleLogout}>
-                        <IconWrap>
-                            <SidebarItemIcon src={isDesktopView ? null : icon11w} />
-                        </IconWrap>
-                        Выход
-                    </SidebarItem>
-                </div>
+          {activeItem === 7 && (
+            <CashKassa
+              type={2}
+              title={'Наличных в кассе:'}
+              cancelText={'Отмена'}
+              okText={'Изъять'}
+              onCancel={handleCloseContent}
+              onSuccess={hideSidebar}
+            />
+          )}
 
-            </SidebarBox>
-            }
-
-            {!!activeItem &&
-            <Modal onClose={null}>
-                {activeItem === 1 &&
-                    <Confirm
-                        title={'Вы действительно хотите закрыть смену?'}
-                        onOk={handleCloseShift}
-                        onCancel={handleCloseContent}
-                        isLoading={isLoadingCloseShift}
-                    />
-                }
-
-                {activeItem === 2 &&
-                    <CurrentReport
-                        onClose={handleCloseContent}
-                    />
-                }
-
-                {activeItem === 3 &&
-                    <Confirm
-                        title={'Вы действительно хотите отменить?'}
-                        onOk={handleCloseLast}
-                        onCancel={handleCloseContent}
-                        isLoading={isLoadingCloseShift}
-                    />
-                }
-
-                {activeItem === 6 &&
-                <CashKassa
-                    type={1}
-                    title={'Наличных в кассе:'}
-                    cancelText={'Отмена'}
-                    okText={'Внести'}
-                    onCancel={handleCloseContent}
-                    onSuccess={hideSidebar}
-                />
-                }
-
-                {activeItem === 7 &&
-                <CashKassa
-                    type={2}
-                    title={'Наличных в кассе:'}
-                    cancelText={'Отмена'}
-                    okText={'Изъять'}
-                    onCancel={handleCloseContent}
-                    onSuccess={hideSidebar}
-                />
-                }
-
-                {activeItem === 8 &&
-                <InfoKassa
-                    type={2}
-                    title={'Наличных в кассе:'}
-                    cancelText={'Отмена'}
-                    okText={'Изъять'}
-                    onCancel={handleCloseContent}
-                    onSuccess={hideSidebar}
-                />
-                }
-            </Modal>
-            }
-
-
-        </div>
-    )
+          {activeItem === 8 && (
+            <InfoKassa
+              type={2}
+              title={'Наличных в кассе:'}
+              cancelText={'Отмена'}
+              okText={'Изъять'}
+              onCancel={handleCloseContent}
+              onSuccess={hideSidebar}
+            />
+          )}
+        </Modal>
+      )}
+    </div>
+  )
 }
 
 const IconWrap = styled.div`
@@ -307,35 +300,34 @@ const IconSidebar = styled.div`
   background-color: #ffffff;
   box-shadow: var(--shadow-card);
   cursor: pointer;
-  
+
   -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none;   /* Chrome/Safari/Opera */
-  -khtml-user-select: none;    /* Konqueror */
-  -moz-user-select: none;      /* Firefox */
-  -ms-user-select: none;       /* Internet Explorer/Edge */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
-  
-  @media ${device.mobileTablet} { 
+
+  @media ${device.mobileTablet} {
     display: none;
   }
-  
-  @media ${device.laptop} { 
+
+  @media ${device.laptop} {
     width: 54px;
     height: 54px;
     border-radius: 27px;
   }
 `
 const IconBurger = styled.img`
-  @media ${device.laptop} { 
+  @media ${device.laptop} {
     width: 24px;
   }
 `
 const Burger = styled.img`
-  @media ${device.laptop}, ${device.desktop}  { 
+  @media ${device.laptop}, ${device.desktop} {
     display: none;
   }
 `
-
 
 const SidebarItem = styled.div`
     width: 100%;
@@ -346,21 +338,26 @@ const SidebarItem = styled.div`
     padding: 0 20px 0 0px;
     font-size: 15px;
     border-bottom: 1px solid var(--canvas-text);
-    color: ${p => p.active ? '#ffffff' : 'var(--canvas-text);' };
-    background-color: ${p => p.active ? 'var(--green)' : 'inherit' };
+    color: ${(p) => (p.active ? '#ffffff' : 'var(--canvas-text);')};
+    background-color: ${(p) => (p.active ? 'var(--green)' : 'inherit')};
     
     &:hover {
       cursor: pointer;
-      background-color: ${p => p.active ? 'var(--green)' : 'rgba(37,215,126,0.24)' };
+      background-color: ${(p) =>
+        p.active ? 'var(--green)' : 'rgba(37,215,126,0.24)'};
     }
     
-    ${(p) => p.close && css`
-      margin-bottom: 10px;
-    `}
+    ${(p) =>
+      p.close &&
+      css`
+        margin-bottom: 10px;
+      `}
     
-    ${(p) => p.isForLink && css`
-      padding-left: 0;
-    `}
+    ${(p) =>
+      p.isForLink &&
+      css`
+        padding-left: 0;
+      `}
     
     
     
@@ -382,54 +379,53 @@ const SidebarItemIcon = styled.img`
     height: 20px;
     
     ${(p) =>
-    p.before6 &&
-    css`
-      left: 18px;
-    `}
+      p.before6 &&
+      css`
+        left: 18px;
+      `}
     
     ${(p) =>
-    p.after6 &&
-    css`
-      top: 20px;
-      left: 40px;
-      height: auto;
-    `}
+      p.after6 &&
+      css`
+        top: 20px;
+        left: 40px;
+        height: auto;
+      `}
     ${(p) =>
-    p.before7 &&
-    css`
-      top: 20px;
-      left: 17px;
-      height: auto;
-    `}
+      p.before7 &&
+      css`
+        top: 20px;
+        left: 17px;
+        height: auto;
+      `}
     
     ${(p) =>
-    p.after7 &&
-    css`
-      left: 29px;
-    `}
+      p.after7 &&
+      css`
+        left: 29px;
+      `}
 `
 
-
 const SidebarBox = styled.div`
-    width: 380px;
-    position: absolute;
-    top: 100px;
-    background-color: white;
-    border: 1px solid #e2e2e2;
-    box-shadow: var(--shadow-card);
-    z-index: 10;
-    
-    ${SidebarItem}:last-child {
-      border-bottom: none;
-    }
-    
-    @media ${device.mobileTablet} { 
-        width: 100%;
-        left: 0;
-        top: 0;
-        height: 100vh;
-        background-color: #5087DE;
-     }
+  width: 380px;
+  position: absolute;
+  top: 100px;
+  background-color: white;
+  border: 1px solid #e2e2e2;
+  box-shadow: var(--shadow-card);
+  z-index: 10;
+
+  ${SidebarItem}:last-child {
+    border-bottom: none;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background-color: #5087de;
+  }
 `
 
 const LikA = styled.a`
@@ -442,4 +438,3 @@ const LikA = styled.a`
   //padding-left: 75px;
   padding-right: 0px;
 `
-

@@ -1,70 +1,66 @@
-import React from "react"
-import {useSelector, useDispatch} from "react-redux";
-import styled, { css } from "styled-components"
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import styled, { css } from 'styled-components'
 import { device } from 'lib/mediaDevice'
-import {userActions} from "features/user";
-import {productActions} from "features/product";
-
+import { userActions } from 'features/user'
+import { productActions } from 'features/product'
 
 export const UsersList = () => {
-    const { users, isLoadingUsers } = useSelector(state => state.user)
-    const dispatch = useDispatch()
+  const { users, isLoadingUsers } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
-    const handleSetClient = client => {
-        dispatch(userActions.setClient(client))
-        dispatch(userActions.setSearch(''))
-    }
+  const handleSetClient = (client) => {
+    dispatch(userActions.setClient(client))
+    dispatch(userActions.setSearch(''))
+  }
 
-    if(isLoadingUsers) return (
-        <UserContainer>
-            <Loading>Поиск...</Loading>
-        </UserContainer>
-    )
-
+  if (isLoadingUsers)
     return (
-        <UserContainer>
-            {users.length ?
-                <UsersBox>
-                    {users.map((item, key) =>
-                        <User
-                            key={item.id}
-                            onClick={() => handleSetClient(item)}
-                        >
-                            <Name>{item.name}</Name>
-                            <Phone>{item.phone ? item.phone : 'нет номера'}</Phone>
-                        </User>
-                    )}
-                </UsersBox>
-                :
-                <Loading>Ничего не найдено</Loading>
-            }
-        </UserContainer>
+      <UserContainer>
+        <Loading>Поиск...</Loading>
+      </UserContainer>
     )
+
+  return (
+    <UserContainer>
+      {users.length ? (
+        <UsersBox>
+          {users.map((item, key) => (
+            <User key={item.id} onClick={() => handleSetClient(item)}>
+              <Name>{item.name}</Name>
+              <Phone>{item.phone ? item.phone : 'нет номера'}</Phone>
+            </User>
+          ))}
+        </UsersBox>
+      ) : (
+        <Loading>Ничего не найдено</Loading>
+      )}
+    </UserContainer>
+  )
 }
 
 const UserContainer = styled.div`
-    position: absolute;
-    top: 110px;
-    min-height: 87px;
-    max-height: 400px;
-    width: 375px;
-    padding: 10px;
-    border-radius: 30px;
-    background: #ffffff;
-    box-shadow: var(--shadow-card);
-    z-index: 3;
-    
-    @media ${device.laptop} { 
-        width: 315px;
-        max-height: 350px;
-        top: 90px;
-    }
-    
-    @media ${device.mobileTablet} { 
-        width: 90%;
-        left: 5%;
-    }
-    
+  position: absolute;
+  top: 110px;
+  min-height: 87px;
+  max-height: 400px;
+  width: 375px;
+  padding: 10px;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: var(--shadow-card);
+  z-index: 3;
+
+  @media ${device.laptop} {
+    width: 315px;
+    max-height: 350px;
+    top: 90px;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 90%;
+    left: 5%;
+  }
 `
 const UsersBox = styled.div`
   height: 100%;
@@ -80,7 +76,7 @@ const User = styled.div`
   border-radius: 20px;
   background: #ffffff;
   box-shadow: var(--shadow-card);
-  
+
   &:hover {
     cursor: pointer;
     //font-weight: bold;
@@ -88,8 +84,7 @@ const User = styled.div`
   }
 `
 const Name = styled.div`
-    font-size: 15px;
-    
+  font-size: 15px;
 `
 const Phone = styled(Name)`
   min-width: 105px;

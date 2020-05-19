@@ -1,5 +1,5 @@
-import { css } from "styled-components"
-import { prismcssLight } from "./prismcss"
+import { css } from 'styled-components'
+import { prismcssLight } from './prismcss'
 
 export const lightTheme = {
   prismcss: prismcssLight,

@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import styled from "styled-components"
+import styled from 'styled-components'
 
 export const H1 = styled.h1`
   line-height: 4rem;
@@ -43,4 +43,3 @@ export const H6 = styled.h4`
   margin-bottom: 1rem;
   user-select: none;
 `
-
