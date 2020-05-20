@@ -41,6 +41,10 @@ const Close = styled.div`
 const CartItemInfoDiscount = styled.div`
   font-size: 15px;
   color: #6d82a3;
+  
+  @media ${device.laptop} {
+    font-size: 14px;
+  }
 `
 const CartCol = styled.div`
   display: flex;
@@ -77,6 +81,10 @@ const CartCol = styled.div`
        }
      `}
    
+   @media ${device.laptop} { 
+      height: 90px;
+    };
+   
    @media ${device.mobileTablet} { 
       height: 120px;
     }
@@ -91,11 +99,23 @@ const CartTotal = styled.div`
   padding: 30px;
   background-color: #ffffff;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
+
+  @media ${device.laptop} {
+    height: 180px;
+    border-radius: 25px;
+    padding: 25px;
+  }
 `
 const CartItemAvatar = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50px;
+  
+   @media ${device.laptop} {
+     width: 60px;
+    height: 60px;
+    border-radius: 30px;
+  }
 
   @media ${device.mobileTablet} {
     width: 60px;
@@ -112,6 +132,12 @@ const CartItemInfo = styled.div`
   //align-items: center;
   justify-content: space-between;
   padding: 0 10px;
+  
+  @media ${device.laptop} {
+    height: 90px;
+    width: calc(100% - 140px);
+    padding: 4%;
+  }
 
   @media ${device.mobileTablet} {
     height: 100px;
@@ -123,7 +149,12 @@ const CartItemInfoTitle = styled.div`
   max-height: 75px;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: GilroyBold, sans-serif;
+  font-weight: bold;
+  
+  @media ${device.laptop} {
+    font-size: 18px;
+    max-height: 65px;
+  }
 
   @media ${device.mobileTablet} {
     font-size: 16px;
@@ -131,6 +162,10 @@ const CartItemInfoTitle = styled.div`
 `
 const CartItemInfoPrice = styled.div`
   font-size: 28px;
+  
+  @media ${device.laptop} {
+    font-size: 20px;
+  }
 
   @media ${device.mobileTablet} {
     font-size: 22px;
@@ -147,6 +182,10 @@ const CartTotalRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+
+  @media ${device.laptop} {
+    margin-bottom: 10px;
+  }
 `
 const CartTotalRowTitle = styled.div`
   white-space: nowrap;
@@ -155,8 +194,13 @@ const CartTotalRowTitle = styled.div`
   ${(p) =>
     p.bold &&
     css`
-      font-family: GilroyBold, sans-serif;
+      font-weight: bold;
     `}
+  
+  @media ${device.laptop} {
+    font-size: 16px;
+  }
+  
 `
 const CartTotalRowDivider = styled.div`
   width: 100%;
@@ -171,8 +215,12 @@ const CartTotalRowValuer = styled.div`
   ${(p) =>
     p.bold &&
     css`
-      font-family: GilroyBold, sans-serif;
+      font-weight: bold;
     `}
+  
+  @media ${device.laptop} {
+    font-size: 16px;
+  }
 `
 const CartBtnBox = styled.div`
   display: flex;
@@ -180,6 +228,15 @@ const CartBtnBox = styled.div`
 
   ${StyledButton} {
     width: 48%;
+    height: 50px;
+  }
+
+  @media ${device.laptop} {
+    margin-top: 15px;
+
+    ${StyledButton} {
+      height: 50px;
+    }
   }
 `
 const CartItemCountIcon = styled.div`
@@ -199,6 +256,8 @@ const CartItemCountIcon = styled.div`
       background-color: #ffffff;
       color: var(--green);
     `}
+  
+  
 `
 const CartItemCountIcon2 = styled(CartItemCountIcon)`
   display: flex;
@@ -210,6 +269,10 @@ const CartItemCountIcon2 = styled(CartItemCountIcon)`
 const CartItemCountValue = styled.div`
   font-size: 28px;
   margin: 5px 0;
+  
+  @media ${device.laptop} {
+    font-size: 22px;
+  }
 
   @media ${device.mobileTablet} {
     font-size: 22px;
