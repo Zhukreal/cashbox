@@ -17,6 +17,10 @@ const CartRow = styled.div`
   height: calc(100vh - 450px);
   padding: 0 5px;
   overflow-y: auto;
+  
+  @media ${device.laptop} {
+    height: calc(100vh - 350px);
+  }
 `
 
 const Close = styled.div`
