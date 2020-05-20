@@ -12,6 +12,7 @@ import {
   Input,
   StyledInput,
   StyledInputMask,
+  BoxInput,
   CashBoxList,
   Modal,
   Text,
@@ -19,8 +20,8 @@ import {
 import bgLogin from 'static/img/bg-login.png'
 import bgLoginLaptop from 'static/img/bg-login-laptop.png'
 import bgLoginMobile from 'static/img/bg-login-mobile2.png'
-import logo from 'static/img/logo.png'
-import arrowRight from 'static/img/icons/arrow-right.png'
+import logo from 'static/img/logo.svg'
+import arrowRight from 'static/img/icons/arrow-right-white.svg'
 
 export const LoginPage = () => {
   const dispatch = useDispatch()
@@ -60,7 +61,6 @@ export const LoginPage = () => {
 
   const onChange = (e) => {
     const { name, value } = e.target
-    debugger
     setData({ ...data, [name]: value })
     setError(false)
   }
@@ -267,7 +267,7 @@ const FormBox = styled.div`
     //margin-top: 5%;
   }
 
-  @media ${device.mobile}, ${device.tablet} {
+  @media ${device.mobileTablet} {
     width: 100%;
     height: auto;
     min-height: auto;
@@ -280,6 +280,7 @@ const FormBox = styled.div`
     }
     ${StyledInput}, ${StyledInputMask} {
       border: none;
+      margin-bottom: 10px;
     }
   }
 

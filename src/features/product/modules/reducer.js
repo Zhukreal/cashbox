@@ -34,11 +34,11 @@ const product = createSlice({
       const { results } = action.payload
       state.skip = state.initialTake
       state.hasMore = results.length === state.initialTake
-      console.log('state.hasMore', state.hasMore)
       state.products = results.map((product) => toModel(product))
     },
     setMoreProducts(state, action) {
       const { results } = action.payload
+      console.log('set more')
       state.skip = state.skip + state.take
       state.hasMore = results.length === state.take
       const modifiedProducts = results.map((product) => toModel(product))

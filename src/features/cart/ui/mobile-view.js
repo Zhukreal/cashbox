@@ -62,28 +62,28 @@ export const MobileView = ({
           <HeaderCart>
             <HeaderCartTop>
               <IconArrowLeft onClick={() => setShowedMobileCart(false)} />
-              <CenterBox>
-                {client.id ? (
-                  <ClientInfo>
-                    <ClientName>{client.name}</ClientName>
-                    <ClientPhone>{client.phone}</ClientPhone>
-                  </ClientInfo>
-                ) : (
-                  <Input
-                    type="search"
-                    value={searchU}
-                    onChange={onChangeSearchUsers}
-                    placeholder="Введите номер/ФИО клиента"
-                    isSearch
-                  />
-                )}
-              </CenterBox>
               {client.id ? (
                 <IconClearClient onClick={handleClearClient} />
               ) : (
                 <AddUser />
               )}
             </HeaderCartTop>
+            <HeaderCartSearch>
+              {client.id ? (
+                <ClientInfo>
+                  <ClientName>{client.name}</ClientName>
+                  <ClientPhone>{client.phone}</ClientPhone>
+                </ClientInfo>
+              ) : (
+                <Input
+                  type="search"
+                  value={searchU}
+                  onChange={onChangeSearchUsers}
+                  placeholder="Введите номер/ФИО клиента"
+                  isSearch
+                />
+              )}
+            </HeaderCartSearch>
           </HeaderCart>
           <CartRowMobile>
             {products.map((item) => (
@@ -180,11 +180,14 @@ const MobileBox = styled.div`
   overflow-y: hidden;
 `
 const HeaderCart = styled.div`
-  height: 100px;
-  padding: 5%;
+    height: 160px;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 `
 const CartRowMobile = styled.div`
-  height: calc(100vh - 320px);
+  height: calc(100vh - 370px);
   overflow-y: auto;
   padding: 5px 5% 0;
 `
@@ -248,7 +251,6 @@ const ClientInfo = styled.div`
   height: 50px;
   width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 4%;
@@ -258,16 +260,17 @@ const ClientInfo = styled.div`
 `
 const ClientName = styled.div`
   font-size: 14px;
-  width: 100%;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 50%;
+  text-align: left;
+  overflow-y: hidden;
 `
 const ClientPhone = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   color: grey;
+   text-align: right;
+  width: 50%;
 `
-const CenterBox = styled.div`
-  width: calc(100% - 130px);
+const HeaderCartSearch = styled.div`
+  width: 100%;
+
 `

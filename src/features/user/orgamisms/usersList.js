@@ -60,6 +60,7 @@ const UserContainer = styled.div`
   @media ${device.mobileTablet} {
     width: 90%;
     left: 5%;
+    top: 160px;
   }
 `
 const UsersBox = styled.div`

@@ -63,7 +63,8 @@ const CashBoxItem = styled.div`
       height: 40px;
       font-size: 17px;
       justify-content: center;
-    }
+      color: ${p => p.active ? 'var(--blue)' : 'rgba(14, 37, 74, 0.5)'};
+    };
     
    @media ${device.laptop} {       
       height: 60px;

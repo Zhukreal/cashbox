@@ -79,7 +79,7 @@ export const AddUser = () => {
   const disabled = !user.name || !user.phone || errorEmail
 
   return (
-    <Box ref={ref}>
+    <Box ref={isDesktopView ? ref : null}>
       {isMobileView && <IconAddPerson onClick={toggleShowed} />}
       {isDesktopView && (
         <ProfileBtn onClick={toggleShowed}>

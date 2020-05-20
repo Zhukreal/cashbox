@@ -97,14 +97,14 @@ export const ChangePassword = ({ onClose }) => {
           />
         </BoxInputs>
 
-        {/*{isMobileView &&*/}
-        {/*<FooterMobile*/}
-        {/*    title={'Добавить'}*/}
-        {/*    onOk={handleSave}*/}
-        {/*    disabled={disabled}*/}
-        {/*    isLoading={isLoadingAddNew}*/}
-        {/*/>*/}
-        {/*}*/}
+        {isMobileView &&
+        <FooterMobile
+            title={'Сменить'}
+            onOk={handleSave}
+            disabled={disabled}
+            isLoading={null}
+        />
+        }
 
         {isDesktopView && (
           <Footer>
@@ -121,6 +121,7 @@ export const ChangePassword = ({ onClose }) => {
             </Button>
           </Footer>
         )}
+
       </UserContainer>
     </Box>
   )
@@ -128,6 +129,10 @@ export const ChangePassword = ({ onClose }) => {
 
 const Box = styled.div`
   width: 550px;
+  
+  @media ${device.mobileTablet} {
+    width: 100%;
+  }
 `
 
 const BoxInputs = styled.div`
@@ -140,6 +145,10 @@ const BoxInputs = styled.div`
 
   @media ${device.mobileTablet} {
     width: 100%;
+    
+    ${StyledInput} {
+      border-color: transparent;
+    }
   }
 `
 

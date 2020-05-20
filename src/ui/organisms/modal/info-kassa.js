@@ -10,29 +10,47 @@ export const Info = ({ data, isLoading, onCancel }) => {
         <Left>
           <Title>Информация о кассе</Title>
           <WrapperBorder>
-            <Label>Кассир:</Label>
-            <Text>Иванов Иван Иванович</Text>
-            <Label>Торговая точка:</Label>
-            <Text>SMALL</Text>
-            <Label>Касса:</Label>
-            <Text>Касса 1</Text>
-            <Label>Заводской номер кассы:</Label>
-            <Text>000000001</Text>
-            <Label>Связь с ОФД:</Label>
-            <Status>Online</Status>
+            <WLT>
+              <Label>Кассир:</Label>
+              <Text>Иванов Иван Иванович</Text>
+            </WLT>
+            <WLT>
+              <Label>Торговая точка:</Label>
+              <Text>SMALL</Text>
+            </WLT>
+            <WLT>
+              <Label>Касса:</Label>
+              <Text>Касса 1</Text>
+            </WLT>
+            <WLT>
+              <Label>Заводской номер кассы:</Label>
+              <Text>000000001</Text>
+            </WLT>
+            <WLT>
+              <Label>Связь с ОФД:</Label>
+              <Status>Online</Status>
+            </WLT>
           </WrapperBorder>
         </Left>
         <Right>
           <Title>Информация о смене</Title>
 
-          <Label>Наличных в кассе:</Label>
-          <Text green>3 487 029 тнг</Text>
-          <Label>Номер смены:</Label>
-          <Text>64</Text>
-          <Label>Время открытия смены:</Label>
-          <Text>10:00 03.09.2020</Text>
-          <Label>Чеков за сегодня:</Label>
-          <Text>234</Text>
+          <WLT>
+            <Label>Наличных в кассе:</Label>
+            <Text green>3 487 029 тнг</Text>
+          </WLT>
+          <WLT>
+            <Label>Номер смены:</Label>
+            <Text>64</Text>
+          </WLT>
+          <WLT>
+            <Label>Время открытия смены:</Label>
+            <Text>10:00 03.09.2020</Text>
+          </WLT>
+          <WLT>
+            <Label>Чеков за сегодня:</Label>
+            <Text>234</Text>
+          </WLT>
         </Right>
       </Content>
       <WrapButton>
@@ -50,21 +68,46 @@ const Box = styled.div`
   @media ${device.laptop} {
     width: 450px;
   }
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    height: calc(100vh - 170px);
+    overflow-y: auto;
+  }
 `
 const Content = styled.div`
   display: flex;
+
+  @media ${device.mobileTablet} {
+    flex-direction: column;   
+  }
 `
 const Left = styled.div`
   width: 50%;
   text-align: left;
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    margin-bottom: 15px;
+  }
 `
 const Right = styled.div`
   width: 45%;
   margin-left: 5%;
   text-align: left;
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    margin: 0;
+  }
 `
 const WrapperBorder = styled.div`
   border-right: 1px dashed #0e254a42;
+
+  @media ${device.mobileTablet} {
+    border-right: none;
+    border-bottom: 1px dashed #0e254a42;
+  }
 `
 const Title = styled.div`
   font-size: 25px;
@@ -73,6 +116,12 @@ const Title = styled.div`
 
   @media ${device.laptop} {
     font-size: 20px;
+  }
+
+  @media ${device.mobileTablet} {
+    font-size: 20px;
+    color: var(--blue);
+    //margin-bottom: 5%;
   }
 `
 const Label = styled.div`
@@ -84,6 +133,9 @@ const Label = styled.div`
   @media ${device.laptop} {
     font-size: 16px;
   }
+  @media ${device.mobileTablet} {
+    font-size: 16px;
+  }
 `
 const Text = styled.div`
   font-size: 25px;
@@ -92,6 +144,9 @@ const Text = styled.div`
 
   @media ${device.laptop} {
     font-size: 20px;
+  }
+  @media ${device.mobileTablet} {
+    font-size: 16px;
   }
 `
 const Status = styled.div`
@@ -102,6 +157,9 @@ const Status = styled.div`
 
   @media ${device.laptop} {
     font-size: 20px;
+  }
+  @media ${device.mobileTablet} {
+    font-size: 16px;
   }
 
   ::after {
@@ -118,6 +176,12 @@ const Status = styled.div`
       height: 12px;
       border-radius: 6px;
     }
+    
+    @media ${device.mobileTablet} {
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+    }
   }
 `
 const WrapButton = styled.div`
@@ -127,10 +191,38 @@ const WrapButton = styled.div`
   ${StyledButton} {
     padding: 0 50px;
   }
+  
+  @media ${device.mobileTablet} {
+    display: none;
+  }
 `
 const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 300px;
+`
+const WLT = styled.div`
+  @media ${device.mobileTablet} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    
+     ${Label} {
+      //width: 50%;
+      padding-right: 10px;
+      margin: 0;
+      
+    }
+
+    ${Text} {
+      //width: 50%;
+      text-align: right;
+      margin: 0;
+      font-weight: bold;
+    }
+
+   
+  }
 `

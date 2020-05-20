@@ -10,6 +10,7 @@ export const Modal = ({
   noPadding,
   noBorderRadius,
   bgLock,
+  isFromSidebar,
 }) => {
   const ref = useRef(null)
   useOnClickOutside(ref, onClose)
@@ -49,12 +50,12 @@ const ModalBox = styled.div`
     text-align: center;
     border-radius: 30px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.161);
-    z-index: 1001;
+    z-index: 1005;
     
     ${(p) =>
       p.bgLock &&
       css`
-        background: url(${iconLockBg}) left center no-repeat;
+        background: #ffffff url(${iconLockBg}) left center no-repeat;
         background-size: 100% 100%;
       `}
     
@@ -65,5 +66,15 @@ const ModalBox = styled.div`
         left: 0;
         transform: none;
         border-radius: ${(p) => (p.noBorderRadius ? 0 : '30px 30px 0 0')};
+        
+        //::before {
+        //  content: '';
+        //  position: absolute;
+        //  height: 100vh;
+        //  width: 100vw;
+        //  background: red;
+        //}
     }
 `
+
+

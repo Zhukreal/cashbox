@@ -101,6 +101,7 @@ const sharedStyle = css`
     @media ${device.mobileTablet} { 
         height: 40px;
         border-radius: 20px;
+        border-color: transparent;
         padding: 0 20px;
         font-size: 16px;
     }

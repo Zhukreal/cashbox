@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import useOnClickOutside from 'use-onclickoutside'
@@ -6,8 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { device } from 'lib/mediaDevice'
 import { history } from 'lib/routing'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
-import { profileActions, CurrentReport } from 'features/profile'
+import {
+  profileActions,
+  CurrentReport,
+  CashKassa,
+  InfoKassa,
+} from 'features/profile'
 import { commonActions } from 'features/common'
+import { Modal, Confirm, IconArrowLeft } from 'ui'
 import icon1 from 'static/img/icons/icon1.svg'
 import icon2 from 'static/img/icons/icon2.svg'
 import icon3 from 'static/img/icons/icon3.svg'
@@ -35,10 +41,7 @@ import icon11w from 'static/img/icons/icon11-w.svg'
 import close from 'static/img/icons/close.png'
 import burger from 'static/img/icons/burger-desktop.svg'
 import burgerM from 'static/img/icons/burger-mobile.svg'
-import { Modal } from 'ui/organisms/modal'
-import { Confirm } from 'ui/organisms'
-import { CashKassa, InfoKassa } from 'features/profile'
-import { set } from 'browser-cookies'
+import bgMobile from 'static/img/bg-login-mobile.png'
 
 export const Sidebar = ({ handleLogout }) => {
   const [activeItem, setActiveItem] = useState(0)
@@ -49,6 +52,10 @@ export const Sidebar = ({ handleLogout }) => {
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+
+  useEffect(() => {
+    if (isMobileView) dispatch(commonActions.showSidebar(false))
+  }, [activeItem])
 
   const toggleSidebar = (e) => {
     dispatch(commonActions.toggleSidebar())
@@ -88,6 +95,7 @@ export const Sidebar = ({ handleLogout }) => {
       <IconSidebar onClick={toggleSidebar}>
         <IconBurger src={burger} />
       </IconSidebar>
+
       {isOpenedSidebar && (
         <SidebarBox>
           {isMobileView && (
@@ -223,7 +231,13 @@ export const Sidebar = ({ handleLogout }) => {
         </SidebarBox>
       )}
 
-      {!!activeItem && (
+      {isMobileView && Boolean(activeItem) && (
+        <Background>
+          <IconArrowLeft onClick={handleCloseContent} />
+        </Background>
+      )}
+
+      {Boolean(activeItem) && (
         <Modal onClose={null}>
           {activeItem === 1 && (
             <Confirm
@@ -410,6 +424,8 @@ const SidebarBox = styled.div`
   width: 380px;
   position: absolute;
   top: 100px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
   background-color: white;
   border: 1px solid #e2e2e2;
   box-shadow: var(--shadow-card);
@@ -424,7 +440,9 @@ const SidebarBox = styled.div`
     left: 0;
     top: 0;
     height: 100vh;
+    max-height: 100vh;
     background-color: #5087de;
+    z-index: 1011;
   }
 `
 
@@ -437,4 +455,23 @@ const LikA = styled.a`
   display: flex;
   //padding-left: 75px;
   padding-right: 0px;
+`
+
+const Background = styled.div`
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: #ffffff url(${bgMobile});
+  background-size: cover;
+  padding: 5%;
+
+  // ${IconArrowLeft} {
+  //   position: relative;
+  //   top: 5%;
+  //   left: 5%;
+  // };
+  
 `

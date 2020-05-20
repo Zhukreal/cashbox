@@ -60,6 +60,9 @@ export const CommonLoader = ({ children }) => {
       dispatch(productActions.getProducts({}))
     }
   }, [dispatch, searchFilter, activeSorting, activeGroup.id])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [searchFilter, activeSorting, activeGroup.id])
 
   // if(!TOKEN) return null
   return children

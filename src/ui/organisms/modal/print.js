@@ -111,7 +111,7 @@ const Close = styled.div`
   }
 
   @media ${device.mobile} {
-    display: none;
+    //display: none;
   }
 `
 const Report = styled.div``

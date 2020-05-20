@@ -21,6 +21,7 @@ export const Cart = () => {
   const [searchU, setSearchU] = useState('')
   const debouncedSearchU = useDebounce(searchU, 300)
 
+  const { isOpenedSidebar } = useSelector((state) => state.common)
   const { currency } = useSelector((state) => state.profile)
   const { searchUser, client, showedModalAdd } = useSelector(
     (state) => state.user,
@@ -31,7 +32,7 @@ export const Cart = () => {
   const currentDevice = useDetectDevice()
 
   useEffect(() => {
-    if (debouncedSearchU) dispatch(userActions.getUsers(debouncedSearchU))
+    dispatch(userActions.getUsers(debouncedSearchU))
   }, [debouncedSearchU])
   const onChangeSearchUsers = (e) => {
     const { value } = e.target
@@ -86,11 +87,14 @@ export const Cart = () => {
   const handleClearClient = () => {
     setSearchU('')
     dispatch(userActions.setClient({}))
+    dispatch(userActions.setSearch(''))
   }
 
   const handleClickBlur = (e) => {
-    console.log('click')
+    dispatch(userActions.setShowedAdd(false))
   }
+
+  console.log('searchUser', searchUser)
 
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
@@ -111,7 +115,7 @@ export const Cart = () => {
           handleOpenModalPayment={handleOpenModalPayment}
         />
       )}
-      {isMobileView && (
+      {(!isOpenedSidebar && isMobileView ) && (
         <>
           <MobileView
             isShowedMobileCart={isShowedMobileCart}
@@ -132,7 +136,8 @@ export const Cart = () => {
             handleClearClient={handleClearClient}
           />
           {searchUser && <UsersList />}
-          {(searchUser || showedModalAdd) && <Blur onClick={handleClickBlur} />}
+          {(searchUser) && <Blur onClick={handleClickBlur} />}
+          {(showedModalAdd) && <Blur2 onClick={handleClickBlur} />}
         </>
       )}
 
@@ -194,7 +199,7 @@ const CartWrapper = styled.div`
 
 const Blur = styled.div`
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 160px);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -206,4 +211,7 @@ const Blur = styled.div`
   -moz-filter: blur(0px);
   -webkit-filter: blur(0x);
   z-index: 2;
+`
+const Blur2 = styled(Blur)`
+height: calc(100% - 80px);
 `

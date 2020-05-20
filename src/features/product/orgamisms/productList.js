@@ -14,8 +14,6 @@ import { cartActions } from 'features/cart'
 import { Modal, Confirm } from 'ui'
 import plusIcon from 'static/img/icons/plus.svg'
 import emptyPhoto from 'static/img/no-photo.png'
-import { Link } from 'react-router-dom'
-import { Common } from '../../common/organisms'
 
 export const ProductList = () => {
   const [productConfirm, setProductConfirm] = useState({})
@@ -31,13 +29,11 @@ export const ProductList = () => {
     activeGroup,
   } = useSelector((state) => state.product)
   const { currency } = useSelector((state) => state.profile)
+  const { typeViewProduct } = useSelector((state) => state.common)
   const products = useSelector((state) => productSelectors.getProducts(state))
   const currentDevice = useDetectDevice()
-
-  // useEffect( () => {
-  //     dispatch(productActions.resetFilters())
-  //     dispatch(productActions.getProducts({}))
-  // }, [dispatch, searchFilter, activeSorting, activeGroup.id])
+  const isMobileView = currentDevice.isMobile || currentDevice.isTablet
+  const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
   const fetchMoreListItems = async () => {
     console.log('hasMore', hasMore)
@@ -74,27 +70,61 @@ export const ProductList = () => {
     setOpenedModalNewProduct(false)
   }
 
-  const isMobileView = currentDevice.isMobile || currentDevice.isTablet
-  const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+  const ProductsListView = () => {
+    if (typeViewProduct === 'list') {
+      return (
+        <ProductsRow2>
+          <ProductCol2>
+            <ProductLogo2 src={emptyPhoto} />
+            <ProductNameNew>Новый товар</ProductNameNew>
+            <ProductPrice2>0 {currency}</ProductPrice2>
+            {isDesktopView && (
+              <AddIcon2 onClick={() => handleAddNew()}>
+                <PlusIcon src={plusIcon} />
+              </AddIcon2>
+            )}
+          </ProductCol2>
+          {products.map((item, key) => (
+            <ProductCol2 key={`${item.id}-${key}`} url={item.image}>
+              <ProductLogo2 src={item.image || emptyPhoto} />
+              <WrapInfoList>
+                <ProductName2>{item.name}</ProductName2>
+                <ProductCode2>Код: {item.barcode}</ProductCode2>
+                <ProductCode2>
+                  {item.currentCount !== null &&
+                    `
+                Остаток: ${item.currentCount} ${item.unit}
+                  `}
+                </ProductCode2>
+                <ProductPrice2>
+                  {item.price} {currency}
+                </ProductPrice2>
+              </WrapInfoList>
+              {isDesktopView && (
+                <AddIcon2 onClick={() => handleAddToCart(item)}>
+                  <PlusIcon src={plusIcon} />
+                </AddIcon2>
+              )}
+            </ProductCol2>
+          ))}
+          <LoadingMore>
+            {hasMore ? isFetching && 'Загружаем еще...' : ''}
+          </LoadingMore>
+        </ProductsRow2>
+      )
+    }
 
-  if (isLoading) return <Skeleton />
-  if (searchFilter && !products.length)
-    return <Loading>По вышему запросу ничего не найдено...</Loading>
-  return (
-    <>
+    return (
       <ProductsRow>
         <ProductCol>
           <ProductInfo>
             <ProductName>Новый товар</ProductName>
-            {/*<ProductCode>Код: - </ProductCode>*/}
-            {/*<ProductCode>Остаток: - </ProductCode>*/}
             <ProductPrice>0 {currency}</ProductPrice>
             <AddIcon onClick={() => handleAddNew()}>
               <PlusIcon src={plusIcon} />
             </AddIcon>
           </ProductInfo>
         </ProductCol>
-
         {products.map((item, key) => (
           <ProductCol key={`${item.id}-${key}`} url={item.image}>
             <ProductInfo>
@@ -114,11 +144,24 @@ export const ProductList = () => {
             </ProductInfo>
           </ProductCol>
         ))}
-
         <LoadingMore>
           {hasMore ? isFetching && 'Загружаем еще...' : ''}
         </LoadingMore>
       </ProductsRow>
+    )
+  }
+
+  if (isLoading) return <Skeleton typeViewProduct={typeViewProduct} />
+  if (searchFilter && !products.length)
+    return <Loading>По вашему запросу ничего не найдено...</Loading>
+
+  return (
+    <>
+      <ProductsListView />
+
+      {/*<LoadingMore>*/}
+      {/*  Загружаем !!!*/}
+      {/*</LoadingMore>*/}
 
       {productConfirm.id && (
         <Modal onClose={() => setProductConfirm({})}>
@@ -177,7 +220,7 @@ const ProductCol = styled.div`
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
        height: 320px;
-    }
+    };
     
     @media ${device.laptop} { 
       flex: 0 1 calc(33.333% - 3em);
@@ -282,4 +325,143 @@ const Loading = styled.div`
   font-size: 15px;
   text-align: center;
   color: grey;
+`
+
+const ProductsRow2 = styled.div`
+  width: calc(100% - 50px);
+  padding-bottom: 110px;
+
+  @media ${device.laptop} {
+    padding-bottom: 80px;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    padding: 0;
+  }
+`
+const ProductCol2 = styled.div`
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 3%;
+  border-radius: 30px;
+  box-shadow: var(--shadow-card);
+
+  @media ${device.laptop} {
+    height: 60px;
+    border-radius: 25px;
+  }
+
+  @media ${device.mobileTablet} {
+    height: 60px;
+  }
+`
+const WrapInfoList = styled.div`
+  width: calc(100% - 120px);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media ${device.laptop} {
+    height: 60px;
+    width: calc(100% - 80px);
+  }
+
+  @media ${device.mobileTablet} {
+    width: calc(100% - 40px);
+    height: 60px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+`
+
+const ProductLogo2 = styled.img`
+  width: 58px;
+  height: 58px;
+  border-radius: 29px;
+
+  @media ${device.laptop} {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+`
+const ProductName2 = styled(ProductName)`
+  margin: 0;
+  height: 80px;
+  width: calc(100% - 180px);
+  padding: 0 20px;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+
+  @media ${device.laptop} {
+    font-size: 20px;
+    height: 60px;
+  }
+  @media ${device.mobileTablet} {
+    height: auto;
+    font-size: 15px;
+    margin-bottom: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`
+const ProductCode2 = styled(ProductCode)`
+  min-width: 160px;
+  text-align: left;
+
+  @media ${device.laptop} {
+  }
+  @media ${device.mobileTablet} {
+    font-size: 9px;
+  }
+`
+const ProductPrice2 = styled(ProductPrice)`
+  position: relative;
+  bottom: 0;
+  min-width: 120px;
+
+  @media ${device.laptop} {
+    font-size: 18px;
+  }
+  @media ${device.mobileTablet} {
+    font-size: 16px;
+  }
+`
+const AddIcon2 = styled(AddIcon)`
+  position: relative;
+  right: auto;
+  bottom: auto;
+  min-width: 58px;
+
+  @media ${device.laptop} {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+  }
+`
+const ProductNameNew = styled(ProductName2)`
+  width: calc(100% - 240px);
+
+  @media ${device.laptop} {
+    width: calc(100% - 200px);
+  }
+  @media ${device.mobileTablet} {
+    width: calc(100% - 40px);
+  }
 `

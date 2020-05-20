@@ -2,8 +2,20 @@ import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { device } from 'lib/mediaDevice'
 
-export const Skeleton = () => {
+export const Skeleton = ({typeViewProduct}) => {
   const cards = [1, 2, 3, 4, 5, 6, 7, 8]
+
+  if(typeViewProduct === 'list'){
+    return (
+      <>
+        <SkeletonRow2>
+          {cards.map((item) => (
+            <SkeletonCol2 key={item}></SkeletonCol2>
+          ))}
+        </SkeletonRow2>
+      </>
+    )
+  }
 
   return (
     <>
@@ -75,7 +87,42 @@ const SkeletonCol = styled.div`
   // animation: ${Gradient} 2s ease infinite ;
   
   
-  animation : ${Gradient} 2s infinite;
+   animation : ${Gradient} 2s infinite;
    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
    background-size: 1000px 100%;
+`
+const SkeletonRow2 = styled.div`
+  width: calc(100% - 50px);
+  padding-bottom: 110px;
+
+  @media ${device.laptop} {
+    padding-bottom: 80px;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 100%;
+    padding: 0;
+  }
+`
+const SkeletonCol2 = styled.div`
+height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 3%;
+  border-radius: 30px;
+  box-shadow: var(--shadow-card);
+  
+  animation : ${Gradient} 2s infinite;
+  background: linear-gradient(to right, #f8fafc 4%, #f4f4f4 25%, #f6f8fa 36%);
+  
+  @media ${device.laptop} {
+    height: 60px;
+    border-radius: 25px;
+  }
+  @media ${device.mobileTablet} {
+    height: 60px;
+    border-radius: 25px;
+  }
 `

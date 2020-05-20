@@ -12,7 +12,7 @@ import { commonActions } from 'features/common'
 import { ProductSections, ProductSorting } from 'features/product'
 import { Sidebar } from './sidebar'
 import { Container, Input, BoxInput, InputDatepicker } from 'ui'
-import logo from 'static/img/logo.png'
+import logo from 'static/img/logo.svg'
 import ImgClose from 'static/img/icons/close-gray.png'
 
 export const Header = () => {
@@ -25,7 +25,6 @@ export const Header = () => {
   const currentDevice = useDetectDevice()
 
   const location = useLocation()
-  const isHomePage = location.pathname === '/'
 
   useEffect(() => {
     console.log('debouncedSearchU', debouncedSearchU)
@@ -57,6 +56,7 @@ export const Header = () => {
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
+
   return (
     <HeaderBox>
       <Container>
@@ -70,76 +70,69 @@ export const Header = () => {
                 </Link>
                 <ShiftStatus />
               </LeftBoxControls>
-              {isHomePage && (
-                <>
-                  <WrapSearch>
-                    <Input
-                      type="search"
-                      value={searchP}
-                      onChange={onChangeSearchProducts}
-                      placeholder="Поиск товара/кода"
-                      isSearch
-                    />
-                  </WrapSearch>
-                  <ProductSorting />
-                  <ProductSections />
-                </>
-              )}
+              <WrapSearch>
+                <Input
+                  type="search"
+                  value={searchP}
+                  onChange={onChangeSearchProducts}
+                  placeholder="Поиск товара/кода"
+                  isSearch
+                />
+              </WrapSearch>
+              <ProductSorting />
+              <ProductSections />
             </LeftBox>
-
-            {isHomePage && (
-              <RightBox>
-                {searchUser && <UsersList />}
-                {client.id ? (
-                  <ClientInfo>
-                    <ClientName>{client.name}</ClientName>
-                    <ClientPhone>{client.phone}</ClientPhone>
-                  </ClientInfo>
-                ) : (
-                  <Input
-                    type="search"
-                    value={searchU}
-                    onChange={onChangeSearchUsers}
-                    placeholder="Введите номер/ФИО клиента"
-                    isSearch
-                  />
-                )}
-                {client.id ? (
-                  <ClearClient onClick={handleClearClient}>
-                    <img src={ImgClose} alt="" />
-                  </ClearClient>
-                ) : (
-                  <AddUser />
-                )}
-              </RightBox>
-            )}
+            <RightBox>
+              {searchUser && <UsersList />}
+              {client.id ? (
+                <ClientInfo>
+                  <ClientName>{client.name}</ClientName>
+                  <ClientPhone>{client.phone}</ClientPhone>
+                </ClientInfo>
+              ) : (
+                <Input
+                  type="search"
+                  value={searchU}
+                  onChange={onChangeSearchUsers}
+                  placeholder="Введите номер/ФИО клиента"
+                  isSearch
+                />
+              )}
+              {client.id ? (
+                <ClearClient onClick={handleClearClient}>
+                  <img src={ImgClose} alt="" />
+                </ClearClient>
+              ) : (
+                <AddUser />
+              )}
+            </RightBox>
           </HeaderRow>
         )}
 
-        {isMobileView && (
+        {isMobileView &&
           <HeaderRowMobile>
-            <HeaderRowMobileTop>
-              <HML>
-                <Sidebar handleLogout={handleLogout} />
-                <ProductSections />
-              </HML>
-              <HMR>
-                <ShiftStatus />
-                <Logo src={logo} />
-              </HMR>
-            </HeaderRowMobileTop>
-            <ProductSorting />
-            <HeaderRowMobileSearch>
-              <Input
-                type="search"
-                value={searchP}
-                onChange={onChangeSearchProducts}
-                placeholder="Поиск товара/кода"
-                isSearch
-              />
-            </HeaderRowMobileSearch>
+              <HeaderRowMobileTop>
+                <HML>
+                  <Sidebar handleLogout={handleLogout} />
+                  <ProductSections />
+                </HML>
+                <HMR>
+                  <ShiftStatus />
+                  <Logo src={logo} />
+                </HMR>
+              </HeaderRowMobileTop>
+              <ProductSorting />
+              <HeaderRowMobileSearch>
+                <Input
+                  type="search"
+                  value={searchP}
+                  onChange={onChangeSearchProducts}
+                  placeholder="Поиск товара/кода"
+                  isSearch
+                />
+              </HeaderRowMobileSearch>
           </HeaderRowMobile>
-        )}
+        }
       </Container>
     </HeaderBox>
   )
