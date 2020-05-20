@@ -96,10 +96,10 @@ export const ProductList = () => {
                 Остаток: ${item.currentCount} ${item.unit}
                   `}
                 </ProductCode2>
-                <ProductPrice2>
-                  {item.price} {currency}
-                </ProductPrice2>
               </WrapInfoList>
+              <ProductPrice2>
+                {item.price} {currency}
+              </ProductPrice2>
               {isDesktopView && (
                 <AddIcon2 onClick={() => handleAddToCart(item)}>
                   <PlusIcon src={plusIcon} />
@@ -286,6 +286,7 @@ const AddIcon = styled.div`
   border-radius: 28px;
   color: #ffffff;
   background-color: var(--blue);
+  cursor: pointer;
 
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Chrome/Safari/Opera */
@@ -338,6 +339,7 @@ const ProductsRow2 = styled.div`
   @media ${device.mobileTablet} {
     width: 100%;
     padding: 0;
+    margin-top: 5px
   }
 `
 const ProductCol2 = styled.div`
@@ -360,7 +362,7 @@ const ProductCol2 = styled.div`
   }
 `
 const WrapInfoList = styled.div`
-  width: calc(100% - 120px);
+  width: calc(100% - 180px);
   height: 80px;
   display: flex;
   align-items: center;
@@ -372,10 +374,11 @@ const WrapInfoList = styled.div`
   }
 
   @media ${device.mobileTablet} {
-    width: calc(100% - 40px);
+    width: calc(100% - 100px);
     height: 60px;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
     padding-left: 20px;
   }
 `
@@ -411,13 +414,15 @@ const ProductName2 = styled(ProductName)`
     height: 60px;
   }
   @media ${device.mobileTablet} {
+    width: 100%;
     height: auto;
     font-size: 15px;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     padding: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: bold;
   }
 `
 const ProductCode2 = styled(ProductCode)`
@@ -440,6 +445,8 @@ const ProductPrice2 = styled(ProductPrice)`
   }
   @media ${device.mobileTablet} {
     font-size: 16px;
+    min-width: 60px;
+    position: initial;
   }
 `
 const AddIcon2 = styled(AddIcon)`
@@ -462,6 +469,7 @@ const ProductNameNew = styled(ProductName2)`
     width: calc(100% - 200px);
   }
   @media ${device.mobileTablet} {
-    width: calc(100% - 40px);
+    width: calc(100% - 80px);
+    padding-left: 20px;
   }
 `

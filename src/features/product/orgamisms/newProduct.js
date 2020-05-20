@@ -14,6 +14,7 @@ import {
   IconArrowLeft,
 } from 'ui'
 import closeGray from 'static/img/icons/close-gray.png'
+import bgMobile from 'static/img/bg-login-mobile2.png'
 
 export const NewProduct = ({ onClose, editable = {} }) => {
   const [product, setProduct] = useState({
@@ -50,7 +51,7 @@ export const NewProduct = ({ onClose, editable = {} }) => {
   useEffect(() => {
     const totalPrice = product.price * product.count
     const currentPrice = mathRound2(totalPrice - discountCurrency)
-    setTotal(currentPrice)
+    setTotal(currentPrice || 0)
   }, [product.price, product.count, discountCurrency])
 
   const onChange = (e) => {
@@ -190,7 +191,8 @@ export const NewProduct = ({ onClose, editable = {} }) => {
 
 const Wrapper = styled.div`
   padding: 5%;
-  background: #cbd8ff26 url(${(p) => p.url});
+  background: url(${(p) => p.url ? p.url : bgMobile});
+  background-size: cover;
   border-radius: 30px;
   width: 480px;
 
@@ -227,11 +229,13 @@ const MobileBoxWrapper = styled.div`
     position: fixed;
     bottom: 0;
     width: 100%;
+    
+    ${StyledInput} {
+      border-color: transparent;
+    }
   }
 
-  ${StyledInput} {
-    border-color: transparent;
-  }
+  
 `
 
 const Wrap = styled.div`

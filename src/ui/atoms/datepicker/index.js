@@ -10,6 +10,7 @@ export const InputDatepicker = ({ selected, onChange, placeholderText }) => {
       onChange={onChange}
       placeholderText={placeholderText}
       showYearDropdown
+      dropdownMode="select"
     />
   )
 }
