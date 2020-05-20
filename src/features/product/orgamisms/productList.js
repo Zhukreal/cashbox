@@ -151,6 +151,7 @@ export const ProductList = () => {
     )
   }
 
+
   if (isLoading) return <Skeleton typeViewProduct={typeViewProduct} />
   if (searchFilter && !products.length)
     return <Loading>По вашему запросу ничего не найдено...</Loading>
@@ -217,16 +218,25 @@ const ProductCol = styled.div`
       background-size: cover;
     `}
   
+  @media ${device.laptop} { 
+      height: 300px;
+      flex: 0 1 calc(25% - 2em);
+      margin: 0.66em;
+      background-position: center 40px;
+    };
+    
+    // @media ${device.laptop} { 
+    //   flex: 0 1 calc(33.333% - 3em);
+    //   height: 380px;
+    //   background-position: center 45px;
+    // }
+  
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
        height: 320px;
     };
     
-    @media ${device.laptop} { 
-      flex: 0 1 calc(33.333% - 3em);
-      height: 380px;
-      background-position: center 45px;
-    }
+    
 `
 const ProductInfo = styled.div`
   position: absolute;
@@ -237,6 +247,12 @@ const ProductInfo = styled.div`
   width: 96%;
   left: 2%;
   border-radius: 30px;
+
+  @media ${device.laptop} {
+    height: 150px;
+    border-radius: 20px;
+    padding: 10px;
+  }
 
   @media ${device.mobileTablet} {
     height: 150px;
@@ -249,6 +265,11 @@ const ProductName = styled.div`
   overflow-y: hidden;
   word-wrap: break-word;
 
+  @media ${device.laptop} {
+    font-size: 20px;
+    height: 50px;
+  }
+
   @media ${device.mobileTablet} {
     height: 40px;
     font-size: 20px;
@@ -259,6 +280,10 @@ const ProductCode = styled.div`
   font-size: 15px;
   color: #6d82a3;
 
+  @media ${device.laptop} {
+    font-size: 13px;
+  }
+
   @media ${device.mobileTablet} {
     font-size: 13px;
   }
@@ -267,6 +292,11 @@ const ProductPrice = styled.div`
   font-size: 26px;
   position: absolute;
   bottom: 30px;
+
+  @media ${device.laptop} {
+    font-size: 20px;
+    bottom: 10px;
+  }
 
   @media ${device.mobileTablet} {
     font-size: 20px;
@@ -298,6 +328,14 @@ const AddIcon = styled.div`
   &:hover {
     cursor: pointer;
     background-color: var(--blue-hover);
+  }
+
+  @media ${device.laptop} {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    bottom: 15px;
+    right: 15px;
   }
 
   @media ${device.mobileTablet} {
@@ -339,7 +377,7 @@ const ProductsRow2 = styled.div`
   @media ${device.mobileTablet} {
     width: 100%;
     padding: 0;
-    margin-top: 5px
+    margin-top: 5px;
   }
 `
 const ProductCol2 = styled.div`
@@ -454,12 +492,14 @@ const AddIcon2 = styled(AddIcon)`
   right: auto;
   bottom: auto;
   min-width: 58px;
+  bottom: auto;
 
   @media ${device.laptop} {
     min-width: 40px;
     width: 40px;
     height: 40px;
     border-radius: 20px;
+    bottom: auto;
   }
 `
 const ProductNameNew = styled(ProductName2)`

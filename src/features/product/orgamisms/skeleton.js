@@ -41,6 +41,7 @@ const SkeletonRow = styled.div`
   @media ${device.laptop} {
     padding-bottom: 90px;
   }
+  
 `
 const Gradient = keyframes`
   //0% {
@@ -72,15 +73,23 @@ const SkeletonCol = styled.div`
   box-sizing: border-box;
   //background: #E7E9ED;
   
+   @media ${device.laptop} { 
+      height: 300px;
+      flex: 0 1 calc(25% - 2em);
+      margin: 0.66em;
+    };
+  
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
       height: 320px;
     }
     
-    @media ${device.laptop} { 
-      flex: 0 1 calc(33.333% - 3em);
-      height: 380px;
-    }
+   
+    
+    // @media ${device.laptop} { 
+    //   flex: 0 1 calc(33.333% - 3em);
+    //   height: 380px;
+    // }
     
   // background: linear-gradient(90deg, #f3f3f3, #e2e2e2, #E7E9ED);
   // background-size: 400% 400%;
