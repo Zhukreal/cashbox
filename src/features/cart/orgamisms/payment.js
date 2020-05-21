@@ -89,6 +89,7 @@ export const Payment = ({ onSuccess, onClose }) => {
   const onChangeSumByCard = (e) => {
     const { value } = e.target
     let numberView = modifyToNumber(value)
+    if(Number(numberView) > totalInfo.total) numberView = totalInfo.total
     setSumByCard(numberView)
   }
 

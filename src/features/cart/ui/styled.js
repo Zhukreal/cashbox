@@ -259,10 +259,10 @@ const CartItemCountIcon = styled.div`
     css`
       background-color: #ffffff;
       color: var(--green);
-    `}
-  
-  
+    `}  
 `
+
+
 const CartItemCountIcon2 = styled(CartItemCountIcon)`
   display: flex;
   align-items: center;

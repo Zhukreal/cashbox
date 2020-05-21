@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37.109" height="37.109" viewBox="0 0 37.109 37.109">
+  <defs>
+    <filter id="Path_5" x="0" y="0" width="37.109" height="37.109" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Component_2_1" data-name="Component 2 – 1" transform="translate(9 6)">
+    <g id="Group_22" data-name="Group 22">
+      <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Path_5)">
+        <path id="Path_5-2" data-name="Path 5" d="M9.554,0A9.554,9.554,0,1,1,0,9.554,9.554,9.554,0,0,1,9.554,0Z" transform="translate(9 6)" fill="#25d87e"/>
+      </g>
+      <g id="Group_20" data-name="Group 20" transform="translate(6.109 6.109)">
+        <line id="Line_1" data-name="Line 1" y1="6.892" transform="translate(3.446)" fill="none" stroke="#fff" stroke-width="1"/>
+        <path id="Path_1" data-name="Path 1" d="M0,6.892V0" transform="translate(6.892 3.446) rotate(90)" fill="none" stroke="#fff" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

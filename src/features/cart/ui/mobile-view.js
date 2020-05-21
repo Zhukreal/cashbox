@@ -4,33 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useDebounce } from 'lib/customHooks/useDebounce'
 import { AddUser, userActions, UsersList } from 'features/user'
 import { Button, Input, Modal, StyledButton } from 'ui'
-import minusIcon from 'static/img/icons/minus-s.png'
-import noPhoto from 'static/img/no-photo.png'
-import closeCard from 'static/img/icons/close-card.png'
+import { List } from './list'
 import iconCloseCart from 'static/img/icons/close-cart-mob.svg'
 import iconAcceptCart from 'static/img/icons/accept-cart-mob.svg'
 import {
-  CartBox,
   CartBtnBox,
-  CartCol,
-  CartItemAvatar,
-  CartItemCount,
-  CartItemCountIcon,
-  CartItemCountIcon2,
-  CartItemCountValue,
-  CartItemInfo,
-  CartItemInfoDiscount,
-  CartItemInfoPrice,
-  CartItemInfoTitle,
-  CartRow,
-  CartTotal,
   CartTotalRow,
   CartTotalRowDivider,
   CartTotalRowTitle,
   CartTotalRowValuer,
-  Close,
-  Icon,
-  IconImg,
 } from './styled'
 import { IconArrowLeft, IconClearClient } from 'ui'
 
@@ -86,46 +68,18 @@ export const MobileView = ({
             </HeaderCartSearch>
           </HeaderCart>
           <CartRowMobile>
-            {products.map((item) => (
-              <CartCol
-                key={item.name}
-                onClick={() => handleEdit(item)}
-                active={editable.id === item.id}
-              >
-                <Close
-                  onClick={(e) => handleRemoveProduct(e, item.id)}
-                  active={editable.id === item.id}
-                >
-                  <img src={closeCard} alt="" />
-                </Close>
-                <CartItemAvatar src={item.image ? item.image : noPhoto} />
-                <CartItemInfo>
-                  <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-                  {!!item.discount && (
-                    <CartItemInfoDiscount>
-                      Скидка: {item.totalDiscount} {currency}
-                    </CartItemInfoDiscount>
-                  )}
-                  <CartItemInfoPrice>
-                    {item.currentPrice} {currency}
-                  </CartItemInfoPrice>
-                </CartItemInfo>
-                <CartItemCount>
-                  <CartItemCountIcon
-                    onClick={(e) => handleAddOne(e, item)}
-                    active={editable.id === item.id}
-                  >
-                    <Icon>+</Icon>
-                  </CartItemCountIcon>
-                  <CartItemCountValue>
-                    {item.count} {item.unit}
-                  </CartItemCountValue>
-                  <CartItemCountIcon2 onClick={(e) => handleRemoveOne(e, item)}>
-                    <IconImg src={minusIcon} />
-                  </CartItemCountIcon2>
-                </CartItemCount>
-              </CartCol>
-            ))}
+            <List
+              products={products}
+              editable={editable}
+              currency={currency}
+              totalInfo={totalInfo}
+              handleEdit={handleEdit}
+              handleRemoveProduct={handleRemoveProduct}
+              handleAddOne={handleAddOne}
+              handleRemoveOne={handleRemoveOne}
+              handleClearCart={handleClearCart}
+              handleOpenModalPayment={handleOpenModalPayment}
+            />
           </CartRowMobile>
           <CartTotalMobile>
             <CartTotalRow>
@@ -180,11 +134,11 @@ const MobileBox = styled.div`
   overflow-y: hidden;
 `
 const HeaderCart = styled.div`
-    height: 160px;
-    padding: 5%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  height: 160px;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `
 const CartRowMobile = styled.div`
   height: calc(100vh - 370px);
@@ -267,10 +221,9 @@ const ClientName = styled.div`
 const ClientPhone = styled.div`
   font-size: 14px;
   color: grey;
-   text-align: right;
+  text-align: right;
   width: 50%;
 `
 const HeaderCartSearch = styled.div`
   width: 100%;
-
 `
