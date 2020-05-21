@@ -47,12 +47,12 @@ export const ProductGroups = () => {
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
-  if (isDesktopView && isLoadingGroups)
-    return (
-      <GroupBox>
-        <Loading>Загрузка...</Loading>
-      </GroupBox>
-    )
+  // if (isDesktopView && isLoadingGroups)
+  //   return (
+  //     <GroupBox>
+  //       <Loading>Загрузка...</Loading>
+  //     </GroupBox>
+  //   )
 
   if (isDesktopView) {
     return (

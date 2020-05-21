@@ -33,9 +33,9 @@ export const pay = (data) => async (dispatch) => {
         name: product.name,
         base_price: product.price,
         amount: product.count,
-        discount: product.discount,
+        discount: product.totalDiscount || 0,
         section: activeSection,
-        product: product.id,
+        // product: product.id,
       }
     })
     const payments = []
@@ -47,12 +47,12 @@ export const pay = (data) => async (dispatch) => {
     } else {
       payments.push({
         payment_type: 'CARD',
-        sum: data.card,
+        sum: Number(data.card),
       })
       if (data.cash) {
         payments.push({
           payment_type: 'CASH',
-          sum: data.cash,
+          sum: Number(data.cash),
         })
       }
     }

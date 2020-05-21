@@ -103,7 +103,7 @@ export const MobileView = ({
                   <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
                   {!!item.discount && (
                     <CartItemInfoDiscount>
-                      Скидка: {item.discount}%
+                      Скидка: {item.totalDiscount} {currency}
                     </CartItemInfoDiscount>
                   )}
                   <CartItemInfoPrice>

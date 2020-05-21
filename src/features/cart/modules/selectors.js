@@ -6,7 +6,7 @@ const cartSelector = (state) => state.cart.products
 export const getProducts = createSelector(cartSelector, (products) =>
   products.map((product) => {
     const totalPrice = product.price * product.count
-    const totalDiscount = totalPrice * (product.discount / 100)
+    const totalDiscount = Math.round(totalPrice * (product.discount / 100))
     const currentPrice = mathRound2(totalPrice - totalDiscount)
     return {
       ...product,
