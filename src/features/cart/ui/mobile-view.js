@@ -146,7 +146,7 @@ const CartRowMobile = styled.div`
   padding: 5px 5% 0;
 `
 const CartTotalMobile = styled.div`
-  height: 220px;
+  height: 180px;
   padding: 20px 5% 0 5%;
   box-shadow: var(--shadow-card);
   border-radius: 30px 30px 0 0;

@@ -363,6 +363,7 @@ const VariantStyled = styled.div`
     width: 100%;
     font-size: 18px;
     margin-bottom: 10px;
+    padding-left: 2px;
   }
 `
 const Check = styled.div`

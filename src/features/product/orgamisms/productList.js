@@ -74,7 +74,7 @@ export const ProductList = () => {
     if (typeViewProduct === 'list') {
       return (
         <ProductsRow2>
-          <ProductCol2>
+          <ProductCol2 onClick={() => isMobileView ? handleAddNew() : null}>
             <ProductLogo2 src={emptyPhoto} />
             <ProductNameNew>Новый товар</ProductNameNew>
             <ProductPrice2>0 {currency}</ProductPrice2>
@@ -85,7 +85,11 @@ export const ProductList = () => {
             )}
           </ProductCol2>
           {products.map((item, key) => (
-            <ProductCol2 key={`${item.id}-${key}`} url={item.image}>
+            <ProductCol2
+              key={`${item.id}-${key}`}
+              url={item.image}
+              onClick={() => isMobileView ? handleAddToCart(item) : null}
+            >
               <ProductLogo2 src={item.image || emptyPhoto} />
               <WrapInfoList>
                 <ProductName2>{item.name}</ProductName2>
@@ -170,7 +174,7 @@ export const ProductList = () => {
             title={'Количество превышает наличие. Продолжить?'}
             onOk={handleAddToCartAfterConfirm}
             onCancel={() => setProductConfirm({})}
-          ></Confirm>
+          />
         </Modal>
       )}
 
@@ -474,7 +478,7 @@ const ProductCode2 = styled(ProductCode)`
   }
 `
 const ProductPrice2 = styled(ProductPrice)`
-  position: relative;
+  position: initial;
   bottom: 0;
   min-width: 120px;
 

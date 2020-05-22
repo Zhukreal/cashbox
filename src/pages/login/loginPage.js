@@ -15,8 +15,8 @@ import {
   BoxInput,
   CashBoxList,
   Modal,
-  Text,
-} from 'ui'
+  Text, FooterMobile
+} from "ui";
 import bgLogin from 'static/img/bg-login.png'
 import bgLoginLaptop from 'static/img/bg-login-laptop.png'
 import bgLoginMobile from 'static/img/bg-login-mobile2.png'
@@ -88,11 +88,11 @@ export const LoginPage = () => {
     dispatch(authActions.setFailureConnection(false))
   }
 
-  console.log('render login')
 
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
+  // show modal with reason of error
   if (isExpiredSession || isFailureConnection) {
     return (
       <LoginContainer>
@@ -104,19 +104,15 @@ export const LoginPage = () => {
               </Text>
             )}
             {isFailureConnection && (
-              <Text fz={15} mb={30}>
+              <Text fz={16} mb={30}>
                 Сессия была отключена по причине отсутствия связи
               </Text>
             )}
-            <EnterMobile>
-              <EMText>Возобновить</EMText>
-              <ButtonIcon
-                onClick={handleCloseModal}
-                disabled={!isValidForm || isLoading}
-                isLoading={isLoading}
-                icon={arrowRight}
-              ></ButtonIcon>
-            </EnterMobile>
+            <FooterMobile
+              title={'Возобновить'}
+              onOk={handleCloseModal}
+              isLoading={isLoading}
+            />
           </FormBox>
         )}
         {isDesktopView && (
@@ -211,7 +207,7 @@ export const LoginPage = () => {
 
 const LoginContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  //height: 100vh;
   min-height: 100vh;
   display: flex;
   align-items: center;
