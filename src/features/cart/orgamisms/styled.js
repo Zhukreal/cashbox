@@ -31,9 +31,9 @@ export const Box = styled.div`
 
   @media ${device.mobile} {
     flex-direction: column;
-    //height: 510px;
-    margin-top: calc(100vh - 510px);
-    height: 510px;
+    height: calc(100vh - 100px);
+    margin-top: 100px;
+    overflow-y: auto;
     border-radius: 30px 30px 0 0;
     box-shadow: var(--shadow-card);
     padding: 5%;

@@ -29,12 +29,14 @@ import {
   Spinner,
   HMobile,
 } from './styled'
+import closeGray from "../../../static/img/icons/close-gray.png";
 
 export const Payment = ({ onSuccess, onClose }) => {
   const items = [500, 1000, 2000, 5000, 10000, 20000]
   const [typePayment, setTypePayment] = useState('cash')
   const [activeCash, setActiveCash] = useState(null)
-  const [sumByCard, setSumByCard] = useState('')
+  const [enteredValue, setEnteredValue] = useState('')
+  const [sumByCard, setSumByCard] = useState(0)
   const [sumByCash, setSumByCash] = useState(0)
   const [accepted, setAccepted] = useState(0)
   const [comment, setComment] = useState('')
@@ -51,24 +53,51 @@ export const Payment = ({ onSuccess, onClose }) => {
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
   useEffect(() => {
-    if (typePayment === 'cash') return
-    let cashRest = totalInfo.total - sumByCard
-    if (cashRest < 0) {
-      setSumByCash(0)
+    setEnteredValue(totalInfo.total)
+    if (typePayment === 'cash') {
+      setSumByCard(0)
+      setSumByCash(totalInfo.total)
     } else {
+      setSumByCard(totalInfo.total)
+      setSumByCash(0)
+    }
+  }, [typePayment])
+
+  useEffect(() => {
+    setActiveCash(null)
+    if (typePayment === 'cash') {
+      setSumByCash(enteredValue)
+      setSumByCard(0)
+    } else {
+      setSumByCard(enteredValue)
+      let cashRest = totalInfo.total - Number(enteredValue)
       setSumByCash(cashRest)
     }
-  }, [sumByCard])
+  }, [enteredValue])
+
+
+
+  // useEffect(() => {
+  //   if (typePayment === 'cash') return
+  //   let cashRest = totalInfo.total - sumByCard
+  //   if (cashRest < 0) {
+  //     setSumByCash(0)
+  //   } else {
+  //     setSumByCash(cashRest)
+  //   }
+  // }, [sumByCard])
 
   useEffect(() => {
     if (activeCash) {
-      if (activeCash > totalInfo.total) {
-        handlePayment()
-        setSumByCash(activeCash)
-        setShowedErrorCash(false)
-      } else {
-        setShowedErrorCash(true)
-      }
+      handlePayment()
+
+      // if (activeCash > totalInfo.total) {
+      //   handlePayment()
+      //   setSumByCash(activeCash)
+      //   setShowedErrorCash(false)
+      // } else {
+      //   setShowedErrorCash(true)
+      // }
     }
   }, [activeCash])
 
@@ -76,21 +105,13 @@ export const Payment = ({ onSuccess, onClose }) => {
     setAccepted(Number(sumByCash) + Number(sumByCard))
   }, [sumByCash, sumByCard])
 
-  useEffect(() => {
-    if (typePayment === 'card') {
-      setSumByCard(totalInfo.total)
-      setActiveCash(null)
-      setSumByCash(0)
-    } else {
-      setSumByCard('')
-    }
-  }, [typePayment])
 
-  const onChangeSumByCard = (e) => {
+
+  const onChangeEntered = (e) => {
     const { value } = e.target
     let numberView = modifyToNumber(value)
     if(Number(numberView) > totalInfo.total) numberView = totalInfo.total
-    setSumByCard(numberView)
+    setEnteredValue(numberView)
   }
 
   const onChangeComment = (e) => {
@@ -134,6 +155,11 @@ export const Payment = ({ onSuccess, onClose }) => {
           <IconArrowLeft onClick={onClose} />
         </HMobile>
       )}
+      {isDesktopView && (
+        <Close onClick={onClose}>
+          <img src={closeGray} alt="" />
+        </Close>
+      )}
       {isLoadingPayment && (
         <Loading>
           <SpinnerBox>
@@ -159,33 +185,54 @@ export const Payment = ({ onSuccess, onClose }) => {
             </Type>
           </FlexBox>
 
-          {typePayment === 'card' && (
-            <>
-              <Input
-                type="text"
-                value={sumByCard}
-                onChange={onChangeSumByCard}
-                placeholder="Сумма"
-              />
 
-              {isDesktopView && (
-                <TextCenter>
-                  <Button onClick={handlePayment} color={'white'}>
-                    Принять
-                  </Button>
-                </TextCenter>
-              )}
 
-              {isMobileView && (
-                <FooterMobile
-                  title={'Принять'}
-                  onOk={handlePayment}
-                  disabled={null}
-                  isLoading={isLoadingPayment}
-                />
-              )}
-            </>
+
+          <Input
+            type="text"
+            value={enteredValue}
+            onChange={onChangeEntered}
+            placeholder="Сумма"
+          />
+
+          {isDesktopView && (
+            <TextCenter>
+              <Button onClick={handlePayment} color={'white'}>
+                Принять
+              </Button>
+            </TextCenter>
           )}
+
+
+
+
+          {/*{typePayment === 'card' && (*/}
+          {/*  <>*/}
+          {/*    <Input*/}
+          {/*      type="text"*/}
+          {/*      value={sumByCard}*/}
+          {/*      onChange={onChangeSumByCard}*/}
+          {/*      placeholder="Сумма"*/}
+          {/*    />*/}
+
+          {/*    {isDesktopView && (*/}
+          {/*      <TextCenter>*/}
+          {/*        <Button onClick={handlePayment} color={'white'}>*/}
+          {/*          Принять*/}
+          {/*        </Button>*/}
+          {/*      </TextCenter>*/}
+          {/*    )}*/}
+
+          {/*    {isMobileView && (*/}
+          {/*      <FooterMobile*/}
+          {/*        title={'Принять'}*/}
+          {/*        onOk={handlePayment}*/}
+          {/*        disabled={null}*/}
+          {/*        isLoading={isLoadingPayment}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  </>*/}
+          {/*)}*/}
 
           {typePayment === 'cash' && (
             <>
@@ -208,6 +255,17 @@ export const Payment = ({ onSuccess, onClose }) => {
               )}
             </>
           )}
+
+          {isMobileView && (
+            <FooterMobile
+              title={'Принять'}
+              onOk={handlePayment}
+              disabled={null}
+              isLoading={isLoadingPayment}
+            />
+          )}
+
+
         </BoxLeft>
         <BoxRight>
           <Title>Платежи</Title>
@@ -249,4 +307,15 @@ const ErrorCash = styled.div`
   color: var(--red);
   font-size: 14px;
   margin-top: 10px;
+`
+
+const Close = styled.div`
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  cursor: pointer;
+
+  :hover {
+    opacity: 0.8;
+  }
 `
