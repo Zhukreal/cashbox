@@ -19,6 +19,7 @@ import { IconArrowLeft, IconClearClient } from 'ui'
 export const MobileView = ({
   isShowedMobileCart,
   setShowedMobileCart,
+  handleCloseMobileCart,
   client,
   searchU,
   onChangeSearchUsers,
@@ -43,7 +44,7 @@ export const MobileView = ({
         <MobileBox>
           <HeaderCart>
             <HeaderCartTop>
-              <IconArrowLeft onClick={() => setShowedMobileCart(false)} />
+              <IconArrowLeft onClick={handleCloseMobileCart} />
               {client.id ? (
                 <IconClearClient onClick={handleClearClient} />
               ) : (

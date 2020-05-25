@@ -47,5 +47,6 @@ export const GlobalStyles = createGlobalStyle`
     .notification-container  {
       font-family: Gilroy, sans-serif;
     }
+   
   
 `

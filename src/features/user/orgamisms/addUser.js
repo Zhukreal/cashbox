@@ -9,6 +9,7 @@ import { emailValidator } from 'lib/validators'
 import {
   Input,
   StyledInput,
+  StyledInputMask,
   Button,
   StyledButton,
   InputDatepicker,
@@ -36,6 +37,7 @@ export const AddUser = () => {
     { value: 'FEMALE', label: 'Ж' },
   ]
   const [errorEmail, setErrorEmail] = useState(null)
+  const [errorPhone, setErrorPhone] = useState(null)
   const { showedModalAdd, isLoadingAddNew } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const ref = useRef(null)
@@ -50,6 +52,17 @@ export const AddUser = () => {
       setErrorEmail(null)
     }
   }, [user.email])
+
+  useEffect(() => {
+    if (user.phone) {
+      const phoneNumbers = user.phone.replace(/\D/g, '')
+      if (phoneNumbers.length === 11) {
+        setErrorPhone(false)
+      } else {
+        setErrorPhone(true)
+      }
+    }
+  }, [user.phone])
 
   const toggleShowed = () => {
     dispatch(userActions.setShowedAdd(!showedModalAdd))
@@ -100,14 +113,27 @@ export const AddUser = () => {
               isForm={isMobileView}
             />
             <Input
-              type={'tel'}
+              type="tel"
+              label="Номер телефона:"
               name="phone"
               value={user.phone}
               onChange={onChange}
-              placeholder="Номер телефона"
-              isUnderline={isDesktopView}
+              placeholder="+7(___)___-__-__"
+              error={errorPhone && 'Введите номер телефона'}
+              isInputMask
+              mask="+7 (999) 999-99-99"
+              alwaysShowMask
               isForm={isMobileView}
             />
+            {/*<Input*/}
+            {/*  type={'tel'}*/}
+            {/*  name="phone"*/}
+            {/*  value={user.phone}*/}
+            {/*  onChange={onChange}*/}
+            {/*  placeholder="Номер телефона"*/}
+            {/*  isUnderline={isDesktopView}*/}
+            {/*  isForm={isMobileView}*/}
+            {/*/>*/}
             <Input
               name="email"
               value={user.email}
@@ -196,6 +222,28 @@ const UserContainer = styled.div`
   background: #ffffff;
   box-shadow: var(--shadow-card);
 
+  ${StyledInputMask} {
+    border-radius: 0;
+    border: none;
+    border-bottom: 2px solid var(--canvas-text);
+    padding: 20px 0 0 10px;
+    box-shadow: none;
+    font-size: 25px;
+    //text-align: center;
+  }
+
+  @media ${device.laptop} {
+    width: 400px;
+    //max-height: 350px;
+    top: 90px;
+    @media ${device.laptop} {
+      ${StyledInputMask} {
+        font-size: 16px;
+        height: 54px;
+      }
+    }
+  }
+
   @media ${device.mobileTablet} {
     width: 100%;
     left: 0;
@@ -206,6 +254,16 @@ const UserContainer = styled.div`
 
     ${StyledInput} {
       border: none;
+      padding: 0 20px!important;
+    }
+    ${StyledInputMask} {
+      border: none;
+      height: 40px;
+      border-radius: 20px;
+      border-color: transparent;
+      padding: 0 20px;
+      font-size: 16px;
+      box-shadow: var(--shadow-card);
     }
 
     ${StyledSelect} {
@@ -213,14 +271,9 @@ const UserContainer = styled.div`
     }
   }
 
-  @media ${device.laptop} {
-    width: 400px;
-    //max-height: 350px;
-    top: 90px;
-  }
-
   ${StyledInput} {
-    text-align: center;
+    padding-left: 10px;
+    //text-align: center;
   }
 `
 const ProfileBtn = styled.div`

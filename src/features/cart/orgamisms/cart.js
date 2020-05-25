@@ -94,6 +94,11 @@ export const Cart = () => {
     dispatch(userActions.setShowedAdd(false))
   }
 
+  const handleCloseMobileCart = () => {
+    setShowedMobileCart(false)
+    dispatch(userActions.setShowedAdd(false))
+  }
+
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
@@ -118,6 +123,7 @@ export const Cart = () => {
           <MobileView
             isShowedMobileCart={isShowedMobileCart}
             setShowedMobileCart={setShowedMobileCart}
+            handleCloseMobileCart={handleCloseMobileCart}
             client={client}
             searchU={searchU}
             onChangeSearchUsers={onChangeSearchUsers}

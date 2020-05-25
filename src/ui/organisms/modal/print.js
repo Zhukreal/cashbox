@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
+import { Base64 } from 'js-base64';
+import { useReactToPrint } from 'react-to-print';
 import { useDispatch, useSelector } from 'react-redux'
 import { device } from 'lib/mediaDevice'
 import { profileActions } from 'features/profile'
@@ -10,12 +12,33 @@ import iconPrint from 'static/img/icons/print.png'
 export const Print = ({
   title,
   data,
-  onPrint,
   onClose,
   isLoadingReport,
   error,
   padding,
 }) => {
+  const [decodedStr, setDecodedStr] = useState(null)
+  const componentRef = useRef(null);
+
+  useEffect(() => {
+    //type checking
+    try {
+      const text = Base64.decode(data.receipt)
+      setDecodedStr(text)
+    } catch (e) {
+
+    }
+  }, [data])
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: '',
+    onAfterPrint: () => onClose()
+  });
+
+
+
+
   return (
     <Wrapper padding={padding}>
       <Header>
@@ -29,23 +52,21 @@ export const Print = ({
           <Loading>Загрузка...</Loading>
         ) : (
           <Report>
-            {/*<iframe src="https://www.w3.org/TR/PNG/iso_8859-1.txt"></iframe>*/}
-            <IFRAME
-              src={`data:text/plain;charset=utf-8;base64,${data.receipt}`}
-            ></IFRAME>
+            {/*<IFRAME*/}
+            {/*  src={`data:text/plain;charset=utf-8;base64,${data.receipt}`}*/}
+            {/*></IFRAME>*/}
 
-            {/*<PRE>*/}
-            {/*    <CODE>{data.receipt}</CODE>*/}
-            {/*</PRE>*/}
+            <PRE ref={componentRef}>
+                <CODE>{decodedStr}</CODE>
+            </PRE>
 
-            {/*<img src={`data:image/jpeg;base64,${data.receipt}`} alt='receipt' />*/}
             {error && 'Не удалось загрузить'}
           </Report>
         )}
       </Box>
       {data.id && (
         <Footer>
-          <Button onClick={onPrint} disabled={null} color={'green'}>
+          <Button onClick={handlePrint} disabled={null} color={'green'}>
             <Icon src={iconPrint}></Icon>
             Напечатать
           </Button>
@@ -127,6 +148,7 @@ const shared = css`
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
+  
 `
 const PRE = styled.pre`
   ${shared}

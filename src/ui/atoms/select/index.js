@@ -42,7 +42,8 @@ export const StyledSelect = styled.select`
   border-bottom: 2px solid var(--canvas-text);
   font-size: 25px;
   padding-top: 20px;
-  text-align-last: center;
+  padding-left: 10px;
+  //text-align-last: center;
   position: relative;
 
   color: ${(p) => (p.value ? 'inherit' : 'rgba(14,37,74,0.302)')};
@@ -52,8 +53,9 @@ export const StyledSelect = styled.select`
     font-size: 16px;
     border-bottom: none;
     box-shadow: var(--shadow-card);
-    padding-top: 5px;
+    //padding-top: 5px;
     border-radius: 20px;
+    padding: 0 20px!important;
   }
 
   @media ${device.laptop} {
