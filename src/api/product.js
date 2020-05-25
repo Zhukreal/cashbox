@@ -26,8 +26,9 @@ export const apiPay = (data, receiptWidth) => {
     data,
   )
 }
-export const apiSendTicketEmail = (id) => {
-  return axios.post(`${API_URL}/api/v1/product_orders/${id}/send_ticket_email/`)
+export const apiSendTicketEmail = (id, data) => {
+  return axios.post(`${API_URL}/api/v1/operations/${id}/send_receipt`, data)
+
 }
 export const apiSendTicketWhatsApp = (id) => {
   return axios.post(

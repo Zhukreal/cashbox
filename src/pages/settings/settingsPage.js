@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { history } from 'lib/routing'
 import { device } from 'lib/mediaDevice'
-import {VIEWTYPE} from 'lib/CONST'
+import { VIEWTYPE } from 'lib/CONST'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { ChangePassword } from 'features/profile'
 import { ShiftStatus } from 'features/product'
-import { Button, Modal, StyledButton, IconArrowLeft, FooterMobile } from "ui";
+import { Button, Modal, StyledButton, IconArrowLeft, FooterMobile } from 'ui'
 import iconGrid from 'static/img/icons/grid.svg'
 import iconGridWhite from 'static/img/icons/grid-white.svg'
 import iconList from 'static/img/icons/list.svg'
@@ -16,7 +16,7 @@ import iconListWhite from 'static/img/icons/list-white.svg'
 import iconLock from 'static/img/icons/lock.svg'
 import iconGear from 'static/img/icons/gear.png'
 import logo from 'static/img/logo.svg'
-import { commonActions } from "../../features/common";
+import { commonActions } from '../../features/common'
 
 export const SettingsPage = () => {
   const [activeView, setActiveView] = useState('grid')
@@ -164,7 +164,9 @@ export const SettingsPage = () => {
             <Button color={'red'} onClick={() => history.push('/')}>
               Отмена
             </Button>
-            <Button color={'green'} onClick={handleSave}>Сохранить</Button>
+            <Button color={'green'} onClick={handleSave}>
+              Сохранить
+            </Button>
           </Footer>
         )}
 
@@ -176,8 +178,6 @@ export const SettingsPage = () => {
             isLoading={null}
           />
         )}
-
-
       </Container>
 
       {openedModalPassword && (
@@ -208,6 +208,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   //background: url(${iconGear}) no-repeat;
+  
+  @media ${device.laptop} {
+    padding-top: 80px;
+  }
   
   @media ${device.mobileTablet} {
     padding-top: 100px;
@@ -254,6 +258,10 @@ const Title = styled.div`
   color: rgba(14, 37, 74, 0.1);
   margin-bottom: 10%;
 
+  @media ${device.laptop} {
+    font-size: 30px;
+  }
+
   @media ${device.mobileTablet} {
     display: none;
   }
@@ -261,6 +269,10 @@ const Title = styled.div`
 const SubTitle = styled.div`
   font-size: 27px;
   margin-bottom: 4%;
+
+  @media ${device.laptop} {
+    font-size: 22px;
+  }
 
   @media ${device.mobileTablet} {
     font-size: 18px;
@@ -293,6 +305,10 @@ const Lang = styled.div`
   color: ${(p) => (p.active ? 'var(--green)' : 'rgba(14,37,74,0.31)')};
   cursor: pointer;
 
+  @media ${device.laptop} {
+    font-size: 25px;
+  }
+
   @media ${device.mobileTablet} {
     font-size: 20px;
   }
@@ -321,7 +337,7 @@ const ViewItem = styled.div`
   cursor: pointer;
   user-select: none;
   
-  @media ${device.mobileTablet} {
+  @media ${device.laptop}, ${device.mobileTablet} {
    width: 150px;
    height: 40px;
    border-radius: 20px;
@@ -332,7 +348,7 @@ const ViewItem = styled.div`
 const Icon = styled.img`
   height: 24px;
 
-  @media ${device.mobileTablet} {
+  @media ${device.laptop}, ${device.mobileTablet} {
     height: 18px;
   }
 `
@@ -359,6 +375,10 @@ const VariantStyled = styled.div`
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 
+  @media ${device.laptop} {
+    font-size: 20px;
+  }
+
   @media ${device.mobileTablet} {
     width: 100%;
     font-size: 18px;
@@ -375,12 +395,24 @@ const Check = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  @media ${device.laptop}, ${device.mobileTablet} {
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+  }
 `
 const ActiveDot = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 10px;
   background-color: var(--green);
+
+  @media ${device.laptop}, ${device.mobileTablet} {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+  }
 `
 const ChangePass = styled.div`
   font-size: 30px;
@@ -390,12 +422,20 @@ const ChangePass = styled.div`
   margin-top: 10%;
   cursor: pointer;
 
+  @media ${device.laptop} {
+    font-size: 25px;
+  }
+
   @media ${device.mobileTablet} {
     font-size: 18px;
   }
 `
 const IconLock = styled.img`
   margin-left: 20px;
+
+  @media ${device.laptop} {
+    height: 25px;
+  }
 
   @media ${device.mobileTablet} {
     height: 20px;
@@ -433,7 +473,7 @@ const CustomHeader = styled.div`
   box-shadow: var(--shadow-card);
 
   @media ${device.laptop} {
-    height: 100px;
+    height: 80px;
   }
 
   @media ${device.mobileTablet} {
@@ -445,11 +485,12 @@ const Logo = styled.img`
   width: 144px;
   margin-right: 20px;
 
+  @media ${device.laptop} {
+    width: 114px;
+  }
+
   @media ${device.mobileTablet} {
     width: 67px;
-  }
-  @media ${device.laptop} {
-    width: 124px;
   }
 `
 const CHLeft = styled.div`

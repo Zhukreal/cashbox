@@ -12,7 +12,7 @@ import { commonActions } from 'features/common'
 import { ProductSections, ProductSorting } from 'features/product'
 import { Sidebar } from './sidebar'
 import { Container, Input, BoxInput, InputDatepicker } from 'ui'
-import logo from 'static/img/logo.svg'
+import logo from 'static/img/logo.png'
 import ImgClose from 'static/img/icons/close-gray.png'
 
 export const Header = () => {

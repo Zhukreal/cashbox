@@ -138,11 +138,9 @@ const IconDelete = styled.div`
   text-align: center;
   cursor: pointer;
   
-  
-
   @media ${device.laptop}, ${device.mobileTablet} {
     img {
-      width: 20px;  
+      width: 17px;  
     }
   }
 `

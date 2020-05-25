@@ -80,9 +80,10 @@ export const pay = (data) => async (dispatch) => {
     dispatch(cartReducer.setIsLoadingPayment(false))
   }
 }
-export const sendTicketEmail = (id) => async (dispatch) => {
+export const sendTicketEmail = (id, email) => async (dispatch) => {
   try {
-    let res = await apiSendTicketEmail(id)
+    let res = await apiSendTicketEmail(id, {email: email})
+    showNotification('info', `Чек был отправлен на ${email}`)
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)
