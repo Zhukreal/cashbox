@@ -27,7 +27,7 @@ export const Header = () => {
   const location = useLocation()
 
   useEffect(() => {
-    console.log('debouncedSearchU', debouncedSearchU)
+    // console.log('debouncedSearchU', debouncedSearchU)
     if (debouncedSearchU) dispatch(userActions.getUsers(debouncedSearchU))
   }, [debouncedSearchU])
 

@@ -94,8 +94,6 @@ export const Cart = () => {
     dispatch(userActions.setShowedAdd(false))
   }
 
-  console.log('searchUser', searchUser)
-
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 

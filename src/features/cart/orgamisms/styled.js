@@ -284,7 +284,7 @@ export const Icon = styled.div`
   float: left;
   margin-right: 20px;
   background-color: ${(p) => (p.green ? `var(--green)` : `var(--red)`)};
-   box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card);
   cursor: pointer;
   
   ${(p) =>
