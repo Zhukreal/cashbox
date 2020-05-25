@@ -28,6 +28,7 @@ export const CommonLoader = ({ children }) => {
   // info for first loading
   useEffect(() => {
     if (isLoginPage) {
+      // dispatch(profileActions.checkCashStatus())
     } else {
       dispatch(productActions.getGroups())
       dispatch(productActions.getSections())

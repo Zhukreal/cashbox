@@ -29,7 +29,7 @@ import {
   Spinner,
   HMobile,
 } from './styled'
-import closeGray from "../../../static/img/icons/close-gray.png";
+import closeGray from "static/img/icons/close-gray.png";
 
 export const Payment = ({ onSuccess, onClose }) => {
   const items = [500, 1000, 2000, 5000, 10000, 20000]
@@ -312,8 +312,21 @@ const ErrorCash = styled.div`
 const Close = styled.div`
   position: absolute;
   right: 5%;
-  top: 5%;
+  top: 5%;  
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-card);
+  opacity: 0.6;
   cursor: pointer;
+
+  img {
+    width: 8px;
+  }
 
   :hover {
     opacity: 0.8;

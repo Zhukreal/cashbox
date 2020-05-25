@@ -22,8 +22,8 @@ export const getAccount = (token) => async (dispatch) => {
 
 export const checkCashStatus = () => async (dispatch) => {
   try {
-    const CASHBOX = localStorage.getItem('cashbox')
-    let res = await apiCheckCashStatus(CASHBOX)
+    // const CASHBOX = localStorage.getItem('cashbox')
+    let res = await apiCheckCashStatus()
     dispatch(profileReducer.setCashStatus(res.data))
   } catch (e) {
     console.log(e)

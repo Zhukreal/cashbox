@@ -3,22 +3,51 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { history } from 'lib/routing'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
+import { apiCheckCashStatus } from 'api/account'
 import { Button, ButtonIcon, CashBoxList } from 'ui'
 import arrowRight from 'static/img/icons/arrow-right.png'
 
 export const ChooseCashbox = () => {
-  const { cashes } = useSelector((state) => state.profile)
+  const { cashes, currentShift } = useSelector((state) => state.profile)
   const [activeCashbox, setActiveCashbox] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
   const currentDevice = useDetectDevice()
 
   useEffect(() => {
-    if (cashes.length === 1) {
-      localStorage.setItem('cashbox', cashes[0].id)
-      localStorage.setItem('store', cashes[0].store_id)
-      window.location.href = '/'
-      // history.push('/')
-    }
-  }, [cashes])
+    apiCheckCashStatus()
+      .then((res) => {
+        const kassa = res.data
+        if(kassa.cash) {
+          localStorage.setItem('cashbox', kassa.cash)
+          localStorage.setItem('store', kassa.store)
+          window.location.href = '/'
+        }
+        // setIsLoading(false)
+      })
+      .catch((e) => {
+        setIsLoading(false)
+      })
+  }, [])
+
+  // useEffect(() => {
+  //   console.log('currentShift', currentShift)
+  //   if(currentShift.cash) {
+  //     localStorage.setItem('cashbox', currentShift.cash)
+  //     localStorage.setItem('store', currentShift.store)
+  //     window.location.href = '/'
+  //   }
+  // }, [currentShift])
+
+
+  // useEffect(() => {
+  //   if(!isLoading) {
+  //     if (cashes.length === 1) {
+  //       localStorage.setItem('cashbox', cashes[0].id)
+  //       localStorage.setItem('store', cashes[0].store_id)
+  //       window.location.href = '/'
+  //     }
+  //   }
+  // }, [cashes, isLoading])
 
   const handleChooseCashbox = () => {
     if (!activeCashbox.id) return
@@ -30,6 +59,10 @@ export const ChooseCashbox = () => {
 
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+
+  if (isLoading) {
+    return <div>Загрузка...</div>
+  }
 
   return (
     <>
