@@ -15,7 +15,7 @@ export const CurrentReport = ({ onClose }) => {
   )
 
   useEffect(() => {
-    loadReport().then()
+    loadReport()
   }, [])
 
   const loadReport = async () => {
@@ -32,7 +32,7 @@ export const CurrentReport = ({ onClose }) => {
   return (
     <Print
       title={'X отчет'}
-      data={currentReport}
+      data={currentReport.report}
       onPrint={handlePrint}
       onClose={onClose}
       isLoadingReport={isLoadingReport}

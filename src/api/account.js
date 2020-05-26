@@ -11,10 +11,10 @@ export const apiCheckConnection = () => {
   return axios.head(`${API_URL}/api/v1/current_user/`)
 }
 export const apiCloseShift = () => {
-  return axios.delete(`${API_URL}/api/v1/shifts/`)
+  return axios.delete(`${API_URL}/api/v1/current_shift/`)
 }
 export const apiLoadCurrentReport = (cashId) => {
-  return axios.get(`${API_URL}/api/v1/cash/${cashId}/zxreport/`)
+  return axios.get(`${API_URL}/api/v1/cashes/${cashId}/zxreport/`)
 }
 export const apiCloseLastProcedure = () => {
   return axios.delete(`${API_URL}/api/v1/product_order/`)

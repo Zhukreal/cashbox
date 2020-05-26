@@ -27,6 +27,7 @@ export const checkCashStatus = () => async (dispatch) => {
     dispatch(profileReducer.setCashStatus(res.data))
   } catch (e) {
     console.log(e)
+    showNotification('error', e)
   } finally {
   }
 }

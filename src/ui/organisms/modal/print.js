@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled, { css } from 'styled-components'
-import { Base64 } from 'js-base64';
-import { useReactToPrint } from 'react-to-print';
+import { Base64 } from 'js-base64'
+import  QRCode from 'qrcode.react'
+import { useReactToPrint } from 'react-to-print'
 import { useDispatch, useSelector } from 'react-redux'
 import { device } from 'lib/mediaDevice'
 import { profileActions } from 'features/profile'
@@ -12,32 +13,36 @@ import iconPrint from 'static/img/icons/print.png'
 export const Print = ({
   title,
   data,
+  qr,
   onClose,
   isLoadingReport,
   error,
   padding,
 }) => {
   const [decodedStr, setDecodedStr] = useState(null)
-  const componentRef = useRef(null);
+  const [decodedQr, setDecodedQr] = useState(null)
+  const componentRef = useRef(null)
 
   useEffect(() => {
-    //type checking
     try {
-      const text = Base64.decode(data.receipt)
+      const text = Base64.decode(data)
       setDecodedStr(text)
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }, [data])
+
+  useEffect(() => {
+    try {
+      const text = Base64.decode(qr)
+      console.log('qr', text)
+      setDecodedQr(text)
+    } catch (e) {}
+  }, [qr])
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: '',
-    onAfterPrint: () => onClose()
-  });
-
-
-
+    onAfterPrint: () => onClose(),
+  })
 
   return (
     <Wrapper padding={padding}>
@@ -52,19 +57,20 @@ export const Print = ({
           <Loading>Загрузка...</Loading>
         ) : (
           <Report>
-            {/*<IFRAME*/}
-            {/*  src={`data:text/plain;charset=utf-8;base64,${data.receipt}`}*/}
-            {/*></IFRAME>*/}
-
             <PRE ref={componentRef}>
-                <CODE>{decodedStr}</CODE>
-            </PRE>
+              <CODE>{decodedStr}</CODE>
 
+              {decodedQr &&
+              <WrapQr>
+                <QRCode value={decodedQr}/>
+              </WrapQr>
+              }
+            </PRE>
             {error && 'Не удалось загрузить'}
           </Report>
         )}
       </Box>
-      {data.id && (
+      {decodedStr && (
         <Footer>
           <Button onClick={handlePrint} disabled={null} color={'green'}>
             <Icon src={iconPrint}></Icon>
@@ -110,6 +116,16 @@ const Title = styled.div`
 const Footer = styled.div`
   text-align: center;
   margin-top: 5%;
+
+  ${StyledButton} {
+    padding: 0 50px;
+  }
+
+  @media ${device.laptop}, ${device.mobileTablet} {
+    ${StyledButton} {
+      padding: 0 30px;
+    }
+  }
 `
 const Close = styled.div`
   width: 24px;
@@ -135,7 +151,19 @@ const Close = styled.div`
     //display: none;
   }
 `
-const Report = styled.div``
+const Report = styled.div`
+  width: 100%;
+  max-height: 50vh;
+  overflow-y: auto;
+  text-align: center;
+
+  @media ${device.laptop} {
+    height: 50vh;
+  }
+  @media ${device.mobileTablet} {
+    height: calc(100vh - 300px);
+  }
+`
 const Loading = styled.div``
 const Icon = styled.img`
   margin-right: 10px;
@@ -144,14 +172,13 @@ const Icon = styled.img`
 const shared = css`
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  //overflow: hidden;
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
-  
 `
 const PRE = styled.pre`
-  ${shared}
+  ${shared};
 `
 const CODE = styled.code`
   ${shared}
@@ -159,4 +186,13 @@ const CODE = styled.code`
 const IFRAME = styled.iframe`
   height: 400px;
   border: none;
+`
+const WrapQr = styled.div`
+  margin-top: 20px;
+  //text-align: center;
+  
+  canvas{
+    width: 80px!important;
+    height: 80px!important;
+  }
 `

@@ -172,7 +172,8 @@ export const Check = ({ onClose, editable = {} }) => {
         )}
         <Print
           title={'Чек'}
-          data={currentReceipt}
+          data={currentReceipt.receipt}
+          qr={currentReceipt.ofd_qr}
           onClose={onClose}
           isLoadingReport={false}
           error={null}
