@@ -17,7 +17,7 @@ const CartRow = styled.div`
   height: calc(100vh - 450px);
   padding: 0 5px;
   overflow-y: auto;
-  
+
   @media ${device.laptop} {
     height: calc(100vh - 350px);
   }
@@ -36,6 +36,12 @@ const Close = styled.div`
   background-color: #b5b5b5;
   cursor: pointer;
 
+  @media ${device.laptop} {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+  }
+
   ${(p) =>
     p.active &&
     css`
@@ -45,7 +51,7 @@ const Close = styled.div`
 const CartItemInfoDiscount = styled.div`
   font-size: 15px;
   color: #6d82a3;
-  
+
   @media ${device.laptop} {
     font-size: 14px;
   }
@@ -114,9 +120,9 @@ const CartItemAvatar = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  
-   @media ${device.laptop} {
-     width: 60px;
+
+  @media ${device.laptop} {
+    width: 60px;
     height: 60px;
     border-radius: 30px;
   }
@@ -136,7 +142,7 @@ const CartItemInfo = styled.div`
   //align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  
+
   @media ${device.laptop} {
     height: 90px;
     width: calc(100% - 140px);
@@ -154,7 +160,7 @@ const CartItemInfoTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: bold;
-  
+
   @media ${device.laptop} {
     font-size: 18px;
     max-height: 65px;
@@ -166,7 +172,7 @@ const CartItemInfoTitle = styled.div`
 `
 const CartItemInfoPrice = styled.div`
   font-size: 28px;
-  
+
   @media ${device.laptop} {
     font-size: 20px;
   }
@@ -190,7 +196,6 @@ const CartTotalRow = styled.div`
   @media ${device.laptop}, ${device.mobileTablet} {
     margin-bottom: 10px;
   }
-
 `
 const CartTotalRowTitle = styled.div`
   white-space: nowrap;
@@ -261,9 +266,8 @@ const CartItemCountIcon = styled.div`
     css`
       background-color: #ffffff;
       color: var(--green);
-    `}  
+    `}
 `
-
 
 const CartItemCountIcon2 = styled(CartItemCountIcon)`
   display: flex;
@@ -275,7 +279,7 @@ const CartItemCountIcon2 = styled(CartItemCountIcon)`
 const CartItemCountValue = styled.div`
   font-size: 28px;
   margin: 5px 0;
-  
+
   @media ${device.laptop} {
     font-size: 22px;
   }

@@ -89,7 +89,7 @@ export const Payment = ({ onSuccess, onClose }) => {
 
   useEffect(() => {
     if (activeCash) {
-      handlePayment()
+      handlePayment(null,true)
 
       // if (activeCash > totalInfo.total) {
       //   handlePayment()
@@ -110,7 +110,9 @@ export const Payment = ({ onSuccess, onClose }) => {
   const onChangeEntered = (e) => {
     const { value } = e.target
     let numberView = modifyToNumber(value)
-    if(Number(numberView) > totalInfo.total) numberView = totalInfo.total
+    if(typePayment === 'card') {
+      if(Number(numberView) > totalInfo.total) numberView = totalInfo.total
+    }
     setEnteredValue(numberView)
   }
 
@@ -123,7 +125,8 @@ export const Payment = ({ onSuccess, onClose }) => {
     setActiveCash(cash)
   }
 
-  const handlePayment = async () => {
+  const handlePayment = async (e, isActiveCashPayment) => {
+    if(!isActiveCashPayment) setActiveCash(null)
     const data = {
       ticketType: 'SELL',
       total: totalInfo.total,
@@ -133,9 +136,9 @@ export const Payment = ({ onSuccess, onClose }) => {
     }
 
     if (typePayment === 'cash') {
-      data.cash = activeCash
+      data.cash = isActiveCashPayment ? activeCash : enteredValue
       data.card = 0
-      data.accepted = Number(activeCash)
+      data.accepted = Number(data.cash)
     } else {
       data.accepted = accepted
       data.cash = sumByCash

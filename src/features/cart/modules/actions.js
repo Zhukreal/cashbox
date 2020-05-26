@@ -57,13 +57,15 @@ export const pay = (data) => async (dispatch) => {
       }
     }
 
+    const change_sum = data.accepted - data.total
+
     const obj = {
       request_id: uuidv4(),
       ticket_type: data.ticketType,
       cash: localStorage.getItem('cashbox'),
       total_sum: data.total,
       taken_sum: data.accepted,
-      change_sum: data.accepted - data.total,
+      change_sum: change_sum > 0 ? change_sum : 0,
       items: items,
       payments: payments,
       comment: data.comment,

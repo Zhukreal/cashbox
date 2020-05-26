@@ -20,13 +20,17 @@ export const login = (credentials) => async (dispatch) => {
   }
 }
 
-export const logout = () => async (dispatch) => {
+export const logout = (isInterceptor) => async (dispatch) => {
   try {
-    // await apiLogout();
+
     localStorage.removeItem(AUTHTOKEN)
     dispatch(profileReducer.clearProfile())
-    window.location.href = '/login'
-    // history.push('/login');
+
+    if(isInterceptor) {
+      history.push('/login');
+    } else {
+      window.location.href = '/login'
+    }
   } catch (e) {
     console.log(e)
   }

@@ -23,13 +23,12 @@ export const CommonLoader = ({ children }) => {
   const CASHBOX = localStorage.getItem('cashbox')
 
   const location = useLocation()
-  const isLoginPage = location.pathname === '/login'
+  const locationPathName = location.pathname
+  const isLoginPage = locationPathName === '/login'
 
   // info for first loading
   useEffect(() => {
-    if (isLoginPage) {
-      // dispatch(profileActions.checkCashStatus())
-    } else {
+    if(TOKEN) {
       dispatch(productActions.getGroups())
       dispatch(productActions.getSections())
 
@@ -44,23 +43,44 @@ export const CommonLoader = ({ children }) => {
         clearInterval(interval2)
       }
     }
-  }, [])
+
+
+    // if (isLoginPage) {
+    //
+    // } else {
+    //   dispatch(productActions.getGroups())
+    //   dispatch(productActions.getSections())
+    //
+    //   const checkCashStatus = () => dispatch(profileActions.checkCashStatus())
+    //   // const requestInterval = 10000 // 10 sec
+    //   const requestInterval = 300000 // 5 min
+    //   checkCashStatus()
+    //   const interval = setInterval(() => checkConnection(), requestInterval)
+    //   const interval2 = setInterval(() => checkCashStatus(), requestInterval)
+    //   return () => {
+    //     clearInterval(interval)
+    //     clearInterval(interval2)
+    //   }
+    // }
+  }, [TOKEN])
 
   const checkConnection = useCallback(async () => {
     try {
       const res = await apiCheckConnection()
     } catch (e) {
       dispatch(authActions.setFailureConnection(true))
-      dispatch(authActions.logout())
+      dispatch(authActions.logout(true))
     }
   }, [])
 
   useEffect(() => {
-    if (!isLoginPage) {
+    if (TOKEN) {
       dispatch(productActions.resetFilters())
       dispatch(productActions.getProducts({}))
     }
-  }, [dispatch, searchFilter, activeSorting, activeGroup.id])
+  }, [dispatch, searchFilter, activeSorting, activeGroup.id, TOKEN])
+
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [searchFilter, activeSorting, activeGroup.id])

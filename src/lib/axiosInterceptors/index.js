@@ -22,7 +22,7 @@ axios.interceptors.response.use(
     async (error) => {
         const status = error.response.status
         if (status === 401) {
-            store.dispatch(authActions.logout())
+            store.dispatch(authActions.logout(true))
         }
         if (status === 403) {
             // window.location.href='/'

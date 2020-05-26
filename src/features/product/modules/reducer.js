@@ -55,7 +55,7 @@ const product = createSlice({
     setSections(state, action) {
       const { results } = action.payload
       state.sections = results
-      if (results.length) state.activeSection = results[0]
+      if (results.length && !state.activeSection.id) state.activeSection = results[0]
     },
     setSearchFilter(state, action) {
       state.skip = 0

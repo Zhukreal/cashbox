@@ -20,7 +20,8 @@ export const ChooseCashbox = () => {
         if(kassa.cash) {
           localStorage.setItem('cashbox', kassa.cash)
           localStorage.setItem('store', kassa.store)
-          window.location.href = '/'
+          // window.location.href = '/'
+          history.push('/')
         }
         // setIsLoading(false)
       })
@@ -53,8 +54,8 @@ export const ChooseCashbox = () => {
     if (!activeCashbox.id) return
     localStorage.setItem('cashbox', activeCashbox.id)
     localStorage.setItem('store', activeCashbox.store_id)
-    window.location.href = '/'
-    // history.push('/')
+    // window.location.href = '/'
+    history.push('/')
   }
 
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet

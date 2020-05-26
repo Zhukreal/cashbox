@@ -13,13 +13,14 @@ import { Text, Button, Modal, InactiveForWhile } from 'ui'
 export const Common = ({ children }) => {
   const dispatch = useDispatch()
   const [opened, setOpened] = useState(false)
+  const TOKEN = localStorage.getItem(AUTHTOKEN)
 
   const handleWarn = () => {
     setOpened(true)
   }
   const handleLogout = () => {
     dispatch(authActions.setExpiredSession(true))
-    dispatch(authActions.logout())
+    dispatch(authActions.logout(true))
   }
 
   // useIdle(handleWarn, handleLogout)
@@ -27,6 +28,7 @@ export const Common = ({ children }) => {
     setOpened(false)
   }
 
+  if(!TOKEN) return null
   return (
     <CommonContentTemplate>
       {children}
