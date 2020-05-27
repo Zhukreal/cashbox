@@ -423,7 +423,7 @@ const ChangePass = styled.div`
   cursor: pointer;
 
   @media ${device.laptop} {
-    font-size: 25px;
+    font-size: 22px;
   }
 
   @media ${device.mobileTablet} {
@@ -434,7 +434,7 @@ const IconLock = styled.img`
   margin-left: 20px;
 
   @media ${device.laptop} {
-    height: 25px;
+    height: 22px;
   }
 
   @media ${device.mobileTablet} {

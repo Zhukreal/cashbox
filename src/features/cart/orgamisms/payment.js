@@ -45,6 +45,7 @@ export const Payment = ({ onSuccess, onClose }) => {
   const dispatch = useDispatch()
   const { currency } = useSelector((state) => state.profile)
   const { isLoadingPayment } = useSelector((state) => state.cart)
+  const { client } = useSelector((state) => state.user)
   const products = useSelector((state) => cartSelectors.getProducts(state))
   const totalInfo = useSelector((state) => cartSelectors.getTotalInfo(state))
 
@@ -133,7 +134,9 @@ export const Payment = ({ onSuccess, onClose }) => {
       comment: comment,
       products: products,
       typePayment: typePayment,
+      customer: client.id
     }
+
 
     if (typePayment === 'cash') {
       data.cash = isActiveCashPayment ? activeCash : enteredValue

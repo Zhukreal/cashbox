@@ -69,7 +69,10 @@ export const pay = (data) => async (dispatch) => {
       items: items,
       payments: payments,
       comment: data.comment,
+      customer: data.customer
     }
+
+    if(!obj.customer) delete obj.customer
 
     dispatch(cartReducer.setIsLoadingPayment(true))
     dispatch(cartReducer.setCurrentPayment(data))

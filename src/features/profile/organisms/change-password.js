@@ -6,6 +6,8 @@ import DatePicker from 'react-datepicker'
 import { device } from 'lib/mediaDevice'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { emailValidator } from 'lib/validators'
+import { showNotification } from 'lib/notification'
+import { profileActions } from 'features/profile'
 import {
   Input,
   StyledInput,
@@ -24,6 +26,10 @@ export const ChangePassword = ({ onClose }) => {
     newPassword: '',
     newPasswordConfirm: '',
   })
+  const [typeNewPass, setTypeNewPass] = useState(true)
+  const [typeRepeatPass, setTypeRepeatPass] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+
   const dispatch = useDispatch()
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
@@ -50,10 +56,14 @@ export const ChangePassword = ({ onClose }) => {
   const handleSave = async () => {
     const copy = { ...user }
     try {
-      // await dispatch(userActions.addNewUser(copy))
-      // setUser(initial)
+      setIsLoading(true)
+      await dispatch(profileActions.changePassword(copy))
+      showNotification('info', 'Пароль успешно изменен')
+      onClose()
     } catch (e) {
-      debugger
+
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -63,37 +73,41 @@ export const ChangePassword = ({ onClose }) => {
     !user.newPasswordConfirm ||
     user.newPassword !== user.newPasswordConfirm
 
+  const errorConfirm = user.newPassword && user.newPasswordConfirm && user.newPassword !== user.newPasswordConfirm
+
   return (
     <Box>
       <UserContainer>
         <Title>Сменить пароль</Title>
         <BoxInputs>
           <Input
+            type='password'
             name="password"
             value={user.password}
             onChange={onChange}
             placeholder="Текущий пароль"
-            // isUnderline={isDesktopView}
             isForm
           />
           <Input
-            type={'password'}
+            type={typeNewPass ? 'password' : 'text'}
             name="newPassword"
             value={user.newPassword}
             onChange={onChange}
+            onClickEye={() => setTypeNewPass(!typeNewPass)}
             placeholder="Новый пароль"
-            // isUnderline={isDesktopView}
             isForm
+            hasEye
           />
           <Input
-            type={'password'}
+            type={typeRepeatPass ? 'password' : 'text'}
             name="newPasswordConfirm"
             value={user.newPasswordConfirm}
             onChange={onChange}
+            onClickEye={() => setTypeRepeatPass(!typeRepeatPass)}
             placeholder="Повторите пароль"
-            // error={errorEmail && 'Введите корректный e-mail'}
-            // isUnderline={isDesktopView}
+            error={errorConfirm && 'Пароли не совпадают'}
             isForm
+            hasEye
           />
         </BoxInputs>
 
@@ -102,7 +116,7 @@ export const ChangePassword = ({ onClose }) => {
             title={'Сменить'}
             onOk={handleSave}
             disabled={disabled}
-            isLoading={null}
+            isLoading={isLoading}
         />
         }
 
@@ -115,7 +129,7 @@ export const ChangePassword = ({ onClose }) => {
               onClick={handleSave}
               color="green"
               disabled={disabled}
-              isLoading={null}
+              isLoading={isLoading}
             >
               Сменить
             </Button>

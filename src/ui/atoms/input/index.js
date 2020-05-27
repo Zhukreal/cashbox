@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import InputMask from 'react-input-mask'
 import { device } from 'lib/mediaDevice'
 import searchIcon from 'static/img/icons/search.png'
+import eyeIcon from 'static/img/icons/eye.svg'
 
 export const Input = ({
   type,
@@ -10,6 +11,7 @@ export const Input = ({
   label,
   value,
   onChange,
+  onClickEye,
   placeholder,
   readOnly,
   size = 'medium',
@@ -20,6 +22,7 @@ export const Input = ({
   mask,
   alwaysShowMask,
   error,
+  hasEye,
 }) => {
   return (
     <BoxInput isForm={isForm}>
@@ -50,6 +53,7 @@ export const Input = ({
         />
       )}
       {isSearch && !value && <SearchIcon src={searchIcon} />}
+      {hasEye && <EyeIcon src={eyeIcon} onClick={onClickEye} />}
       <Error>{error}</Error>
     </BoxInput>
   )
@@ -199,5 +203,26 @@ const SearchIcon = styled.img`
     height: 18px;
     right: 18px;
     top: 18px;
+  }
+`
+
+const EyeIcon = styled.img`
+  position: absolute;
+  width: 25px;
+  right: 30px;
+  top: 25px;
+  cursor: pointer;
+
+  @media ${device.laptop} {
+    width: 20px;
+    top: 20px;
+    right: 22px;
+  }
+
+  @media ${device.mobileTablet} {
+    width: 16px;
+    height: 16px;
+    right: 14px;
+    top: 14px;
   }
 `

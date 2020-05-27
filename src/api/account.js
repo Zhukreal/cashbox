@@ -7,6 +7,9 @@ export const apiLogin = (data) => {
 export const apiGetAccount = () => {
   return axios.get(`${API_URL}/api/v1/current_user/`)
 }
+export const apiChangePassword = (data) => {
+  return axios.put(`${API_URL}/api/v1/current_user/password/`, data)
+}
 export const apiCheckConnection = () => {
   return axios.head(`${API_URL}/api/v1/current_user/`)
 }

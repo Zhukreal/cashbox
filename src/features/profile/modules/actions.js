@@ -1,5 +1,6 @@
 import {
   apiGetAccount,
+  apiChangePassword,
   apiCloseShift,
   apiLoadCurrentReport,
   apiCloseLastProcedure,
@@ -17,6 +18,20 @@ export const getAccount = (token) => async (dispatch) => {
     dispatch(profileReducer.setProfile(profile.data))
   } catch (e) {
     console.log(e)
+  }
+}
+
+export const changePassword = (data) => async (dispatch) => {
+  try {
+    const obj  = {
+      old_password: data.password,
+      new_password: data.newPassword
+    }
+    let res = await apiChangePassword(obj)
+  } catch (e) {
+    console.log(e)
+    showNotification('error', e)
+    throw new Error(e)
   }
 }
 
