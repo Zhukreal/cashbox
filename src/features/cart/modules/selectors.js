@@ -1,12 +1,16 @@
 import { mathRound2 } from 'lib/math'
 import { createSelector } from 'reselect'
+import { MODE } from "lib/CONST";
 
 const cartSelector = (state) => state.cart.products
 
 export const getProducts = createSelector(cartSelector, (products) =>
   products.map((product) => {
     const totalPrice = product.price * product.count
-    const totalDiscount = Math.round(totalPrice * (product.discount / 100))
+    const mode = localStorage.getItem(MODE)
+    let discount = product.discount
+    if(mode === 'purchase') discount = 0
+    const totalDiscount = Math.round(totalPrice * (discount / 100))
     const currentPrice = mathRound2(totalPrice - totalDiscount)
     return {
       ...product,

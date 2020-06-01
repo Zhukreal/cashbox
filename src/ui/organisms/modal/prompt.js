@@ -44,7 +44,7 @@ export const Prompt = ({
           <Button onClick={onCancel} color={'red'} disabled={isLoading}>
             {cancelText}
           </Button>
-          <Button onClick={onOk} color={'green'} isLoading={isLoading}>
+          <Button onClick={onOk} color={'green'} isLoading={isLoading} disabled={!value}>
             {okText}
           </Button>
         </Actions>

@@ -1,5 +1,5 @@
-import { API_URL, PATH_TO_FILE } from 'lib/CONST'
-import noPhoto from 'static/img/test.png'
+import { API_URL, PATH_TO_FILE, MODE } from 'lib/CONST'
+
 
 export const toModel = (product) => {
   let rest = null,
@@ -12,6 +12,9 @@ export const toModel = (product) => {
       price = store.price
     }
   })
+
+  const mode = localStorage.getItem(MODE)
+  if(mode === 'purchase') price = product.purchase
 
   return {
     ...product,

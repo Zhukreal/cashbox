@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { history } from 'lib/routing'
 import { device } from 'lib/mediaDevice'
-import { VIEWTYPE } from 'lib/CONST'
+import { VIEWTYPE, SETTINGS, MODE } from "lib/CONST";
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { ChangePassword } from 'features/profile'
 import { ShiftStatus } from 'features/product'
@@ -27,6 +27,7 @@ export const SettingsPage = () => {
     image: false,
     code: false,
   })
+  const [mode, setMode] = useState('sale')
   const [openedModalPassword, setOpenedModalPassword] = useState(false)
   const dispatch = useDispatch()
   const { isOpenedSidebar, isBlurredAll } = useSelector((state) => state.common)
@@ -35,7 +36,13 @@ export const SettingsPage = () => {
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
   useEffect(() => {
-    setActiveView(localStorage.getItem(VIEWTYPE))
+    const settings = JSON.parse(localStorage.getItem(SETTINGS))
+    if (settings) {
+      setActiveView(settings.view)
+      setWidthCheck(settings.width)
+      setInfo(settings.info)
+      setMode(settings.mode)
+    }
   }, [])
 
   const handleChangeInfo = (type) => {
@@ -51,9 +58,22 @@ export const SettingsPage = () => {
   }
 
   const handleSave = () => {
-    localStorage.setItem(VIEWTYPE, activeView)
+    const settings = {
+      view: activeView,
+      info: info,
+      width: widthCheck,
+      mode: mode
+    }
+    localStorage.setItem(SETTINGS, JSON.stringify(settings))
+    dispatch(commonActions.setSettings(settings))
 
-    dispatch(commonActions.setTypeViewProduct(activeView))
+    if(mode === localStorage.getItem(MODE)) {
+      history.push('/')
+    } else {
+      localStorage.setItem(MODE, mode)
+      window.location.href = '/'
+    }
+
   }
 
   return (
@@ -124,6 +144,19 @@ export const SettingsPage = () => {
                 active={info.code}
               >
                 штрих-код
+              </Variant>
+            </ListVariants>
+
+            <SubTitle mt>Режим:</SubTitle>
+            <ListVariants>
+              <Variant onClick={() => setMode('sale')} active={mode === 'sale'}>
+                Продажа
+              </Variant>
+              <Variant
+                onClick={() => setMode('purchase')}
+                active={mode === 'purchase'}
+              >
+                Покупка
               </Variant>
             </ListVariants>
           </Left>
@@ -201,7 +234,7 @@ export const Variant = ({ type, onClick, active, children }) => {
 }
 
 const Container = styled.div`
-  padding: 120px 5% 5%;
+  padding: 130px 5% 5%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -210,7 +243,7 @@ const Container = styled.div`
   //background: url(${iconGear}) no-repeat;
   
   @media ${device.laptop} {
-    padding-top: 80px;
+    padding-top: 100px;
   }
   
   @media ${device.mobileTablet} {
@@ -269,6 +302,12 @@ const Title = styled.div`
 const SubTitle = styled.div`
   font-size: 27px;
   margin-bottom: 4%;
+  
+  ${(p) =>
+    p.mt &&
+    css`
+      margin-top: 8%;
+    `}
 
   @media ${device.laptop} {
     font-size: 22px;

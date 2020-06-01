@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import {formatDate} from 'lib/modifyData/formatDate'
 import { profileActions } from '../index'
 import { Info } from 'ui'
 import { showNotification } from '../../../lib/notification'
+import { getOfdStatus } from "../../product";
 
 export const InfoKassa = ({ onCancel }) => {
-  const { isLoadingInfoKassa, infoKassa } = useSelector(
-    (state) => state.profile,
-  )
-  const dispatch = useDispatch()
+  const { currentShift, currency } = useSelector((state) => state.profile)
+  const [status, color] = getOfdStatus(currentShift.ofd_status)
 
-  useEffect(() => {
-    dispatch(profileActions.getKassaInfo())
-  }, [])
+  const data = {...currentShift,
+    currency: currency,
+    openDate: formatDate(currentShift.open_date, true),
+    status: status,
+    color: color
+  }
 
   return (
-    <Info data={infoKassa} onCancel={onCancel} isLoading={isLoadingInfoKassa} />
+    <Info
+      data={data}
+      onCancel={onCancel}
+      // isLoading={isLoadingInfoKassa}
+    />
   )
 }

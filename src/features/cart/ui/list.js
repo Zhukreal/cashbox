@@ -35,12 +35,12 @@ export const List = ({
   handleAddOne,
   handleRemoveOne,
 }) => {
-  const { typeViewProduct } = useSelector((state) => state.common)
+  const { settings } = useSelector((state) => state.common)
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
-  if (typeViewProduct === 'list') {
+  if (settings.view === 'list') {
     return (
       <>
         {products.map((item) => (
@@ -102,7 +102,7 @@ export const List = ({
           <CartItemAvatar src={item.image ? item.image : noPhoto} />
           <CartItemInfo>
             <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-            {!!item.discount && (
+            {(settings.mode === 'sale' && Boolean(item.discount)) && (
               <CartItemInfoDiscount>
                 Скидка: {item.totalDiscount} {currency}
               </CartItemInfoDiscount>

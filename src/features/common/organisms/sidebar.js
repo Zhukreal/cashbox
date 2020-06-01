@@ -12,7 +12,7 @@ import {
   CashKassa,
   InfoKassa,
 } from 'features/profile'
-import { commonActions } from 'features/common'
+import { commonActions, commonReducer } from 'features/common'
 import { Modal, Confirm, IconArrowLeft } from 'ui'
 import icon1 from 'static/img/icons/icon1.svg'
 import icon2 from 'static/img/icons/icon2.svg'
@@ -47,7 +47,9 @@ export const Sidebar = ({ handleLogout }) => {
   const [activeItem, setActiveItem] = useState(0)
   const dispatch = useDispatch()
 
-  const { isOpenedSidebar } = useSelector((state) => state.common)
+  const { isOpenedSidebar, settings, returnMode } = useSelector(
+    (state) => state.common,
+  )
   const { isLoadingCloseShift } = useSelector((state) => state.profile)
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
@@ -75,7 +77,15 @@ export const Sidebar = ({ handleLogout }) => {
   const handleCloseLast = async () => {
     try {
       await dispatch(profileActions.closeLastProcedure())
+      // handleCloseContent()
+      hideSidebar()
     } catch (e) {}
+  }
+
+  const handleReturnMode = async (type) => {
+    setActiveItem(type)
+    dispatch(commonReducer.setReturnMode(true))
+    hideSidebar()
   }
 
   const handleCloseContent = () => {
@@ -86,6 +96,9 @@ export const Sidebar = ({ handleLogout }) => {
     hideSidebar()
     history.push('/settings')
   }
+
+  const isShowedModal =
+    Boolean(activeItem) && activeItem !== 4 && activeItem !== 5
 
   const ref = useRef(null)
   useOnClickOutside(ref, hideSidebar)
@@ -136,25 +149,28 @@ export const Sidebar = ({ handleLogout }) => {
               Отмена последней операции
             </SidebarItem>
 
-            <SidebarItem
-              onClick={() => setActiveItem(4)}
-              active={activeItem === 4}
-            >
-              <IconWrap>
-                <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
-              </IconWrap>
-              Возврат продажи
-            </SidebarItem>
-
-            <SidebarItem
-              onClick={() => setActiveItem(5)}
-              active={activeItem === 5}
-            >
-              <IconWrap>
-                <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />
-              </IconWrap>
-              Возврат покупки
-            </SidebarItem>
+            {settings.mode === 'sale' && (
+              <SidebarItem
+                onClick={() => handleReturnMode(4)}
+                active={activeItem === 4}
+              >
+                <IconWrap>
+                  <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
+                </IconWrap>
+                Возврат продажи
+              </SidebarItem>
+            )}
+            {settings.mode === 'purchase' && (
+              <SidebarItem
+                onClick={() => setActiveItem(5)}
+                active={activeItem === 5}
+              >
+                <IconWrap>
+                  <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />
+                </IconWrap>
+                Возврат покупки
+              </SidebarItem>
+            )}
 
             <SidebarItem
               onClick={() => setActiveItem(6)}
@@ -231,13 +247,13 @@ export const Sidebar = ({ handleLogout }) => {
         </SidebarBox>
       )}
 
-      {isMobileView && Boolean(activeItem) && (
+      {isMobileView && isShowedModal && (
         <Background>
           <IconArrowLeft onClick={handleCloseContent} />
         </Background>
       )}
 
-      {Boolean(activeItem) && (
+      {isShowedModal && (
         <Modal onClose={null}>
           {activeItem === 1 && (
             <Confirm

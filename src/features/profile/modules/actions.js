@@ -76,6 +76,7 @@ export const closeLastProcedure = () => async (dispatch) => {
   try {
     dispatch(profileReducer.setIsLoadingCloseShift(true))
     let res = await apiCloseLastProcedure()
+    showNotification('info', 'Последняя операция успешно отменена')
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)
@@ -83,10 +84,12 @@ export const closeLastProcedure = () => async (dispatch) => {
     dispatch(profileReducer.setIsLoadingCloseShift(false))
   }
 }
-export const addCashToKassa = () => async (dispatch) => {
+export const addCashToKassa = (data) => async (dispatch) => {
   try {
     dispatch(profileReducer.setIsLoadingCashKassa(true))
-    await apiAddCashToKassa()
+    const res = await apiAddCashToKassa(data)
+    dispatch(profileReducer.setShiftCash(Number(res.data.sum)))
+    showNotification('info', `Успешно внесено ${res.data.sum}`)
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)
@@ -94,10 +97,12 @@ export const addCashToKassa = () => async (dispatch) => {
     dispatch(profileReducer.setIsLoadingCashKassa(false))
   }
 }
-export const removeCashFromKassa = () => async (dispatch) => {
+export const removeCashFromKassa = (data) => async (dispatch) => {
   try {
     dispatch(profileReducer.setIsLoadingCashKassa(true))
-    await apiRemoveCashFromKassa()
+    const res = await apiRemoveCashFromKassa(data)
+    dispatch(profileReducer.setShiftCash(-Number(res.data.sum)))
+    showNotification('info', `Успешно изъято ${data.sum}`)
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)

@@ -27,7 +27,9 @@ export const NewProduct = ({ onClose, editable = {} }) => {
   const [total, setTotal] = useState(0)
   const dispatch = useDispatch()
   const products = useSelector((state) => cartSelectors.getProducts(state))
+  const { settings } = useSelector((state) => state.common)
   const currentDevice = useDetectDevice()
+  const isShowedDiscount = settings.mode !== 'purchase'
 
   useEffect(() => {
     if (editable.id) {
@@ -50,7 +52,8 @@ export const NewProduct = ({ onClose, editable = {} }) => {
   // Calculate total price
   useEffect(() => {
     const totalPrice = product.price * product.count
-    const currentPrice = mathRound2(totalPrice - discountCurrency)
+    const disc = isShowedDiscount ? discountCurrency : 0
+    const currentPrice = mathRound2(totalPrice - disc)
     setTotal(currentPrice || 0)
   }, [product.price, product.count, discountCurrency])
 
@@ -119,6 +122,7 @@ export const NewProduct = ({ onClose, editable = {} }) => {
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
   const disabled = !Number(product.price) || !Number(product.count)
 
+
   return (
     <Wrapper url={product.image}>
       {isMobileView && (
@@ -151,20 +155,23 @@ export const NewProduct = ({ onClose, editable = {} }) => {
               placeholder="Количество"
             />
           </Wrap>
-          <FlexBox>
-            <Input
-              name="discount"
-              value={discount}
-              onChange={onChange}
-              placeholder="Скидка в %"
-            />
-            <Input
-              name="discountCurrency"
-              value={discountCurrency}
-              onChange={onChange}
-              placeholder="Скидка в тнг"
-            />
-          </FlexBox>
+
+          {isShowedDiscount &&
+            <FlexBox>
+              <Input
+                name="discount"
+                value={discount}
+                onChange={onChange}
+                placeholder="Скидка в %"
+              />
+              <Input
+                name="discountCurrency"
+                value={discountCurrency}
+                onChange={onChange}
+                placeholder="Скидка в тнг"
+              />
+            </FlexBox>
+          }
           <Total>Итого: {total} тнг</Total>
         </Box>
 

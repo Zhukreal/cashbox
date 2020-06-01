@@ -2,10 +2,10 @@ import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { device } from 'lib/mediaDevice'
 
-export const Skeleton = ({typeViewProduct}) => {
+export const Skeleton = ({view}) => {
   const cards = [1, 2, 3, 4, 5, 6, 7, 8]
 
-  if(typeViewProduct === 'list'){
+  if(view === 'list'){
     return (
       <>
         <SkeletonRow2>

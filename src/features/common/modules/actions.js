@@ -9,6 +9,7 @@ export const showSidebar = (param) => (dispatch) => {
 export const setBlurredAll = (param) => (dispatch) => {
   dispatch(commonReducer.setBlurredAll(param))
 }
-export const setTypeViewProduct = (param) => (dispatch) => {
-  dispatch(commonReducer.setTypeViewProduct(param))
+export const setSettings = (settings) => (dispatch) => {
+  dispatch(commonReducer.setSettings(settings))
 }
+

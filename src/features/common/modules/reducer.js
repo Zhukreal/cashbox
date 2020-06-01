@@ -1,10 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {VIEWTYPE} from 'lib/CONST'
+import { SETTINGS } from 'lib/CONST'
+
+const settingsDefault = {
+  view: 'grid',
+  info: {
+    rest: true,
+    vendorCode: true,
+    image: true,
+    code: true,
+  },
+  width: '57',
+  mode: 'sale'
+}
+const settingsLS = localStorage.getItem(SETTINGS)
+if(!settingsLS) localStorage.setItem(SETTINGS, JSON.stringify(settingsDefault))
+const initialSettings = settingsLS ? JSON.parse(settingsLS) :  settingsDefault
 
 let initialState = {
   isOpenedSidebar: false,
   isBlurredAll: false,
-  typeViewProduct: localStorage.getItem(VIEWTYPE) || 'grid' // grid, list
+  settings: initialSettings,
+  returnMode: null
 }
 
 const common = createSlice({
@@ -20,12 +36,21 @@ const common = createSlice({
     setBlurredAll(state, action) {
       state.isBlurredAll = action.payload
     },
-    setTypeViewProduct(state, action) {
-      state.typeViewProduct = action.payload
+    setSettings(state, action) {
+      state.settings = action.payload
+    },
+    setReturnMode(state, action) {
+      state.returnMode = action.payload
     },
   },
 })
 
-export const { toggleSidebar, showSidebar, setBlurredAll, setTypeViewProduct } = common.actions
+export const {
+  toggleSidebar,
+  showSidebar,
+  setBlurredAll,
+  setSettings,
+  setReturnMode
+} = common.actions
 
 export default common.reducer

@@ -29,11 +29,15 @@ export const ProductList = () => {
     activeGroup,
   } = useSelector((state) => state.product)
   const { currency } = useSelector((state) => state.profile)
-  const { typeViewProduct } = useSelector((state) => state.common)
+  const { settings } = useSelector((state) => state.common)
   const products = useSelector((state) => productSelectors.getProducts(state))
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+  const isShownRest = settings.info.rest
+  const isShownVendorCode = settings.info.vendorCode
+  const isShownImage = settings.info.image
+  const isShownCode = settings.info.code
 
   const fetchMoreListItems = async () => {
     console.log('hasMore', hasMore)
@@ -70,11 +74,16 @@ export const ProductList = () => {
     setOpenedModalNewProduct(false)
   }
 
+  // isShownRest
+  // isShownVendorCode
+  // isShownImage
+  // isShownCode
+
   const ProductsListView = () => {
-    if (typeViewProduct === 'list') {
+    if (settings.view === 'list') {
       return (
         <ProductsRow2>
-          <ProductCol2 onClick={() => isMobileView ? handleAddNew() : null}>
+          <ProductCol2 onClick={() => (isMobileView ? handleAddNew() : null)}>
             <ProductLogo2 src={emptyPhoto} />
             <ProductNameNew>Новый товар</ProductNameNew>
             <ProductPrice2>0 {currency}</ProductPrice2>
@@ -88,17 +97,22 @@ export const ProductList = () => {
             <ProductCol2
               key={`${item.id}-${key}`}
               url={item.image}
-              onClick={() => isMobileView ? handleAddToCart(item) : null}
+              onClick={() => (isMobileView ? handleAddToCart(item) : null)}
             >
-              <ProductLogo2 src={item.image || emptyPhoto} />
+              {isShownImage && <ProductLogo2 src={item.image || emptyPhoto} />}
               <WrapInfoList>
                 <ProductName2>{item.name}</ProductName2>
-                <ProductCode2>Код: {item.barcode}</ProductCode2>
                 <ProductCode2>
-                  {item.currentCount !== null &&
-                    `
-                Остаток: ${item.currentCount} ${item.unit}
-                  `}
+                  {isShownCode && item.barcode && <>Код: {item.barcode}</>}
+                </ProductCode2>
+                <ProductCode2>
+                  {isShownRest && (
+                    <>
+                      {item.currentCount !== null &&
+                        `Остаток: ${item.currentCount} ${item.unit}`
+                      }
+                    </>
+                  )}
                 </ProductCode2>
               </WrapInfoList>
               <ProductPrice2>
@@ -130,13 +144,21 @@ export const ProductList = () => {
           </ProductInfo>
         </ProductCol>
         {products.map((item, key) => (
-          <ProductCol key={`${item.id}-${key}`} url={item.image}>
+          <ProductCol key={`${item.id}-${key}`} url={item.image} isShownImage={isShownImage} >
             <ProductInfo>
               <ProductName>{item.name}</ProductName>
-              <ProductCode>Код: {item.barcode}</ProductCode>
+              <ProductCode>
+                {isShownCode && item.barcode && <>Код: {item.barcode}</>}
+              </ProductCode>
               {item.currentCount !== null && (
                 <ProductCode>
-                  Остаток: {item.currentCount} {item.unit}
+                  {isShownRest && (
+                    <>
+                      {item.currentCount !== null &&
+                      `Остаток: ${item.currentCount} ${item.unit}`
+                      }
+                    </>
+                  )}
                 </ProductCode>
               )}
               <ProductPrice>
@@ -155,8 +177,7 @@ export const ProductList = () => {
     )
   }
 
-
-  if (isLoading) return <Skeleton typeViewProduct={typeViewProduct} />
+  if (isLoading) return <Skeleton view={settings.view} />
   if (searchFilter && !products.length)
     return <Loading>По вашему запросу ничего не найдено...</Loading>
 
@@ -218,7 +239,7 @@ const ProductCol = styled.div`
   ${(props) =>
     props.url &&
     css`
-      background: #e7e9ed url(${props.url});
+      background: #e7e9ed url(${p => p.isShownImage ? props.url : null});
       background-size: cover;
     `}
   

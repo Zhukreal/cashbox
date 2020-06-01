@@ -2,35 +2,14 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { device } from 'lib/mediaDevice'
+import { getOfdStatus } from 'features/product'
 
 export const ShiftStatus = () => {
   const [isHover, setIsHover] = useState(false)
   const { currentShift } = useSelector((state) => state.profile)
 
-  let status = '',
-    color = ''
-  switch (currentShift.ofd_status) {
-    case 'ONL':
-      status = 'Режим онлайн'
-      color = '#25D77E'
-      break
-    case 'OFL':
-      status = 'Автономный режим'
-      color = '#ffff54'
-      break
-    case 'BLK':
-      color = '#F16F58'
-      status = 'Касса заблокирована'
-      break
-    case 'SBL':
-      break
-  }
+  const [status, color] = getOfdStatus(currentShift.ofd_status)
 
-  // ONL - работа с ОФД в нормальном режиме(ONLINE),
-  // OFL - работа кассы в автономном режиме (OFFLINE),
-  // BLK - касса в режиме блокировки(BLOCKED),
-  // SBL - касса в режиме серверной блокировки,
-  // ITG - нарушение целостности данных.
 
   const toggleHover = () => {
     setIsHover((prev) => !prev)

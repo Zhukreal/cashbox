@@ -21,8 +21,8 @@ export const editProduct = (product) => (dispatch) => {
 }
 export const pay = (data) => async (dispatch) => {
   try {
-    const { product } = store.getState()
-    const receiptWidth = 57
+    const { product, common } = store.getState()
+    const receiptWidth = common.settings.width
     const activeSection =
       product.activeSection && product.activeSection.id
         ? product.activeSection.id

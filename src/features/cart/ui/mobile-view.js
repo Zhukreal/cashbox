@@ -27,6 +27,8 @@ export const MobileView = ({
   editable,
   currency,
   totalInfo,
+  mode,
+  returnMode,
   handleEdit,
   handleRemoveProduct,
   handleAddOne,
@@ -103,7 +105,11 @@ export const MobileView = ({
                 Отмена
               </Button>
               <Button onClick={handleOpenModalPayment} color="green">
-                Оплата
+                {returnMode
+                  ? 'Возврат'
+                  : mode === 'sale'
+                  ? 'Оплата'
+                  : 'Покупка'}
               </Button>
             </CartBtnBox>
           </CartTotalMobile>

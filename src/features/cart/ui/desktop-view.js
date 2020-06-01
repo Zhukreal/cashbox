@@ -17,6 +17,8 @@ export const DesktopView = ({
   editable,
   currency,
   totalInfo,
+  mode,
+  returnMode,
   handleEdit,
   handleRemoveProduct,
   handleAddOne,
@@ -61,8 +63,8 @@ export const DesktopView = ({
             <Button color="red" onClick={handleClearCart}>
               Отмена
             </Button>
-            <Button onClick={handleOpenModalPayment} color="green">
-              Оплата
+            <Button onClick={handleOpenModalPayment} color={ returnMode ? 'yellow' : 'green'} >
+              {returnMode ? 'Возврат' : mode === 'sale' ? 'Оплата' : 'Покупка'}
             </Button>
           </CartBtnBox>
         )}

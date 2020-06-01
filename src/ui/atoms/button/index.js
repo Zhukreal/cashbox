@@ -114,6 +114,16 @@ export const StyledButton = styled.button`
       `}
     
     ${(p) =>
+      p.color === 'yellow' &&
+      css`
+        color: #ffffff;
+        background-color: #f0b01f;
+        box-shadow: var(--shadow-card);
+      `}
+    
+    
+    
+    ${(p) =>
       p.variant === 'outlined' &&
       css`
         background: none;

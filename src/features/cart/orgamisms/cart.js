@@ -21,7 +21,7 @@ export const Cart = () => {
   const [searchU, setSearchU] = useState('')
   const debouncedSearchU = useDebounce(searchU, 300)
 
-  const { isOpenedSidebar } = useSelector((state) => state.common)
+  const { isOpenedSidebar, settings, returnMode } = useSelector((state) => state.common)
   const { currency } = useSelector((state) => state.profile)
   const { searchUser, client, showedModalAdd } = useSelector(
     (state) => state.user,
@@ -110,6 +110,8 @@ export const Cart = () => {
           editable={editable}
           currency={currency}
           totalInfo={totalInfo}
+          mode={settings.mode}
+          returnMode={returnMode}
           handleEdit={handleEdit}
           handleRemoveProduct={handleRemoveProduct}
           handleAddOne={handleAddOne}
@@ -131,6 +133,8 @@ export const Cart = () => {
             editable={editable}
             currency={currency}
             totalInfo={totalInfo}
+            mode={settings.mode}
+            returnMode={returnMode}
             handleEdit={handleEdit}
             handleRemoveProduct={handleRemoveProduct}
             handleAddOne={handleAddOne}

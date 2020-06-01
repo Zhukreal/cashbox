@@ -13,6 +13,9 @@ export const apiChangePassword = (data) => {
 export const apiCheckConnection = () => {
   return axios.head(`${API_URL}/api/v1/current_user/`)
 }
+export const apiCheckCashStatus = (id) => {
+  return axios.get(`${API_URL}/api/v1/current_shift/`)
+}
 export const apiCloseShift = () => {
   return axios.delete(`${API_URL}/api/v1/current_shift/`)
 }
@@ -20,16 +23,13 @@ export const apiLoadCurrentReport = (cashId) => {
   return axios.get(`${API_URL}/api/v1/cashes/${cashId}/zxreport/`)
 }
 export const apiCloseLastProcedure = () => {
-  return axios.delete(`${API_URL}/api/v1/product_order/`)
-}
-export const apiCheckCashStatus = (id) => {
-  return axios.get(`${API_URL}/api/v1/current_shift/`)
+  return axios.delete(`${API_URL}/api/v1/operations/last/`)
 }
 export const apiAddCashToKassa = (data) => {
-  return axios.post(`${API_URL}/api/v1/cash/deposit/`, data)
+  return axios.post(`${API_URL}/api/v1/operations/deposit/`, data)
 }
 export const apiRemoveCashFromKassa = (data) => {
-  return axios.post(`${API_URL}/api/v1/cash/withdrawals/`, data)
+  return axios.post(`${API_URL}/api/v1/operations/withdrawal/`, data)
 }
 export const apiGetInfoKassa = (id) => {
   return axios.get(`${API_URL}/api/v1/cash/${id}/stats/`)

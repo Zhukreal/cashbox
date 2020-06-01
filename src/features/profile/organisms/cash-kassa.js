@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
 import { profileActions } from '../index'
 import { Button, StyledButton, Prompt } from 'ui'
 import { showNotification } from '../../../lib/notification'
@@ -14,7 +15,7 @@ export const CashKassa = ({
   isLoading,
 }) => {
   const [value, setValue] = useState('')
-  const { isLoadingCashKassa } = useSelector((state) => state.profile)
+  const { isLoadingCashKassa, currentShift, currency } = useSelector((state) => state.profile)
   const dispatch = useDispatch()
 
   const onChange = (e) => {
@@ -25,12 +26,16 @@ export const CashKassa = ({
 
   const handleCash = async () => {
     try {
+      const CASHBOX = localStorage.getItem('cashbox')
+      let data = {
+        sum: value,
+        cash: CASHBOX,
+        request_id: uuidv4()
+      }
       if (type === 1) {
-        await dispatch(profileActions.addCashToKassa(value))
-        showNotification('info', 'Успешно')
+        await dispatch(profileActions.addCashToKassa(data))
       } else {
-        await dispatch(profileActions.removeCashFromKassa(value))
-        showNotification('info', 'Успешно')
+        await dispatch(profileActions.removeCashFromKassa(data))
       }
       onSuccess()
     } catch (e) {}
@@ -39,7 +44,7 @@ export const CashKassa = ({
   return (
     <Prompt
       title={title}
-      cash={'1 4949 тнг.'}
+      cash={`${currentShift.total_sum} ${currency}`}
       onOk={handleCash}
       onCancel={onCancel}
       cancelText={cancelText}

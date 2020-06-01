@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { device } from 'lib/mediaDevice'
 import { Button, StyledButton } from 'ui'
 
-export const Info = ({ data, isLoading, onCancel }) => {
+export const Info = ({ data, onCancel }) => {
   return (
     <Box>
       <Content>
@@ -12,23 +12,23 @@ export const Info = ({ data, isLoading, onCancel }) => {
           <WrapperBorder>
             <WLT>
               <Label>Кассир:</Label>
-              <Text>Иванов Иван Иванович</Text>
+              <Text>{data.cashier_display}</Text>
             </WLT>
             <WLT>
               <Label>Торговая точка:</Label>
-              <Text>SMALL</Text>
+              <Text>{data.store_display}</Text>
             </WLT>
             <WLT>
               <Label>Касса:</Label>
-              <Text>Касса 1</Text>
+              <Text>{data.cash_display}</Text>
             </WLT>
             <WLT>
               <Label>Заводской номер кассы:</Label>
-              <Text>000000001</Text>
+              <Text>{data.cash_manufacturer_number}</Text>
             </WLT>
             <WLT>
               <Label>Связь с ОФД:</Label>
-              <Status>Online</Status>
+              <Status color={data.color}>{data.status}</Status>
             </WLT>
           </WrapperBorder>
         </Left>
@@ -37,19 +37,19 @@ export const Info = ({ data, isLoading, onCancel }) => {
 
           <WLT>
             <Label>Наличных в кассе:</Label>
-            <Text green>3 487 029 тнг</Text>
+            <Text green >{data.total_sum} {data.currency}</Text>
           </WLT>
           <WLT>
             <Label>Номер смены:</Label>
-            <Text>64</Text>
+            <Text>{data.number}</Text>
           </WLT>
           <WLT>
             <Label>Время открытия смены:</Label>
-            <Text>10:00 03.09.2020</Text>
+            <Text>{data.openDate}</Text>
           </WLT>
           <WLT>
             <Label>Чеков за сегодня:</Label>
-            <Text>234</Text>
+            <Text>{data.operations_count}</Text>
           </WLT>
         </Right>
       </Content>
@@ -151,7 +151,7 @@ const Text = styled.div`
 `
 const Status = styled.div`
   font-size: 25px;
-  color: var(--green);
+  color: ${p => p.color ? p.color : '#000000'};
   display: flex;
   align-items: center;
 
@@ -168,7 +168,7 @@ const Status = styled.div`
     width: 16px;
     height: 16px;
     border-radius: 8px;
-    background-color: var(--green);
+    background-color: ${p => p.color ? p.color : '#ffffff'};
     margin-left: 10px;
 
     @media ${device.laptop} {

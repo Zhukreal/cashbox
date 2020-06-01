@@ -1,13 +1,16 @@
-export const formatDate = (date) => {
-    let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+export const formatDate = (date, type) => {
+  function z(n) {
+    return (n < 10 ? '0' : '') + n
+  }
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
+  let d = new Date(date),
+    year = d.getFullYear(),
+    month = z(d.getMonth() + 1),
+    day = z(d.getDate()),
+    hours = z(d.getHours()),
+    minutes = z(d.getMinutes())
 
-    return [year, month, day].join('-');
+
+  if(type) return `${hours}:${minutes} ${day}.${month}.${year}`
+  return [year, month, day].join('-')
 }

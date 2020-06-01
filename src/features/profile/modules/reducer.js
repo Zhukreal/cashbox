@@ -45,6 +45,10 @@ const profile = createSlice({
     setCashStatus(state, action) {
       state.currentShift = action.payload
     },
+    setShiftCash(state, action) {
+      const newTotal = Number(state.currentShift.total_sum) + Number(action.payload)
+      state.currentShift.total_sum = newTotal
+    },
     setIsLoadingCloseShift(state, action) {
       state.isLoadingCloseShift = action.payload
     },
@@ -74,6 +78,7 @@ export const {
   setIsLoadingReport,
   setCurrentReport,
   setCashStatus,
+  setShiftCash,
   setIsLoadingCashKassa,
   setIsLoadingInfoKassa,
   setInfoKassa,

@@ -43,6 +43,7 @@ export const Payment = ({ onSuccess, onClose }) => {
   const [showedErrorCash, setShowedErrorCash] = useState(false)
 
   const dispatch = useDispatch()
+  const { settings, returnMode } = useSelector((state) => state.common)
   const { currency } = useSelector((state) => state.profile)
   const { isLoadingPayment } = useSelector((state) => state.cart)
   const { client } = useSelector((state) => state.user)
@@ -128,8 +129,15 @@ export const Payment = ({ onSuccess, onClose }) => {
 
   const handlePayment = async (e, isActiveCashPayment) => {
     if(!isActiveCashPayment) setActiveCash(null)
+    let ticketType;
+    if(settings.mode === 'sale') {
+      ticketType = returnMode ? 'RETURN_SELL' : 'SELL'
+    } else {
+      ticketType = returnMode ? 'RETURN_PURCHASE' : 'PURCHASE'
+    }
+
     const data = {
-      ticketType: 'SELL',
+      ticketType: ticketType,
       total: totalInfo.total,
       comment: comment,
       products: products,
