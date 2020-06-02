@@ -53,7 +53,7 @@ export const Sidebar = ({ handleLogout }) => {
   const { isOpenedSidebar, settings, returnMode } = useSelector(
     (state) => state.common,
   )
-  const { isLoadingCloseShift } = useSelector((state) => state.profile)
+  const { isLoadingCloseShift, currentShift } = useSelector((state) => state.profile)
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
@@ -95,6 +95,14 @@ export const Sidebar = ({ handleLogout }) => {
     }
     dispatch(commonReducer.setReturnMode(!returnMode))
     hideSidebar()
+  }
+
+  const handleSetActiveWithCheckCash = type => {
+    if(!currentShift.id) {
+      showNotification('error', 'Нет информации о кассе')
+    } else {
+      setActiveItem(type)
+    }
   }
 
   const handleCloseContent = () => {
@@ -182,7 +190,7 @@ export const Sidebar = ({ handleLogout }) => {
             )}
 
             <SidebarItem
-              onClick={() => setActiveItem(6)}
+              onClick={() => handleSetActiveWithCheckCash(6)}
               active={activeItem === 6}
             >
               {isDesktopView && (
@@ -200,7 +208,7 @@ export const Sidebar = ({ handleLogout }) => {
             </SidebarItem>
 
             <SidebarItem
-              onClick={() => setActiveItem(7)}
+              onClick={() => handleSetActiveWithCheckCash(7)}
               active={activeItem === 7}
             >
               {isDesktopView && (
@@ -221,7 +229,7 @@ export const Sidebar = ({ handleLogout }) => {
             </SidebarItem>
 
             <SidebarItem
-              onClick={() => setActiveItem(8)}
+              onClick={() => handleSetActiveWithCheckCash(8)}
               active={activeItem === 8}
             >
               <IconWrap>

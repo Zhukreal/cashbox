@@ -8,7 +8,7 @@ import { Button, ButtonIcon, CashBoxList } from 'ui'
 import arrowRight from 'static/img/icons/arrow-right.png'
 
 export const ChooseCashbox = () => {
-  const { cashes, currentShift } = useSelector((state) => state.profile)
+  const { cashes } = useSelector((state) => state.profile)
   const [activeCashbox, setActiveCashbox] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const currentDevice = useDetectDevice()
@@ -20,35 +20,13 @@ export const ChooseCashbox = () => {
         if(kassa.cash) {
           localStorage.setItem('cashbox', kassa.cash)
           localStorage.setItem('store', kassa.store)
-          // window.location.href = '/'
           history.push('/')
         }
-        // setIsLoading(false)
       })
       .catch((e) => {
         setIsLoading(false)
       })
   }, [])
-
-  // useEffect(() => {
-  //   console.log('currentShift', currentShift)
-  //   if(currentShift.cash) {
-  //     localStorage.setItem('cashbox', currentShift.cash)
-  //     localStorage.setItem('store', currentShift.store)
-  //     window.location.href = '/'
-  //   }
-  // }, [currentShift])
-
-
-  // useEffect(() => {
-  //   if(!isLoading) {
-  //     if (cashes.length === 1) {
-  //       localStorage.setItem('cashbox', cashes[0].id)
-  //       localStorage.setItem('store', cashes[0].store_id)
-  //       window.location.href = '/'
-  //     }
-  //   }
-  // }, [cashes, isLoading])
 
   const handleChooseCashbox = () => {
     if (!activeCashbox.id) return

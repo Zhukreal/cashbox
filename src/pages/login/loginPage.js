@@ -12,8 +12,6 @@ import {
   Input,
   StyledInput,
   StyledInputMask,
-  BoxInput,
-  CashBoxList,
   Modal,
   Text, FooterMobile
 } from "ui";

@@ -7,9 +7,7 @@ import { getOfdStatus } from 'features/product'
 export const ShiftStatus = () => {
   const [isHover, setIsHover] = useState(false)
   const { currentShift } = useSelector((state) => state.profile)
-
   const [status, color] = getOfdStatus(currentShift.ofd_status)
-
 
   const toggleHover = () => {
     setIsHover((prev) => !prev)

@@ -8,7 +8,7 @@ export const getOfdStatus = (ofdStatus) => {
       break
     case 'OFL':
       status = 'Автономный режим'
-      color = '#ffdc02'
+      color = '#f0b01f'
       break
     case 'BLK':
       color = '#F16F58'

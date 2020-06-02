@@ -235,6 +235,7 @@ const ProductCol = styled.div`
   border-radius: 30px;
   box-sizing: border-box;
   background: #E7E9ED url(${emptyPhoto}) center 85px no-repeat;
+  box-shadow: var(--shadow-card);
   
   ${(props) =>
     props.url &&

@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import { profileActions } from '../index'
-import { Button, StyledButton, Prompt } from 'ui'
-import { showNotification } from '../../../lib/notification'
+import { Prompt } from 'ui'
 
 export const CashKassa = ({
   type,
@@ -30,7 +29,8 @@ export const CashKassa = ({
       let data = {
         sum: value,
         cash: CASHBOX,
-        request_id: uuidv4()
+        request_id: uuidv4(),
+        currency: currency
       }
       if (type === 1) {
         await dispatch(profileActions.addCashToKassa(data))

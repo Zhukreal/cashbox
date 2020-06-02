@@ -28,7 +28,7 @@ export const Header = () => {
 
   useEffect(() => {
     // console.log('debouncedSearchU', debouncedSearchU)
-    if (debouncedSearchU) dispatch(userActions.getUsers(debouncedSearchU))
+    dispatch(userActions.getUsers(debouncedSearchU))
   }, [debouncedSearchU])
 
   useEffect(() => {

@@ -89,7 +89,7 @@ export const addCashToKassa = (data) => async (dispatch) => {
     dispatch(profileReducer.setIsLoadingCashKassa(true))
     const res = await apiAddCashToKassa(data)
     dispatch(profileReducer.setShiftCash(Number(res.data.sum)))
-    showNotification('info', `Успешно внесено ${res.data.sum}`)
+    showNotification('info', `Успешно внесено ${res.data.sum} ${data.currency}`)
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)
@@ -102,7 +102,7 @@ export const removeCashFromKassa = (data) => async (dispatch) => {
     dispatch(profileReducer.setIsLoadingCashKassa(true))
     const res = await apiRemoveCashFromKassa(data)
     dispatch(profileReducer.setShiftCash(-Number(res.data.sum)))
-    showNotification('info', `Успешно изъято ${data.sum}`)
+    showNotification('info', `Успешно изъято ${data.sum} ${data.currency}`)
   } catch (e) {
     showNotification('error', e)
     throw new Error(e)

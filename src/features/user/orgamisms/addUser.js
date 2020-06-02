@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useOnClickOutside from 'use-onclickoutside'
-import styled, { css } from 'styled-components'
-import DatePicker from 'react-datepicker'
+import styled from 'styled-components'
 import { device } from 'lib/mediaDevice'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { emailValidator } from 'lib/validators'
@@ -89,7 +88,7 @@ export const AddUser = () => {
 
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
-  const disabled = !user.name || !user.phone || errorEmail
+  const disabled = !user.name || !user.phone || errorPhone || errorEmail
 
   return (
     <Box ref={isDesktopView ? ref : null}>
@@ -125,15 +124,6 @@ export const AddUser = () => {
               alwaysShowMask
               isForm={isMobileView}
             />
-            {/*<Input*/}
-            {/*  type={'tel'}*/}
-            {/*  name="phone"*/}
-            {/*  value={user.phone}*/}
-            {/*  onChange={onChange}*/}
-            {/*  placeholder="Номер телефона"*/}
-            {/*  isUnderline={isDesktopView}*/}
-            {/*  isForm={isMobileView}*/}
-            {/*/>*/}
             <Input
               name="email"
               value={user.email}
@@ -143,14 +133,6 @@ export const AddUser = () => {
               isUnderline={isDesktopView}
               isForm={isMobileView}
             />
-            {/*<Input*/}
-            {/*    type='date'*/}
-            {/*    name='birth_date'*/}
-            {/*    value={user.birth_date}*/}
-            {/*    onChange={onChange}*/}
-            {/*    placeholder='Дата рождение'*/}
-            {/*    isUnderline*/}
-            {/*/>*/}
             <InputDatepicker
               selected={user.birth_date}
               onChange={onChangeBd}
