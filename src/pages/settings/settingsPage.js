@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { history } from 'lib/routing'
 import { device } from 'lib/mediaDevice'
-import { VIEWTYPE, SETTINGS, MODE } from "lib/CONST";
+import { SETTINGS } from 'lib/CONST'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { ChangePassword } from 'features/profile'
 import { ShiftStatus } from 'features/product'
-import { Button, Modal, StyledButton, IconArrowLeft, FooterMobile } from 'ui'
+import {
+  Button,
+  Modal,
+  StyledButton,
+  IconArrowLeft,
+  FooterMobile,
+  Switch,
+} from 'ui'
 import iconGrid from 'static/img/icons/grid.svg'
 import iconGridWhite from 'static/img/icons/grid-white.svg'
 import iconList from 'static/img/icons/list.svg'
@@ -18,63 +25,70 @@ import iconGear from 'static/img/icons/gear.png'
 import logo from 'static/img/logo.svg'
 import { commonActions } from '../../features/common'
 
+const initialState = {
+  view: 'grid',
+  info: {
+    rest: true,
+    vendorCode: true,
+    image: true,
+    code: true,
+  },
+  width: '57',
+  purchaseEnabled: false,
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setAll':
+      return action.payload
+    case 'view':
+      return { ...state, view: action.payload }
+    case 'info':
+      return {
+        ...state,
+        info: { ...state.info, [action.payload]: !state.info[action.payload] },
+      }
+    case 'width':
+      return { ...state, width: action.payload }
+    case 'purchase':
+      console.log('test')
+      return { ...state, purchaseEnabled: !state.purchaseEnabled }
+    default:
+      throw new Error()
+  }
+}
+
 export const SettingsPage = () => {
-  const [activeView, setActiveView] = useState('grid')
-  const [widthCheck, setWidthCheck] = useState('57')
-  const [info, setInfo] = useState({
-    rest: false,
-    vendorCode: false,
-    image: false,
-    code: false,
-  })
-  const [mode, setMode] = useState('sale')
+  const [state, dispatchState] = useReducer(reducer, initialState)
   const [openedModalPassword, setOpenedModalPassword] = useState(false)
   const dispatch = useDispatch()
-  const { isOpenedSidebar, isBlurredAll } = useSelector((state) => state.common)
+  const { isOpenedSidebar, isBlurredAll, settings } = useSelector(
+    (state) => state.common,
+  )
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
   useEffect(() => {
-    const settings = JSON.parse(localStorage.getItem(SETTINGS))
-    if (settings) {
-      setActiveView(settings.view)
-      setWidthCheck(settings.width)
-      setInfo(settings.info)
-      setMode(settings.mode)
-    }
-  }, [])
-
-  const handleChangeInfo = (type) => {
-    setInfo({ ...info, [type]: !info[type] })
-  }
-
-  const handleChangeWidthCheck = (width) => {
-    setWidthCheck(width)
-  }
+    dispatchState({ type: 'setAll', payload: settings })
+  }, [settings])
 
   const handleCloseModal = (width) => {
     setOpenedModalPassword(false)
   }
 
-  const handleSave = () => {
-    const settings = {
-      view: activeView,
-      info: info,
-      width: widthCheck,
-      mode: mode
-    }
-    localStorage.setItem(SETTINGS, JSON.stringify(settings))
-    dispatch(commonActions.setSettings(settings))
-
-    if(mode === localStorage.getItem(MODE)) {
-      history.push('/')
-    } else {
-      localStorage.setItem(MODE, mode)
-      window.location.href = '/'
-    }
-
+  const handleSwitch = e => {
+    e.stopPropagation()
+    dispatchState({ type: 'purchase' })
   }
+
+  const handleSave = () => {
+    localStorage.setItem(SETTINGS, JSON.stringify(state))
+    dispatch(commonActions.setSettings(state))
+    history.push('/')
+  }
+
+  // console.log(state)
 
   return (
     <>
@@ -102,17 +116,17 @@ export const SettingsPage = () => {
             <SubTitle>Отображение товаров:</SubTitle>
             <ViewBox>
               <ViewItem
-                onClick={() => setActiveView('grid')}
-                active={activeView === 'grid'}
+                onClick={() => dispatchState({ type: 'view', payload: 'grid' })}
+                active={state.view === 'grid'}
               >
-                <Icon src={activeView === 'grid' ? iconGridWhite : iconGrid} />
+                <Icon src={state.view === 'grid' ? iconGridWhite : iconGrid} />
                 Сетка
               </ViewItem>
               <ViewItem
-                onClick={() => setActiveView('list')}
-                active={activeView === 'list'}
+                onClick={() => dispatchState({ type: 'view', payload: 'list' })}
+                active={state.view === 'list'}
               >
-                <Icon src={activeView === 'list' ? iconListWhite : iconList} />
+                <Icon src={state.view === 'list' ? iconListWhite : iconList} />
                 Список
               </ViewItem>
             </ViewBox>
@@ -120,45 +134,56 @@ export const SettingsPage = () => {
             <SubTitle>Отображение информации в карточке товаров:</SubTitle>
             <ListVariants>
               <Variant
-                onClick={() => handleChangeInfo('rest')}
-                active={info.rest}
+                onClick={() => dispatchState({ type: 'info', payload: 'rest' })}
+                active={state.info.rest}
               >
                 остаток на складе
               </Variant>
               <Variant
-                onClick={() => handleChangeInfo('vendorCode')}
-                active={info.vendorCode}
+                onClick={() =>
+                  dispatchState({ type: 'info', payload: 'vendorCode' })
+                }
+                active={state.info.vendorCode}
               >
                 артикул
               </Variant>
             </ListVariants>
             <ListVariants>
               <Variant
-                onClick={() => handleChangeInfo('image')}
-                active={info.image}
+                onClick={() =>
+                  dispatchState({ type: 'info', payload: 'image' })
+                }
+                active={state.info.image}
               >
                 изображение
               </Variant>
               <Variant
-                onClick={() => handleChangeInfo('code')}
-                active={info.code}
+                onClick={() => dispatchState({ type: 'info', payload: 'code' })}
+                active={state.info.code}
               >
                 штрих-код
               </Variant>
             </ListVariants>
 
-            <SubTitle mt>Режим:</SubTitle>
-            <ListVariants>
-              <Variant onClick={() => setMode('sale')} active={mode === 'sale'}>
-                Продажа
-              </Variant>
-              <Variant
-                onClick={() => setMode('purchase')}
-                active={mode === 'purchase'}
-              >
-                Покупка
-              </Variant>
-            </ListVariants>
+            <SwitchBox onClick={handleSwitch}>
+              <Switch
+                onChange={handleSwitch}
+                checked={state.purchaseEnabled}
+              />
+              <SwitchLabel active={state.purchaseEnabled}>Покупка</SwitchLabel>
+            </SwitchBox>
+
+            {/*<ListVariants>*/}
+            {/*  <Variant onClick={() => setMode('sale')} active={mode === 'sale'}>*/}
+            {/*    Продажа*/}
+            {/*  </Variant>*/}
+            {/*  <Variant*/}
+            {/*    onClick={() => setMode('purchase')}*/}
+            {/*    active={mode === 'purchase'}*/}
+            {/*  >*/}
+            {/*    Покупка*/}
+            {/*  </Variant>*/}
+            {/*</ListVariants>*/}
           </Left>
           <Right>
             <Title>Общие настройки</Title>
@@ -172,15 +197,15 @@ export const SettingsPage = () => {
             <ListVariants>
               <Variant
                 type={1}
-                onClick={() => handleChangeWidthCheck('57')}
-                active={widthCheck === '57'}
+                onClick={() => dispatchState({ type: 'width', payload: '57' })}
+                active={state.width === '57'}
               >
                 57 мм
               </Variant>
               <Variant
                 type={1}
-                onClick={() => handleChangeWidthCheck('80')}
-                active={widthCheck === '80'}
+                onClick={() => dispatchState({ type: 'width', payload: '80' })}
+                active={state.width === '80'}
               >
                 80 мм
               </Variant>
@@ -539,4 +564,15 @@ const CHLeft = styled.div`
 const TitlePage = styled.div`
   font-size: 25px;
   font-weight: bold;
+`
+const SwitchBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 8%;
+  cursor: pointer;
+`
+const SwitchLabel = styled.div`
+  margin-left: 10px;
+  font-size: 20px;
+  color: ${(p) => (p.active ? '#5087de' : 'grey')};
 `

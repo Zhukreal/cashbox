@@ -1,4 +1,4 @@
-import { API_URL, PATH_TO_FILE, MODE } from 'lib/CONST'
+import { API_URL, PATH_TO_FILE } from 'lib/CONST'
 
 
 export const toModel = (product) => {
@@ -13,14 +13,11 @@ export const toModel = (product) => {
     }
   })
 
-  const mode = localStorage.getItem(MODE)
-  if(mode === 'purchase') price = product.purchase
-
   return {
     ...product,
     discount: product.discount || 0,
     rest: rest,
-    price: price,
+    priceStore: price,
     image: product.image_url ? `${PATH_TO_FILE}/${product.image_url}` : null,
   }
 }

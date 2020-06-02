@@ -47,11 +47,7 @@ export const MobileView = ({
           <HeaderCart>
             <HeaderCartTop>
               <IconArrowLeft onClick={handleCloseMobileCart} />
-              {client.id ? (
-                <IconClearClient onClick={handleClearClient} />
-              ) : (
-                <AddUser />
-              )}
+              {client.id ? <IconClearClient onClick={handleClearClient} /> : <AddUser />}
             </HeaderCartTop>
             <HeaderCartSearch>
               {client.id ? (
@@ -104,12 +100,13 @@ export const MobileView = ({
               <Button color="red" onClick={handleClearCart}>
                 Отмена
               </Button>
-              <Button onClick={handleOpenModalPayment} color="green">
-                {returnMode
-                  ? 'Возврат'
-                  : mode === 'sale'
-                  ? 'Оплата'
-                  : 'Покупка'}
+              <Button
+                onClick={handleOpenModalPayment}
+                color={mode === 'return_sale' || mode === 'return_purchase' ? 'yellow' : 'green'}
+              >
+                {mode === 'sale' && 'Оплата'}
+                {mode === 'purchase' && 'Покупка'}
+                {(mode === 'return_sale' || mode === 'return_purchase') && 'Возврат'}
               </Button>
             </CartBtnBox>
           </CartTotalMobile>

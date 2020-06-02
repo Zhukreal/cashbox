@@ -3,18 +3,22 @@ import styled from 'styled-components'
 
 export const TestPage = () => {
 
-  setTimeout(function() {
-    console.log('1')
-  }, 1000);
-  setTimeout(function() {
-    console.log('2')
-  }, 1000);
-  setTimeout(function() {
-    console.log('3')
-  }, 1000);
-  setTimeout(function() {
-    console.log('4')
-  }, 1000);
+
+  const shape = {
+    radius: 10,
+    diameter() {
+      return this.radius * 2;
+    },
+    perimeter: function(){return 2 * this.radius} ,
+  };
+
+  console.log(shape.diameter());
+  console.log(shape.perimeter());
+
+
+
+
+
 
   return (
     <>

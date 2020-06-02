@@ -10,7 +10,7 @@ const settingsDefault = {
     code: true,
   },
   width: '57',
-  mode: 'sale'
+  purchaseEnabled: false
 }
 const settingsLS = localStorage.getItem(SETTINGS)
 if(!settingsLS) localStorage.setItem(SETTINGS, JSON.stringify(settingsDefault))
@@ -20,7 +20,7 @@ let initialState = {
   isOpenedSidebar: false,
   isBlurredAll: false,
   settings: initialSettings,
-  returnMode: null
+  mode: 'sale' // 'sale, return_sale, purchase, return_purchase'
 }
 
 const common = createSlice({
@@ -39,8 +39,8 @@ const common = createSlice({
     setSettings(state, action) {
       state.settings = action.payload
     },
-    setReturnMode(state, action) {
-      state.returnMode = action.payload
+    setMode(state, action) {
+      state.mode = action.payload
     },
   },
 })
@@ -50,7 +50,7 @@ export const {
   showSidebar,
   setBlurredAll,
   setSettings,
-  setReturnMode
+  setMode
 } = common.actions
 
 export default common.reducer

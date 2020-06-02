@@ -43,7 +43,7 @@ export const Payment = ({ onSuccess, onClose }) => {
   const [showedErrorCash, setShowedErrorCash] = useState(false)
 
   const dispatch = useDispatch()
-  const { settings, returnMode } = useSelector((state) => state.common)
+  const { settings, mode } = useSelector((state) => state.common)
   const { currency } = useSelector((state) => state.profile)
   const { isLoadingPayment } = useSelector((state) => state.cart)
   const { client } = useSelector((state) => state.user)
@@ -130,11 +130,10 @@ export const Payment = ({ onSuccess, onClose }) => {
   const handlePayment = async (e, isActiveCashPayment) => {
     if(!isActiveCashPayment) setActiveCash(null)
     let ticketType;
-    if(settings.mode === 'sale') {
-      ticketType = returnMode ? 'RETURN_SELL' : 'SELL'
-    } else {
-      ticketType = returnMode ? 'RETURN_PURCHASE' : 'PURCHASE'
-    }
+    if (mode === 'sale') ticketType = 'SELL'
+    if (mode === 'return_sale') ticketType = 'RETURN_SELL'
+    if (mode === 'purchase') ticketType = 'PURCHASE'
+    if (mode === 'return_purchase') ticketType = 'RETURN_PURCHASE'
 
     const data = {
       ticketType: ticketType,
@@ -204,7 +203,7 @@ export const Payment = ({ onSuccess, onClose }) => {
             value={enteredValue}
             onChange={onChangeEntered}
             placeholder="Сумма"
-            readOnly={returnMode}
+            readOnly={mode === 'return_sale' || mode === 'return_purchase'}
           />
 
           {isDesktopView && (

@@ -27,9 +27,9 @@ export const NewProduct = ({ onClose, editable = {} }) => {
   const [total, setTotal] = useState(0)
   const dispatch = useDispatch()
   const products = useSelector((state) => cartSelectors.getProducts(state))
-  const { settings } = useSelector((state) => state.common)
+  const { settings, mode} = useSelector((state) => state.common)
   const currentDevice = useDetectDevice()
-  const isShowedDiscount = settings.mode !== 'purchase'
+  const isShowedDiscount = mode === 'sale' || mode === 'return_sale'
 
   useEffect(() => {
     if (editable.id) {

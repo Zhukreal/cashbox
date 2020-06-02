@@ -5,7 +5,8 @@ import { device } from 'lib/mediaDevice'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { Button } from 'ui'
 import minusIcon from 'static/img/icons/minus-s.png'
-import plusGreen from 'static/img/icons/plus-green.svg'
+import plusGreen from 'static/img/icons/green-plus.png'
+
 import minusRed from 'static/img/icons/minus-red.svg'
 import noPhoto from 'static/img/no-photo.png'
 import closeCard from 'static/img/icons/close-card.png'
@@ -35,7 +36,7 @@ export const List = ({
   handleAddOne,
   handleRemoveOne,
 }) => {
-  const { settings } = useSelector((state) => state.common)
+  const { settings, mode } = useSelector((state) => state.common)
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
@@ -102,7 +103,7 @@ export const List = ({
           <CartItemAvatar src={item.image ? item.image : noPhoto} />
           <CartItemInfo>
             <CartItemInfoTitle>{item.name}</CartItemInfoTitle>
-            {(settings.mode === 'sale' && Boolean(item.discount)) && (
+            {(mode === 'sale' || mode === 'return_sale') && (
               <CartItemInfoDiscount>
                 Скидка: {item.totalDiscount} {currency}
               </CartItemInfoDiscount>

@@ -14,7 +14,7 @@ import {
   InfoKassa,
 } from 'features/profile'
 import { commonActions, commonReducer } from 'features/common'
-import { cartReducer } from "features/cart";
+import { cartReducer } from 'features/cart'
 import { Modal, Confirm, IconArrowLeft } from 'ui'
 import icon1 from 'static/img/icons/icon1.svg'
 import icon2 from 'static/img/icons/icon2.svg'
@@ -45,15 +45,16 @@ import burger from 'static/img/icons/burger-desktop.svg'
 import burgerM from 'static/img/icons/burger-mobile.svg'
 import bgMobile from 'static/img/bg-login-mobile.png'
 
-
 export const Sidebar = ({ handleLogout }) => {
   const [activeItem, setActiveItem] = useState(0)
   const dispatch = useDispatch()
 
-  const { isOpenedSidebar, settings, returnMode } = useSelector(
+  const { isOpenedSidebar, settings, mode } = useSelector(
     (state) => state.common,
   )
-  const { isLoadingCloseShift, currentShift } = useSelector((state) => state.profile)
+  const { isLoadingCloseShift, currentShift } = useSelector(
+    (state) => state.profile,
+  )
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
@@ -85,20 +86,29 @@ export const Sidebar = ({ handleLogout }) => {
     } catch (e) {}
   }
 
-  const handleReturnMode = async (type) => {
-    setActiveItem(type)
+  const handleSwitchMode = async (mode) => {
+    dispatch(commonReducer.setMode(mode))
     dispatch(cartReducer.clearCart())
-    if(returnMode) {
-      showNotification('info', 'Режим возврата отключен')
-    } else {
-      showNotification('info', 'Режим возврата включен')
+    switch (mode) {
+      case 'sale':
+        showNotification('info', 'Продажа')
+        break
+      case 'return_sale':
+        showNotification('info', 'Возврат продажи')
+        break
+      case 'purchase':
+        showNotification('info', 'Покупка')
+        break
+      case 'return_purchase':
+        showNotification('info', 'Возврат покупки')
+        break
+      default:
     }
-    dispatch(commonReducer.setReturnMode(!returnMode))
     hideSidebar()
   }
 
-  const handleSetActiveWithCheckCash = type => {
-    if(!currentShift.id) {
+  const handleSetActiveWithCheckCash = (type) => {
+    if (!currentShift.id) {
       showNotification('error', 'Нет информации о кассе')
     } else {
       setActiveItem(type)
@@ -166,27 +176,48 @@ export const Sidebar = ({ handleLogout }) => {
               Отмена последней операции
             </SidebarItem>
 
-            {settings.mode === 'sale' && (
-              <SidebarItem
-                onClick={() => handleReturnMode(4)}
-                active={returnMode}
-              >
-                <IconWrap>
-                  <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
-                </IconWrap>
-                Возврат продажи
-              </SidebarItem>
-            )}
-            {settings.mode === 'purchase' && (
-              <SidebarItem
-                onClick={() => handleReturnMode(5)}
-                active={returnMode}
-              >
-                <IconWrap>
-                  <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />
-                </IconWrap>
-                Возврат покупки
-              </SidebarItem>
+            <SidebarItem
+              onClick={() => handleSwitchMode('sale')}
+              active={mode === 'sale'}
+            >
+              <IconWrap>
+                {/*<SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />*/}
+              </IconWrap>
+              Продажа
+            </SidebarItem>
+
+            <SidebarItem
+              onClick={() => handleSwitchMode('return_sale')}
+              active={mode === 'return_sale'}
+            >
+              <IconWrap>
+                <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
+              </IconWrap>
+              Возврат продажи
+            </SidebarItem>
+
+            {settings.purchaseEnabled && (
+              <>
+                <SidebarItem
+                  onClick={() => handleSwitchMode('purchase')}
+                  active={mode === 'purchase'}
+                >
+                  <IconWrap>
+                    {/*<SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />*/}
+                  </IconWrap>
+                  Покупка
+                </SidebarItem>
+
+                <SidebarItem
+                  onClick={() => handleSwitchMode('return_purchase')}
+                  active={mode === 'return_purchase'}
+                >
+                  <IconWrap>
+                    <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />
+                  </IconWrap>
+                  Возврат покупки
+                </SidebarItem>
+              </>
             )}
 
             <SidebarItem
