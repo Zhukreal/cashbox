@@ -5,6 +5,7 @@ import useOnClickOutside from 'use-onclickoutside'
 import { useDispatch, useSelector } from 'react-redux'
 import { device } from 'lib/mediaDevice'
 import { history } from 'lib/routing'
+import { showNotification } from 'lib/notification'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import {
   profileActions,
@@ -13,6 +14,7 @@ import {
   InfoKassa,
 } from 'features/profile'
 import { commonActions, commonReducer } from 'features/common'
+import { cartReducer } from "features/cart";
 import { Modal, Confirm, IconArrowLeft } from 'ui'
 import icon1 from 'static/img/icons/icon1.svg'
 import icon2 from 'static/img/icons/icon2.svg'
@@ -42,6 +44,7 @@ import close from 'static/img/icons/close.png'
 import burger from 'static/img/icons/burger-desktop.svg'
 import burgerM from 'static/img/icons/burger-mobile.svg'
 import bgMobile from 'static/img/bg-login-mobile.png'
+
 
 export const Sidebar = ({ handleLogout }) => {
   const [activeItem, setActiveItem] = useState(0)
@@ -84,7 +87,13 @@ export const Sidebar = ({ handleLogout }) => {
 
   const handleReturnMode = async (type) => {
     setActiveItem(type)
-    dispatch(commonReducer.setReturnMode(true))
+    dispatch(cartReducer.clearCart())
+    if(returnMode) {
+      showNotification('info', 'Режим возврата отключен')
+    } else {
+      showNotification('info', 'Режим возврата включен')
+    }
+    dispatch(commonReducer.setReturnMode(!returnMode))
     hideSidebar()
   }
 
@@ -152,7 +161,7 @@ export const Sidebar = ({ handleLogout }) => {
             {settings.mode === 'sale' && (
               <SidebarItem
                 onClick={() => handleReturnMode(4)}
-                active={activeItem === 4}
+                active={returnMode}
               >
                 <IconWrap>
                   <SidebarItemIcon src={isDesktopView ? icon4 : icon4w} />
@@ -162,8 +171,8 @@ export const Sidebar = ({ handleLogout }) => {
             )}
             {settings.mode === 'purchase' && (
               <SidebarItem
-                onClick={() => setActiveItem(5)}
-                active={activeItem === 5}
+                onClick={() => handleReturnMode(5)}
+                active={returnMode}
               >
                 <IconWrap>
                   <SidebarItemIcon src={isDesktopView ? icon5 : icon5w} />

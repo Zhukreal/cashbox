@@ -199,14 +199,12 @@ export const Payment = ({ onSuccess, onClose }) => {
             </Type>
           </FlexBox>
 
-
-
-
           <Input
             type="text"
             value={enteredValue}
             onChange={onChangeEntered}
             placeholder="Сумма"
+            readOnly={returnMode}
           />
 
           {isDesktopView && (
@@ -216,9 +214,6 @@ export const Payment = ({ onSuccess, onClose }) => {
               </Button>
             </TextCenter>
           )}
-
-
-
 
           {/*{typePayment === 'card' && (*/}
           {/*  <>*/}
