@@ -300,8 +300,8 @@ export const Sidebar = ({ handleLogout }) => {
               Настройки
             </SidebarItem>
 
-            <SidebarItem isForLink>
-              <LikA href="https://www.tut.by/" target="_blank">
+            <SidebarItem isForLink onClick={() => hideSidebar()}>
+              <LikA href="https://shop.lkassa.kz" target="_blank">
                 <IconWrap>
                   <SidebarItemIcon src={isDesktopView ? icon10 : icon10w} />
                 </IconWrap>
