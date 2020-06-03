@@ -32,6 +32,16 @@ export const Cart = () => {
   const currentDevice = useDetectDevice()
 
   useEffect(() => {
+    if(isShowedMobileCart) {
+      console.log('hidden')
+      document.body.style.overflow = 'hidden';
+    } else {
+      console.log('unset')
+      document.body.style.overflow = 'unset';
+    }
+  }, [isShowedMobileCart])
+
+  useEffect(() => {
     dispatch(userActions.getUsers(debouncedSearchU))
   }, [debouncedSearchU])
   const onChangeSearchUsers = (e) => {
@@ -102,8 +112,13 @@ export const Cart = () => {
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
 
+  // console.log('isShowedMobileCart', isShowedMobileCart)
+  // console.log('products.length', products.length)
+
+  const isShowedMobileCartCondition = isShowedMobileCart && products.length || isShowedMobileCart && openedModalCheck
+
   return (
-    <CartWrapper isShowedMobileCart={isShowedMobileCart && products.length}>
+    <CartWrapper isShowedMobileCart={isShowedMobileCartCondition}>
       {isDesktopView && (
         <DesktopView
           products={products}
@@ -183,8 +198,9 @@ const CartWrapper = styled.div`
   @media ${device.mobileTablet} {
     position: fixed;
     width: 100%;
-    height: auto;
-    z-index: 1002;
+    height: 70px;
+    bottom: 13px;
+    z-index: 5;
 
     ${(p) =>
       p.isShowedMobileCart &&
@@ -193,6 +209,7 @@ const CartWrapper = styled.div`
         width: 100vw;
         top: 0;
         left: 0;
+        bottom: 0;
         background-color: #ffffff;
         z-index: 1002;
       `}

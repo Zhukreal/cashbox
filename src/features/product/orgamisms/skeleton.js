@@ -34,12 +34,12 @@ const SkeletonRow = styled.div`
   width: 100%;
   padding-bottom: 110px;
 
-  @media ${device.mobileTablet} {
-    padding: 0 10%;
-  }
-
   @media ${device.laptop} {
     padding-bottom: 90px;
+  }
+  
+  @media ${device.mobileTablet} {
+    padding: 0 15%;
   }
   
 `
@@ -81,7 +81,7 @@ const SkeletonCol = styled.div`
   
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
-      height: 320px;
+      height: 250px;
     }
     
    

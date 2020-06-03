@@ -182,6 +182,7 @@ export const Check = ({ onClose, editable = {} }) => {
       </Wrapper>
     )
 
+
   return (
     <Wrapper>
       {isMobileView && (

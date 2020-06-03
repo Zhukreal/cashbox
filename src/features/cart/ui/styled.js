@@ -251,29 +251,21 @@ const CartBtnBox = styled.div`
   }
 `
 const CartItemCountIcon = styled.div`
-  width: 22px;
-  height: 22px;
-  font-size: 16px;
-  line-height: 22px;
-  border-radius: 11px;
-
-  color: #ffffff;
-  background-color: var(--green);
+  //width: 22px;
+  //height: 22px;
+  //font-size: 16px;
+  //line-height: 22px;
+  //border-radius: 11px;
+  //
+  //color: #ffffff;
   cursor: pointer;
-
-  ${(p) =>
-    p.active &&
-    css`
-      background-color: #ffffff;
-      color: var(--green);
-    `}
 `
 
 const CartItemCountIcon2 = styled(CartItemCountIcon)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--red);
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+  //background-color: var(--red);
 `
 
 const CartItemCountValue = styled.div`
@@ -294,7 +286,10 @@ const Icon = styled.span`
   top: -1px;
 `
 
-const IconImg = styled.img``
+const IconImg = styled.img`
+  width: 20px;
+  height: 20px;
+`
 
 export {
   CartBox,

@@ -22,7 +22,7 @@ export const routes = () => [
     component: SettingsPage,
   },
   {
-    path: '/test',
+    path: '/test/:id',
     exact: true,
     component: TestPage,
   },

@@ -217,12 +217,12 @@ const ProductsRow = styled.div`
   //height: calc(100vh - 220px);
   //max-height: calc(100vh - 220px);
 
-  @media ${device.mobileTablet} {
-    padding: 0 10%;
-  }
-
   @media ${device.laptop} {
     padding-bottom: 90px;
+  }
+  
+  @media ${device.mobileTablet} {
+    padding: 0 15%;
   }
 `
 const ProductCol = styled.div`
@@ -259,7 +259,7 @@ const ProductCol = styled.div`
   
     @media ${device.mobileTablet} { 
       flex: 0 1 100%;
-       height: 320px;
+      height: 250px;
     };
     
     
@@ -281,7 +281,7 @@ const ProductInfo = styled.div`
   }
 
   @media ${device.mobileTablet} {
-    height: 150px;
+    height: 130px;
   }
 `
 const ProductName = styled.div`
@@ -298,8 +298,8 @@ const ProductName = styled.div`
 
   @media ${device.mobileTablet} {
     height: 40px;
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 18px;
+    margin-bottom: 10px;
   }
 `
 const ProductCode = styled.div`
@@ -311,7 +311,7 @@ const ProductCode = styled.div`
   }
 
   @media ${device.mobileTablet} {
-    font-size: 13px;
+    font-size: 12px;
   }
 `
 const ProductPrice = styled.div`
@@ -325,8 +325,8 @@ const ProductPrice = styled.div`
   }
 
   @media ${device.mobileTablet} {
-    font-size: 20px;
-    bottom: 20px;
+    font-size: 18px;
+    bottom: 10px;
   }
 `
 const AddIcon = styled.div`

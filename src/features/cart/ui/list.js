@@ -4,10 +4,13 @@ import styled, { css } from 'styled-components'
 import { device } from 'lib/mediaDevice'
 import { useDetectDevice } from 'lib/customHooks/useDetectDevice'
 import { Button } from 'ui'
-import minusIcon from 'static/img/icons/minus-s.png'
-import plusGreen from 'static/img/icons/green-plus.png'
 
-import minusRed from 'static/img/icons/minus-red.svg'
+
+import minusIcon from 'static/img/icons/minus-s.png'
+import plusGreen from 'static/img/icons/plus-green-white.svg'
+import plusWhite from 'static/img/icons/plus-white-green.svg'
+import minusRed from 'static/img/icons/minus-red-white.svg'
+
 import noPhoto from 'static/img/no-photo.png'
 import closeCard from 'static/img/icons/close-card.png'
 import iconTrash from 'static/img/icons/trash.svg'
@@ -117,13 +120,14 @@ export const List = ({
               onClick={(e) => handleAddOne(e, item)}
               active={editable.id === item.id}
             >
-              <Icon>+</Icon>
+              {/*<Icon>+</Icon>*/}
+              <IconImg src={editable.id === item.id ? plusWhite : plusGreen} />
             </CartItemCountIcon>
             <CartItemCountValue>
               {item.count} {item.unit}
             </CartItemCountValue>
             <CartItemCountIcon2 onClick={(e) => handleRemoveOne(e, item)}>
-              <IconImg src={minusIcon} />
+              <IconImg src={minusRed} />
             </CartItemCountIcon2>
           </CartItemCount>
         </CartCol>

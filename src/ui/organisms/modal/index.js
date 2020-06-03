@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import useOnClickOutside from 'use-onclickoutside'
 import { device } from 'lib/mediaDevice'
@@ -14,6 +14,16 @@ export const Modal = ({
 }) => {
   const ref = useRef(null)
   useOnClickOutside(ref, onClose)
+
+  useEffect(() => {
+    console.log('hide body scroll')
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      console.log('allow body scroll')
+    }
+  }, [])
 
   return (
     <ModalBox

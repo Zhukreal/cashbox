@@ -58,6 +58,31 @@ export const Sidebar = ({ handleLogout }) => {
   const currentDevice = useDetectDevice()
   const isMobileView = currentDevice.isMobile || currentDevice.isTablet
   const isDesktopView = currentDevice.isLaptop || currentDevice.isDesktop
+  const isShowedModal =
+    Boolean(activeItem) && activeItem !== 4 && activeItem !== 5
+
+  useEffect(() => {
+    if(isOpenedSidebar) {
+      console.log('hidden')
+      document.body.style.overflow = 'hidden';
+    } else {
+      if(!isShowedModal) {
+        console.log('unset')
+        document.body.style.overflow = 'unset';
+      }
+    }
+  }, [isOpenedSidebar])
+
+  useEffect(() => {
+    if(isShowedModal) {
+      console.log('hidden 2')
+      document.body.style.overflow = 'hidden';
+    } else {
+      console.log('unset 2')
+      document.body.style.overflow = 'unset';
+    }
+  }, [isShowedModal])
+
 
   useEffect(() => {
     if (isMobileView) dispatch(commonActions.showSidebar(false))
@@ -124,8 +149,7 @@ export const Sidebar = ({ handleLogout }) => {
     history.push('/settings')
   }
 
-  const isShowedModal =
-    Boolean(activeItem) && activeItem !== 4 && activeItem !== 5
+
 
   const ref = useRef(null)
   useOnClickOutside(ref, hideSidebar)
